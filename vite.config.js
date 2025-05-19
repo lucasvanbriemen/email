@@ -5,7 +5,7 @@ import laravel from 'laravel-vite-plugin';
 const files = fg.sync([
     'resources/js/**/*.js',
     'resources/css/**/*.css',
-    'resources/scss/**/*.scss'
+    'resources/css/**/*.scss',
 ]);
 
 export default defineConfig({
