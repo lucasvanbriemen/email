@@ -25,7 +25,6 @@ class MailboxController extends Controller
             $folder = $this->client->getFolder($this->DEFAULT_FOLDER);
         }
 
-
         $messages = [];
         if ($folder) {
             $messages = $folder->messages()->all()->get();
