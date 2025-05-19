@@ -85,6 +85,7 @@ if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     currentSystem = 'dark';
 }
 
+// currentSystem = "light";
 
 // Loop over the colors object and set the CSS variables
 for (const [key, value] of Object.entries(colors)) {

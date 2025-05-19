@@ -2,9 +2,9 @@
 
 <div class='sidebar'>
     @foreach ($folders as $folder)
-        <div class='folder'>
+        <div class='folder @if ($folder->name == $selectedFolder->name) selected @endif'>
             <a href='/folder/{{ $folder->name }}'>
-                {{ $folder->name }}
+                {{ strtolower($folder->name) }}
             </a>
         </div>
     @endforeach

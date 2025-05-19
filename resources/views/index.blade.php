@@ -1,4 +1,4 @@
-<x-email-layout>
+<x-email-layout :selectedFolder="$selectedFolder">
     @foreach ($messages as $message)
         <a href='/mail/{{ $message->getUid() }}'>
             Subject: {{ $message->getSubject() }}<br>

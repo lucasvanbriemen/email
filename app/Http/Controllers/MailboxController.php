@@ -19,6 +19,8 @@ class MailboxController extends Controller
 
     public function index($folder = null)
     {
+        $selectedFolder = $folder;
+
         if ($folder) {
             $folder = $this->client->getFolder($folder);
         } else {
@@ -32,6 +34,8 @@ class MailboxController extends Controller
 
         return view('index', [
             'messages' => $messages,
+            'folder' => $folder,
+            'selectedFolder' => $selectedFolder,
         ]);
     }
 
