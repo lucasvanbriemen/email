@@ -39,9 +39,9 @@ class MailboxController extends Controller
         ]);
     }
 
-    public function show($uid)
+    public function show($folder, $uid)
     {
-        $folder = $this->client->getFolder('INBOX');
+        $folder = $this->client->getFolder($folder);
         $message = $folder->messages()->getMessage($uid);
 
 
