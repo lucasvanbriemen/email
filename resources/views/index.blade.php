@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-email-layout>
     @foreach($folders as $folder)
         <strong>{{ $folder->name }}</strong><br>
 
@@ -18,4 +18,4 @@
         @csrf
         <button type="submit">Logout</button>
     </form>
-</x-app-layout>
+</x-email-layout>
