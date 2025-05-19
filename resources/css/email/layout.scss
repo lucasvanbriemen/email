@@ -1,0 +1,12 @@
+body {
+    display: flex;
+    height: 100vh;
+
+    .sidebar {
+        width: 15%;
+    }
+
+    main {
+        width: 85%;
+    }
+}

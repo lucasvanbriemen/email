@@ -1,3 +1,3 @@
-<x-app-layout>
+<x-email-layout>
     {!! $message->getHTMLBody() !!}
-</x-app-layout>
+</x-email-layout>

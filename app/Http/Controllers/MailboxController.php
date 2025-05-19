@@ -9,6 +9,7 @@ use Webklex\IMAP\Facades\Client;
 class MailboxController extends Controller
 {
     protected $client;
+    protected $DEFAULT_FOLDER = 'INBOX';
 
     public function __construct()
     {
@@ -16,18 +17,17 @@ class MailboxController extends Controller
         $this->client->connect();
     }
 
-    public function index()
+    public function index($folder = null)
     {
-        $folders = $this->client->getFolders(false);
+        if ($folder) {
+            $folder = $this->client->getFolder($folder);
+        } else {
+            $folder = $this->client->getFolder($this->DEFAULT_FOLDER);
+        }
 
-        $messages = [];
-
-        $folders->each(function ($folder) use (&$messages) {
-            $messages[] = $folder->messages()->all()->get();
-        });
+        $messages = $folder->messages()->all()->get();
 
         return view('index', [
-            'folders' => $folders,
             'messages' => $messages,
         ]);
     }
