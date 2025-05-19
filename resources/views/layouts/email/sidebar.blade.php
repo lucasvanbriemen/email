@@ -3,7 +3,7 @@
 <div class='sidebar'>
     @foreach ($folders as $folder)
         <div class='folder'>
-            <a href='#' class='folder-link'>
+            <a href='/folder/{{ $folder->name }}'>
                 {{ $folder->name }}
             </a>
         </div>
