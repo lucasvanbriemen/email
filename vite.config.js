@@ -1,10 +1,17 @@
 import { defineConfig } from 'vite';
+import fg from 'fast-glob';
 import laravel from 'laravel-vite-plugin';
+
+const files = fg.sync([
+    'resources/js/**/*.js',
+    'resources/css/**/*.css',
+    'resources/scss/**/*.scss'
+]);
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: files,
             refresh: true,
         }),
     ],
