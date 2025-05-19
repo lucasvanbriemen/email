@@ -8,23 +8,40 @@ use Webklex\IMAP\Facades\Client;
 
 class MailboxController extends Controller
 {
-    //
+    protected $client;
+
+    public function __construct()
+    {
+        $this->client = Client::account('default');
+        $this->client->connect();
+    }
+
     public function index()
     {
-        $client = Client::account('default');
-        $client->connect();
+        $folders = $this->client->getFolders(false);
 
-        $folders = $client->getFolders(false);
+        $messages = [];
 
-        $folders->each(function ($folder) {
-            echo $folder->path . '<br>';
-
-            $messages = $folder->messages()->all()->get();
-            $messages->each(function ($message) {
-                echo $message->getSubject() . '<br>';
-            });
+        $folders->each(function ($folder) use (&$messages) {
+            $messages[] = $folder->messages()->all()->get();
         });
 
-        return view('index');
+        return view('index', [
+            'folders' => $folders,
+            'messages' => $messages,
+        ]);
+    }
+
+    public function show($uid)
+    {
+        $folder = $this->client->getFolder('INBOX');
+        $message = $folder->messages()->getMessage($uid);
+
+
+        if ($message) {
+            return view('mail', [
+                'message' => $message,
+            ]);
+        }
     }
 }
