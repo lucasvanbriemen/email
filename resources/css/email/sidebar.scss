@@ -1,29 +1,68 @@
-.sidebar {
-    background-color: var(--background-color-one);
+.menu-icon {
+    width: 10%;
+    max-width: 50px;
+    aspect-ratio: 1 / 1;
+
+    display: none;
+
+    cursor: pointer;
+
+    @media screen and (max-width: 768px) {
+        display: flex;
+
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        margin: 0.5rem;
+    }
+
+    span {
+        display: block;
+
+        width: 100%;
+        height: 4px;
+        background-color: var(--text-color);
+        border-radius: 1rem;
+    }
+
+}
+
+.sidebar-container {
     color: var(--text-color);
+    position: relative;
 
-    .folder {
-        width: 95%;
+    .sidebar {
+        background-color: var(--background-color-one);
+        width: 100%;
+        height: 100vh;
 
-        border-radius: 0 1rem 1rem 0;
-        margin-top: 0.5rem;
-        
-        a {
-            padding: 0.5rem; 
-            width: 100%;
-            height: 100%;
+        .folder {
+            width: 95%;
 
-            display: block;
+            margin: 1rem 0;
 
-            text-transform: capitalize;
-        }
+            border-radius: 0 1rem 1rem 0;
 
-        &:hover {
-            background-color: var(--background-color);
-        }
+            transition: all 0.2s ease-in-out;
+            
+            a {
+                padding: 0.5rem; 
+                width: 100%;
+                height: 100%;
 
-        &.selected {
-            background-color: var(--primary-color);
+                display: block;
+
+                text-transform: capitalize;
+            }
+
+            &:hover {
+                background-color: var(--background-color);
+            }
+
+            &.selected {
+                background-color: var(--primary-color);
+            }
         }
     }
 }
