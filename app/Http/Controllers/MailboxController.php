@@ -19,17 +19,27 @@ class MailboxController extends Controller
 
     public function index($folder = null)
     {
-        $selectedFolder = $folder;
-
         if ($folder) {
+            $selectedFolder = $folder;
             $folder = $this->client->getFolder($folder);
         } else {
+            $selectedFolder = $this->DEFAULT_FOLDER;
             $folder = $this->client->getFolder($this->DEFAULT_FOLDER);
         }
 
         $messages = [];
         if ($folder) {
-            $messages = $folder->messages()->all()->get();
+            $rawMessages = $folder->messages()->all()->get();
+
+            $messages = $rawMessages->map(function ($message) {
+                return [
+                    'subject' => $message->getSubject(),
+                    'from' => $message->getFrom()[0]->mail ?? null,
+                    'sent_at' => $message->getDate(),
+                    'has_read' => $message->getFlags()->has('seen'),
+                    'uid' => $message->getUid(),
+                ];
+            });
         }
 
         return view('index', [
@@ -43,7 +53,6 @@ class MailboxController extends Controller
     {
         $folder = $this->client->getFolder($folder);
         $message = $folder->messages()->getMessage($uid);
-
 
         if ($message) {
             return view('mail', [

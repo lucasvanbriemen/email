@@ -1,8 +1,13 @@
 <x-email-layout :selectedFolder="$selectedFolder">
     @foreach ($messages as $message)
-        <a href='/folder/{{ $selectedFolder }}/mail/{{ $message->getUid() }}' class='message'>
-            Subject: {{ $message->getSubject() }}<br>
-            UID: {{ $message->getUid() }}<br><br>
+        <a href='/folder/{{ $selectedFolder }}/mail/{{ $message['uid'] }}' class='message'>
+            Subject: {{ $message['subject'] }} <br>
+            from: {{ $message['from'] }} <br>
+            read: {{ $message['has_read'] ? 'yes' : 'no' }} <br>
+            sent_at: {{ $message['sent_at'] }} <br>
         </a>
+
+        <hr>
+
     @endforeach
 </x-email-layout>
