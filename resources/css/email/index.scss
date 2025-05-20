@@ -1,0 +1,9 @@
+main {
+    .message {
+        background-color: green;
+
+        &.unread {
+            background-color: red;
+        }
+    }
+}

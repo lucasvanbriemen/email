@@ -27,21 +27,20 @@ class MailboxController extends Controller
             $folder = $this->client->getFolder($this->DEFAULT_FOLDER);
         }
 
-        $messages = [];
-        if ($folder) {
-            $rawMessages = $folder->messages()->all()->get();
+        $rawMessages = $folder->messages()->all()->get();
+        $sortedMessages = $rawMessages->sortByDesc(function ($message) {
+            return $message->getDate();
+        });
 
-            $messages = $rawMessages->map(function ($message) {
-                return [
-                    'subject' => $message->getSubject(),
-                    'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
-
-                    'sent_at' => $message->getDate(),
-                    'has_read' => $message->getFlags()->has('seen'),
-                    'uid' => $message->getUid(),
-                ];
-            });
-        }
+        $messages = $sortedMessages->map(function ($message) {
+            return [
+            'subject' => $message->getSubject(),
+            'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
+            'sent_at' => $message->getDate(),
+            'has_read' => $message->getFlags()->has('seen'),
+            'uid' => $message->getUid(),
+            ];
+        });
 
         return view('index', [
             'messages' => $messages,
@@ -51,14 +50,14 @@ class MailboxController extends Controller
     }
 
     public function show($folder, $uid)
-    {
-        $folder = $this->client->getFolder($folder);
-        $message = $folder->messages()->getMessage($uid);
+{
+    $folder = $this->client->getFolder($folder);
+    $message = $folder->messages()->getMessage($uid);
 
-        if ($message) {
-            return view('mail', [
-                'message' => $message,
-            ]);
-        }
+    if ($message) {
+        return view('mail', [
+            'message' => $message,
+        ]);
+    }
     }
 }
