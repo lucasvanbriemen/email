@@ -4,6 +4,13 @@ body {
 
     .sidebar-container {
         width: 15%;
+
+        position: relative;
+
+        .sidebar {
+            position: absolute;
+            margin-top: 0rem;
+        }
     }
 
     main {
@@ -28,7 +35,6 @@ body {
             .sidebar {
                 transform: translateX(-100%);
 
-                position: relative;
 
                 transition: all 0.2s ease-in-out;
                 
