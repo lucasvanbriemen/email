@@ -1,4 +1,7 @@
 <x-email-layout :selectedFolder="$selectedFolder">
+
+    @vite('resources/css/email/index.scss')
+
     @foreach ($messages as $message)
         <a href='/folder/{{ $selectedFolder }}/mail/{{ $message['uid'] }}' class='message'>
             Subject: {{ $message['subject'] }} <br>
