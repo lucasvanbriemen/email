@@ -4,13 +4,10 @@
 
     @foreach ($messages as $message)
         <a href='/folder/{{ $selectedFolder }}/mail/{{ $message['uid'] }}' class='message {{ $message['has_read'] ? 'read' : 'unread' }}'>
-            Subject: {{ $message['subject'] }} <br>
-            from: {{ $message['from'] }} <br>
-            read: {{ $message['has_read'] ? 'yes' : 'no' }} <br>
-            sent_at: {{ $message['sent_at'] }} <br>
+            <p class='email-from'>{{ $message['from'] }}</p>
+            <p class='email-subject'>{{ $message['subject'] }}</p>
+            <p class='email-sent-at'>{{ $message['sent_at'] }}</p>
         </a>
-
-        <hr>
 
     @endforeach
 </x-email-layout>

@@ -1,6 +1,34 @@
 main {
+
+    background-color: var(--background-color);
+
     .message {
-        background-color: green;
+        background-color: var(--background-color-one);
+        width: 98%;
+        margin: 1rem auto;
+        display: flex;
+
+        color: var(--text-color);
+
+        border-radius: 1rem;
+        padding: 1rem;
+
+        .email-from {
+            width: 15%;
+            margin-left: 0.5rem;
+            color: var(--text-color-secondary);
+        }
+
+        .email-subject {
+            width: 70%;
+        }
+
+        .email-sent-at {
+            width: 15%;
+            text-align: right;
+            margin-right: 0.5rem;
+            color: var(--text-color-secondary);
+        }
 
         &.unread {
             background-color: red;
