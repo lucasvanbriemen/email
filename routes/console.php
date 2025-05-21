@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schedule;
 use Webklex\IMAP\Facades\Client;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\NtfyHelper;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -38,17 +39,9 @@ Schedule::call(function () {
     }
 
     foreach ($newMessages as $message) {
-        file_get_contents('https://ntfy.sh/lukaas_test', false, stream_context_create([
-            'http' => [
-                'method'  => 'POST',
-                'header'  => [
-                    'Content-Type: text/plain',
-                    'Title: ' . $message['from'],
-                    'Click: ' . 'https://email.lucasvanbriemen.nl/folder/' . $message['parrent_folder'] . '/mail/' . $message['uid'],
-                ],
-                'content' => (string) $message['subject']
-            ]
-        ]));
+        $url = config('app.url') . '/folder/' . $message['parrent_folder'] . '/mail/' . $message['uid']; 
+
+        NtfyHelper::sendNofication($message['from'], $message['subject'], $url);
 
         DB::table('emails')->insert([
             'subject' => $message['subject'],
