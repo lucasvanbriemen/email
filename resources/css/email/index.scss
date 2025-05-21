@@ -2,6 +2,15 @@ main {
 
     background-color: var(--background-color);
 
+    .email-date {
+        color: var(--text-color);
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 1rem 0 1rem 1rem;
+        width: 75%;
+        border-bottom: 1px solid var(--text-color);
+    }
+
     .message {
         background-color: var(--background-color-one);
         width: 98%;
@@ -31,7 +40,13 @@ main {
         }
 
         &.unread {
-            background-color: red;
+            color: var(--text-color);
+            font-weight: bold;
+            background-color: var(--primary-color);
+
+            .email-from, .email-sent-at {
+                color: var(--text-color);
+            }
         }
     }
 }
