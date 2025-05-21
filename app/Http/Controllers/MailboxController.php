@@ -55,6 +55,11 @@ class MailboxController extends Controller
         $folder = $this->client->getFolder($folder);
         $message = $folder->messages()->getMessage($uid);
 
+        // mark as read
+        if ($message->getFlags()->has('seen') == false) {
+            $message->setFlag(['Seen']);
+        }
+
         if ($message) {
             return view('mail', [
                 'message' => $message,
