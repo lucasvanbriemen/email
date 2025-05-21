@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schedule;
 use Webklex\IMAP\Facades\Client;
+use Illuminate\Support\Facades\Log;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -12,7 +13,6 @@ Artisan::command('inspire', function () {
 
 
 Schedule::call(function () {
-
     // Get All emails
     $client = Client::account('default');
     $client->connect();
@@ -23,6 +23,7 @@ Schedule::call(function () {
     $dbMessages = DB::table('emails')->pluck('uid')->toArray();
     $newMessages = [];
 
+    $folderName = $folder->name;
     foreach ($messages as $message) {
         if (!in_array($message->getUid(), $dbMessages)) {
             $newMessages[] = [
@@ -31,7 +32,7 @@ Schedule::call(function () {
                 'sent_at' => date($message->getDate()),
                 'has_read' => $message->getFlags()->has('seen'),
                 'uid' => $message->getUid(),
-                'parrent_folder' => $message->getParentFolder()->getName(),
+                'parrent_folder' => $folderName,
             ];
         }
     }
