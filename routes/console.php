@@ -11,8 +11,6 @@ Artisan::command('inspire', function () {
 
 
 Schedule::call(function () {
-    $this->info('Scheduled task executed successfully!');
-
     file_get_contents('https://ntfy.sh/lukaas_test', false, stream_context_create([
         'http' => [
             'method' => 'POST', // PUT also works
