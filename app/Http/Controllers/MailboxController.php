@@ -37,7 +37,7 @@ class MailboxController extends Controller
             return [
                 'subject' => $message->getSubject(),
                 'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
-                'sent_at' => date($message->getDate()),
+                'sent_at' => $message->getDate()->first()->setTimezone(config('app.display_timezone'))->format('Y-m-d H:i:s'),
                 'has_read' => $message->getFlags()->has('seen'),
                 'uid' => $message->getUid(),
             ];
