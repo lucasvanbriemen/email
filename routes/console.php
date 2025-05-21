@@ -31,6 +31,7 @@ Schedule::call(function () {
                 'sent_at' => date($message->getDate()),
                 'has_read' => $message->getFlags()->has('seen'),
                 'uid' => $message->getUid(),
+                'parrent_folder' => $message->getParentFolder()->getName(),
             ];
         }
     }
@@ -38,9 +39,13 @@ Schedule::call(function () {
     foreach ($newMessages as $message) {
         file_get_contents('https://ntfy.sh/lukaas_test', false, stream_context_create([
             'http' => [
-                'method' => 'POST', // PUT also works
-                'header' => 'Content-Type: text/plain',
-                'content' => $message['subject'] . ' - ' . $message['from']
+                'method'  => 'POST',
+                'header'  => [
+                    'Content-Type: text/plain',
+                    'Title: ' . $message['from'],
+                    'Click: ' . 'https://email.lucasvanbriemen.nl/folder/' . $message['parrent_folder'] . '/' . $message['uid'],
+                ],
+                'content' => $message['subject']
             ]
         ]));
 
