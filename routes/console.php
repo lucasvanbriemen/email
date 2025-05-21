@@ -44,9 +44,9 @@ Schedule::call(function () {
                 'header'  => [
                     'Content-Type: text/plain',
                     'Title: ' . $message['from'],
-                    'Click: ' . 'https://email.lucasvanbriemen.nl/folder/' . $message['parrent_folder'] . '/' . $message['uid'],
+                    'Click: ' . 'https://email.lucasvanbriemen.nl/folder/' . $message['parrent_folder'] . '/mail/' . $message['uid'],
                 ],
-                'content' => $message['subject']
+                'content' => (string) $message['subject']
             ]
         ]));
 
