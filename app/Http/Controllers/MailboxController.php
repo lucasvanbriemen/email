@@ -28,20 +28,20 @@ class MailboxController extends Controller
         }
 
         $messages = [];
-            $rawMessages = $folder->messages()->all()->get();
-            $sortedMessages = $rawMessages->sortByDesc(function ($message) {
-                return $message->getDate();
-            });
+        $rawMessages = $folder->messages()->all()->get();
+        $sortedMessages = $rawMessages->sortByDesc(function ($message) {
+            return $message->getDate();
+        });
 
-            $messages = $sortedMessages->map(function ($message) {
-                return [
-                    'subject' => $message->getSubject(),
-                    'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
-                    'sent_at' => date($message->getDate()),
-                    'has_read' => $message->getFlags()->has('seen'),
-                    'uid' => $message->getUid(),
-                ];
-            });
+        $messages = $sortedMessages->map(function ($message) {
+            return [
+                'subject' => $message->getSubject(),
+                'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
+                'sent_at' => date($message->getDate()),
+                'has_read' => $message->getFlags()->has('seen'),
+                'uid' => $message->getUid(),
+            ];
+        });
 
         return view('index', [
             'messages' => $messages,

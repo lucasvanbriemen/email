@@ -16,7 +16,7 @@
         <a href='/folder/{{ $selectedFolder }}/mail/{{ $message['uid'] }}' class='message {{ $message['has_read'] ? 'read' : 'unread' }}'>
             <p class='email-from'>{{ $message['from'] }}</p>
             <p class='email-subject'>{{ $message['subject'] }}</p>
-            <p class='email-sent-at'>{{ date("H:m", strtotime($message['sent_at'])) }}</p>
+            <p class='email-sent-at'>{{ date("H:i", strtotime($message['sent_at'])) }}</p>
         </a>
 
     @endforeach
