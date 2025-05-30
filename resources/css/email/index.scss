@@ -22,6 +22,8 @@ main {
         border-radius: 1rem;
         padding: 1rem;
 
+        transition: all 0.3s ease-in-out;
+
 
         p {
             text-overflow: ellipsis;
@@ -54,6 +56,10 @@ main {
             .email-from, .email-sent-at {
                 color: var(--text-color);
             }
+        }
+
+        &:hover {
+            border-radius: 2rem;
         }
 
         @media screen and (max-width: 768px) {
