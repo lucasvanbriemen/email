@@ -34,6 +34,9 @@ Schedule::call(function () {
                 'has_read' => $message->getFlags()->has('seen'),
                 'uid' => $message->getUid(),
                 'parrent_folder' => $folderName,
+                'getHtmlBody' => function () use ($message) {
+                    return $message->getHTMLBody() ?: $message->getTextBody();
+                }
             ];
         }
     }
@@ -49,6 +52,7 @@ Schedule::call(function () {
             'sent_at' => $message['sent_at'],
             'has_read' => $message['has_read'],
             'uid' => $message['uid'],
+            'html_body' => $message['getHtmlBody'](),
         ]);
     }
 })->everyMinute();
