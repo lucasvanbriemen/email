@@ -65,5 +65,32 @@
                 background-color: var(--primary-color);
             }
         }
+
+        .account {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            position: absolute;
+            bottom: 1rem;
+            left: 0.5rem;
+            
+            background-color: var(--primary-color);
+            width: 95%;
+            padding: 0.5rem;
+            border-radius: 1rem;
+
+            .text {
+                color: var(--text-color);
+                font-weight: 700;
+            }
+
+            img {
+                width: 15%;
+                height: 15%;
+
+                border-radius: 50%;
+            }
+        }
     }
 }

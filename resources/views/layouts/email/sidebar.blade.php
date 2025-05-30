@@ -16,5 +16,10 @@
                 </a>
             </div>
         @endforeach
+
+        <a href='/account' class='account'>
+            <img src='{{ \App\Helpers\GravatarHelper::gravar(auth()->user()->email, 64) }}' alt='{{ auth()->user()->name }}' class='avatar'>
+            <span class='text'>{{ auth()->user()->name }}</span>
+        </a>
     </div>
 </div>

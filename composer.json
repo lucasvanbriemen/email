@@ -32,7 +32,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/NtfyHelper.php"
+            "app/Helpers/NtfyHelper.php",
+            "app/Helpers/GravatarHelper.php"
         ]
     },
     "autoload-dev": {
