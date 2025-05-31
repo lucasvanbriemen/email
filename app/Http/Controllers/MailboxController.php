@@ -39,6 +39,9 @@ class MailboxController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
+        $email->has_read = true;
+        $email->save();
+
         return view('mail', [
             'email' => $email,
         ]);
