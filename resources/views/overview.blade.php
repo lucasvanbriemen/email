@@ -1,6 +1,6 @@
 <x-email-layout :selectedFolder="$selectedFolder">
 
-    @vite('resources/css/email/index.scss')
+    @vite('resources/css/email/overview.scss')
 
     @php $last_iterated_date = null; @endphp
     @foreach ($emails as $email)

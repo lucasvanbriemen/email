@@ -15,6 +15,8 @@ class Email extends Model
         'user_id',
         'subject',
         'from',
+        'sender_email',
+        'to',
         'sent_at',
         'has_read',
         'uid',

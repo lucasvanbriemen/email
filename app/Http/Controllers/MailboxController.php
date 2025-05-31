@@ -26,7 +26,7 @@ class MailboxController extends Controller
             ->orderBy('sent_at', 'desc')
             ->get();
 
-        return view('index', [
+        return view('overview', [
             'emails' => $emails,
             'folder' => $folder,
             'selectedFolder' => $selectedFolder,
@@ -42,7 +42,7 @@ class MailboxController extends Controller
         $email->has_read = true;
         $email->save();
 
-        return view('mail', [
+        return view('email', [
             'email' => $email,
         ]);
     }

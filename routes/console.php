@@ -77,16 +77,22 @@ Artisan::command("get_emails", function () {
                     'uid' => $message->getUid(),
                     'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
                     'folder_id' => Folder::where('path', $folder->path)->where('user_id', $credential->user_id)->value('id') ?: null,
+                    'sender_email' => $message->getFrom()[0]->mail ?? null,
+                    'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
+                        return $to->mail ?? null;
+                    })->filter()->all()) ?: null,
+
+
                 ];
 
                 Email::create($emailData);
 
-                // Send notification
-                NtfyHelper::sendNofication(
-                    $emailData['from'],
-                    $emailData['subject'],
-                    config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
-                );
+                // // Send notification
+                // NtfyHelper::sendNofication(
+                //     $emailData['from'],
+                //     $emailData['subject'],
+                //     config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
+                // );
             }
         }
     }
