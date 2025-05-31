@@ -52,10 +52,18 @@ Artisan::command("get_emails", function () {
         foreach ($folders as $folder) {
             $messages = $folder->messages()->all()->get();
 
-            foreach ($messages as $message) {
-                // Check if the email already exists in the database
+            if ($messages->isEmpty()) {
+                continue; // Skip if no messages found
+            }
 
-                if (Email::where('uid', $message->getUid())->exists()) {
+            foreach ($messages as $message) {
+                if (
+                    Email::where('uid', $message->getUid())
+                    ->where('user_id', $credential->user_id)
+                    ->where('folder_id', Folder::where('path', $folder->path)
+                        ->where('user_id', $credential->user_id)
+                        ->value('id') ?? null)->exists())
+                {
                     continue; // Skip if email already exists
                 }
 
