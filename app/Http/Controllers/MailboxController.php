@@ -21,7 +21,6 @@ class MailboxController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
-
         $emails = Email::where('folder_id', $folder->id)
             ->where('user_id', auth()->id())
             ->orderBy('sent_at', 'desc')
