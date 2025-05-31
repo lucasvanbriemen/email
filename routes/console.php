@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Helpers\NtfyHelper;
 use App\Models\ImapCredentials;
 use App\Models\Email;
+use App\Models\Folder;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -78,6 +79,51 @@ Artisan::command("get_emails", function () {
     }
 });
 
+Artisan::command('get_folders', function () {
+    $imapCredentials = ImapCredentials::all();
+
+    // Loop through each IMAP credential
+    foreach ($imapCredentials as $credential) {
+        try {
+            $client = Client::make([
+                'host'          => $credential->host,
+                'port'          => $credential->port,
+                'protocol'      => $credential->protocol ?? 'imap',
+                'encryption'    => $credential->encryption ?? 'ssl',
+                'validate_cert' => $credential->validate_cert ?? true,
+                'username'      => $credential->username,
+                'password'      => $credential->password,
+            ]);
+
+            $client->connect();
+        } catch (\Exception $e) {
+            $this->info('Failed to connect to IMAP server: ' . $e->getMessage());
+            continue;
+        }
+
+        // Fetch folders
+        try {
+            $folders = $client->getFolders(false);
+        } catch (\Exception $e) {
+            $this->info('Failed to fetch folders: ' . $e->getMessage());
+            continue;
+        }
+
+        // Process each folder
+        foreach ($folders as $folder) {
+            if (Folder::where('path', $folder->path)->exists() && Folder::where('user_id', $credential->user_id)->where('name', $folder->name)->exists()) {
+                continue; // Skip if folder already exists
+            }
+
+            Folder::create([
+                'user_id' => $credential->user_id,
+                'name' => $folder->name,
+                'path' => $folder->path,
+            ]);
+        }
+    }
+});
+
 Schedule::command('get_emails')
     ->everyMinute()
     ->withoutOverlapping()
@@ -86,4 +132,14 @@ Schedule::command('get_emails')
     })
     ->onFailure(function () {
         Log::error('Failed to fetch emails at ' . now());
+    });
+
+Schedule::command('get_folders')
+    ->everyHour()
+    ->withoutOverlapping()
+    ->onSuccess(function () {
+        Log::info('Folders fetched successfully at ' . now());
+    })
+    ->onFailure(function () {
+        Log::error('Failed to fetch folders at ' . now());
     });

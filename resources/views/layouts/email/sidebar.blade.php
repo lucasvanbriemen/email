@@ -10,12 +10,13 @@
     <div class='sidebar'>
         {{-- Menu icon --}}
         @foreach ($folders as $folder)
-            <div class='folder @if ($folder->name == $selectedFolder->name) selected @endif'>
+            <div class='folder @if ($folder->name == $selectedFolder) selected @endif' data-folder-name="{{ $folder->name }}">
                 <a href='/folder/{{ $folder->name }}'>
                     {{ strtolower($folder->name) }}
                 </a>
             </div>
         @endforeach
+
 
         <a href='/account' class='account'>
             <img src='{{ \App\Helpers\GravatarHelper::gravar(auth()->user()->email, 64) }}' alt='{{ auth()->user()->name }}' class='avatar'>

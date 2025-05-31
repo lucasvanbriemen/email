@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
-use Webklex\IMAP\Facades\Client;
+use App\Models\Folder;
 
 class EmailLayout extends Component
 {
@@ -18,21 +18,21 @@ class EmailLayout extends Component
 
     public function __construct($selectedFolder = null)
     {
-        $this->client = Client::account('default');
-        $this->client->connect();
 
         if ($selectedFolder) {
-            $this->selectedFolder = $this->client->getFolder($selectedFolder);
+            $this->selectedFolder = $selectedFolder;
         } else {
-            $this->selectedFolder = $this->client->getFolder($this->DEFAULT_FOLDER);
+            $this->selectedFolder = $this->DEFAULT_FOLDER;
         }
     }
 
     public function render(): View
     {
+        $folders = Folder::where('user_id', auth()->id())->get();
+
         return view('layouts.email',
             [
-                'folders' => $this->client->getFolders(false),
+                'folders' => $folders,
                 'selectedFolder' => $this->selectedFolder,
             ]
         );
