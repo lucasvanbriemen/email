@@ -5,54 +5,85 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schedule;
 use Webklex\IMAP\Facades\Client;
+use Webklex\IMAP\ClientManager;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\NtfyHelper;
+use App\Models\ImapCredentials;
+use App\Models\Email;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
 
-Schedule::call(function () {
-    // Get All emails
-    $client = Client::account('default');
-    $client->connect();
-    $folder = $client->getFolder('INBOX');
-    $messages = $folder->messages()->all()->get();
+Artisan::command("get_emails", function () {
+    $imapCredentials = ImapCredentials::all();
 
-    // Compare with DB
-    $dbMessages = DB::table('emails')->pluck('uid')->toArray();
-    $newMessages = [];
+    // Loop through each IMAP credential
+    foreach ($imapCredentials as $credential) {
+        try {
+            $client = Client::make([
+                'host'          => $credential->host,
+                'port'          => $credential->port,
+                'protocol'      => $credential->protocol ?? 'imap',
+                'encryption'    => $credential->encryption ?? 'ssl',
+                'validate_cert' => $credential->validate_cert ?? true,
+                'username'      => $credential->username,
+                'password'      => $credential->password,
+            ]);
 
-    $folderName = $folder->name;
-    foreach ($messages as $message) {
-        if (!in_array($message->getUid(), $dbMessages)) {
-            $newMessages[] = [
+            $client->connect();
+        } catch (\Exception $e) {
+            $this->info('Failed to connect to IMAP server: ' . $e->getMessage());
+            continue;
+        }
+
+        // Fetch emails from INBOX
+        try {
+            $folder = $client->getFolder('INBOX');
+            $messages = $folder->messages()->all()->get();
+        } catch (\Exception $e) {
+            $this->info('Failed to fetch emails: ' . $e->getMessage());
+            continue;
+        }
+
+        // Process each email
+        foreach ($messages as $message) {
+            // Check if the email already exists in the database
+
+            if (Email::where('uid', $message->getUid())->exists()) {
+                continue; // Skip if email already exists
+            }
+
+            // Prepare email data
+            $emailData = [
+                'user_id' => $credential->user_id,
                 'subject' => $message->getSubject(),
                 'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
                 'sent_at' => date($message->getDate()),
                 'has_read' => $message->getFlags()->has('seen'),
                 'uid' => $message->getUid(),
-                'parrent_folder' => $folderName,
-                'getHtmlBody' => function () use ($message) {
-                    return $message->getHTMLBody() ?: $message->getTextBody();
-                }
+                'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
             ];
+
+            Email::create($emailData);
+
+            // Send notification
+            // NtfyHelper::sendNofication(
+            //     $emailData['from'],
+            //     $emailData['subject'],
+            //     config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
+            // );
         }
     }
+});
 
-    foreach ($newMessages as $message) {
-        $url = config('app.url') . '/folder/' . $message['parrent_folder'] . '/mail/' . $message['uid']; 
-
-        NtfyHelper::sendNofication($message['from'], $message['subject'], $url);
-
-        DB::table('emails')->insert([
-            'subject' => $message['subject'],
-            'from' => $message['from'],
-            'sent_at' => $message['sent_at'],
-            'has_read' => $message['has_read'],
-            'uid' => $message['uid'],
-            'html_body' => $message['getHtmlBody'](),
-        ]);
-    }
-})->everyMinute();
+Schedule::command('get_emails')
+    ->everyMinute()
+    ->withoutOverlapping()
+    ->onSuccess(function () {
+        Log::info('Emails fetched successfully at ' . now());
+    })
+    ->onFailure(function () {
+        Log::error('Failed to fetch emails at ' . now());
+    });
