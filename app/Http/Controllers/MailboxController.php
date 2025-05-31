@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Webklex\IMAP\Facades\Client;
 use App\Models\Email;
+use App\Models\Folder;
 
 class MailboxController extends Controller
 {
@@ -20,32 +21,20 @@ class MailboxController extends Controller
 
     public function index($folder = null)
     {
-        if ($folder) {
-            $selectedFolder = $folder;
-            $folder = $this->client->getFolder($folder);
-        } else {
-            $selectedFolder = $this->DEFAULT_FOLDER;
-            $folder = $this->client->getFolder($this->DEFAULT_FOLDER);
-        }
+        $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
-        $messages = [];
-        $rawMessages = $folder->messages()->all()->get();
-        $sortedMessages = $rawMessages->sortByDesc(function ($message) {
-            return $message->getDate();
-        });
+        $folder = Folder::where('name', $selectedFolder)
+            ->where('user_id', auth()->id())
+            ->first();
 
-        $messages = $sortedMessages->map(function ($message) {
-            return [
-                'subject' => $message->getSubject(),
-                'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
-                'sent_at' => $message->getDate()->first()->setTimezone(config('app.display_timezone'))->format('Y-m-d H:i:s'),
-                'has_read' => $message->getFlags()->has('seen'),
-                'uid' => $message->getUid(),
-            ];
-        });
+
+        $emails = Email::where('folder_id', $folder->id)
+            ->where('user_id', auth()->id())
+            ->orderBy('sent_at', 'desc')
+            ->get();
 
         return view('index', [
-            'messages' => $messages,
+            'emails' => $emails,
             'folder' => $folder,
             'selectedFolder' => $selectedFolder,
         ]);
@@ -53,18 +42,12 @@ class MailboxController extends Controller
 
     public function show($folder, $uid)
     {
-        $folder = $this->client->getFolder($folder);
-        $message = $folder->messages()->getMessage($uid);
+        $email = Email::where('uid', $uid)
+            ->where('user_id', auth()->id())
+            ->first();
 
-        // mark as read
-        if ($message->getFlags()->has('seen') == false) {
-            $message->setFlag(['Seen']);
-        }
-
-        if ($message) {
-            return view('mail', [
-                'message' => $message,
-            ]);
-        }
+        return view('mail', [
+            'email' => $email,
+        ]);
     }
 }
