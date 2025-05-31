@@ -35,8 +35,14 @@ class MailboxController extends Controller
 
     public function show($folder, $uid)
     {
+        // convert the folder name into an folder id
+        $folder = Folder::where('name', $folder)
+            ->where('user_id', auth()->id())
+            ->first();
+
         $email = Email::where('uid', $uid)
             ->where('user_id', auth()->id())
+            ->where('folder_id', $folder->id)
             ->first();
 
         $email->has_read = true;

@@ -81,8 +81,6 @@ Artisan::command("get_emails", function () {
                     'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
                         return $to->mail ?? null;
                     })->filter()->all()) ?: null,
-
-
                 ];
 
                 Email::create($emailData);
