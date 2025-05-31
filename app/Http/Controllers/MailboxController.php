@@ -13,12 +13,6 @@ class MailboxController extends Controller
     protected $client;
     protected $DEFAULT_FOLDER = 'INBOX';
 
-    public function __construct()
-    {
-        $this->client = Client::account('default');
-        $this->client->connect();
-    }
-
     public function index($folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
