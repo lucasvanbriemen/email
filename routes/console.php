@@ -39,44 +39,50 @@ Artisan::command("get_emails", function () {
             continue;
         }
 
-        // Fetch emails from INBOX
+        // Fetch folders
         try {
-            $folder = $client->getFolder('INBOX');
-            $messages = $folder->messages()->all()->get();
+            $folders = $client->getFolders(false);
         } catch (\Exception $e) {
             $this->info('Failed to fetch emails: ' . $e->getMessage());
             continue;
         }
 
         // Process each email
-        foreach ($messages as $message) {
-            // Check if the email already exists in the database
 
-            if (Email::where('uid', $message->getUid())->exists()) {
-                continue; // Skip if email already exists
+        foreach ($folders as $folder) {
+            $messages = $folder->messages()->all()->get();
+
+            foreach ($messages as $message) {
+                // Check if the email already exists in the database
+
+                if (Email::where('uid', $message->getUid())->exists()) {
+                    continue; // Skip if email already exists
+                }
+
+                // Prepare email data
+                $emailData = [
+                    'user_id' => $credential->user_id,
+                    'subject' => $message->getSubject(),
+                    'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
+                    'sent_at' => date($message->getDate()),
+                    'has_read' => $message->getFlags()->has('seen'),
+                    'uid' => $message->getUid(),
+                    'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
+                    'folder_id' => Folder::where('path', $folder->path)->where('user_id', $credential->user_id)->value('id') ?: null,
+                ];
+
+                Email::create($emailData);
+
+                // Send notification
+                // NtfyHelper::sendNofication(
+                //     $emailData['from'],
+                //     $emailData['subject'],
+                //     config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
+                // );
             }
-
-            // Prepare email data
-            $emailData = [
-                'user_id' => $credential->user_id,
-                'subject' => $message->getSubject(),
-                'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
-                'sent_at' => date($message->getDate()),
-                'has_read' => $message->getFlags()->has('seen'),
-                'uid' => $message->getUid(),
-                'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
-            ];
-
-            Email::create($emailData);
-
-            // Send notification
-            // NtfyHelper::sendNofication(
-            //     $emailData['from'],
-            //     $emailData['subject'],
-            //     config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
-            // );
         }
     }
+
 });
 
 Artisan::command('get_folders', function () {
@@ -128,18 +134,18 @@ Schedule::command('get_emails')
     ->everyMinute()
     ->withoutOverlapping()
     ->onSuccess(function () {
-        Log::info('Emails fetched successfully at ' . now());
+                Log::info('Emails fetched successfully at ' . now());
     })
     ->onFailure(function () {
-        Log::error('Failed to fetch emails at ' . now());
+                Log::error('Failed to fetch emails at ' . now());
     });
 
 Schedule::command('get_folders')
-    ->everyHour()
+    ->everyOddHour()
     ->withoutOverlapping()
     ->onSuccess(function () {
-        Log::info('Folders fetched successfully at ' . now());
+                Log::info('Folders fetched successfully at ' . now());
     })
     ->onFailure(function () {
-        Log::error('Failed to fetch folders at ' . now());
+                Log::error('Failed to fetch folders at ' . now());
     });
