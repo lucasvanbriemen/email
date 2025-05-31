@@ -137,6 +137,15 @@ Artisan::command('get_folders', function () {
     }
 });
 
+Artisan::command('ntfy_test', function () {
+    NtfyHelper::sendNofication(
+        'Test User',
+        'This is a test notification',
+        config('app.url') . '/test'
+    );
+    $this->info('Test notification sent successfully.');
+});
+
 Schedule::command('get_emails')
     ->everyMinute()
     ->withoutOverlapping()
