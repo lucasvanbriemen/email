@@ -21,6 +21,8 @@ class Email extends Model
         'has_read',
         'uid',
         'html_body',
-        'folder_id'
+        'folder_id',
+        'is_archived',
+        'is_starred'
     ];
 }
