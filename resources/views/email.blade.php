@@ -3,8 +3,12 @@
 
 
     <div class='option-bar'>
-        <a href='/folder/{{ $selectedFolder }}' class='btn btn-secondary'>
+        <a href='/folder/{{ $selectedFolder }}'>
             {!! App\Helpers\SvgHelper::svg('left-arrow') !!}
+        </a>
+
+        <a href='/folder/{{ $selectedFolder }}/mail/{{ $email->uid }}/archive'>
+            {!! App\Helpers\SvgHelper::svg('archive') !!}
         </a>
     </div>
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\MailboxController;
 Route::get('/', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox');
 Route::get('/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 Route::get('/folder/{folder}/mail/{uid}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail');
+Route::get('/folder/{folder}/mail/{uid}/archive', [MailboxController::class, 'archive'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.archive');
 
 
 Route::middleware('auth')->group(function () {

@@ -53,4 +53,24 @@ class MailboxController extends Controller
             'selectedFolder' => $folder->name,
         ]);
     }
+
+    public function archive($folder, $uid)
+    {
+        // convert the folder name into an folder id
+        $folder = Folder::where('name', $folder)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        $email = Email::where('uid', $uid)
+            ->where('user_id', auth()->id())
+            ->where('folder_id', $folder->id)
+            ->first();
+
+        if ($email) {
+            $email->is_archived = true;
+            $email->save();
+        }
+
+        return redirect()->route('mailbox.folder', ['folder' => $folder->name]);
+    }
 }
