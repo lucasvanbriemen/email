@@ -19,7 +19,7 @@ body {
     main {
         width: 85%;
         height: 100vh;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 
     @media screen and (max-width: 768px) {

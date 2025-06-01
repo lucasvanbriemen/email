@@ -1,6 +1,8 @@
 main {
     color: var(--text-color);
 
+    overflow-y: hidden !important;
+
     .option-bar {
         height: 3rem;
         background-color: var(--background-color-one);
@@ -16,27 +18,59 @@ main {
         a {
             height: 3rem !important;
             width: 3rem !important;
-
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease-in-out;
+            
 
+            &:hover {
+                border-radius: 3rem;
+                background-color: var(--primary-color);
+            }
+            
             
             svg { 
                 height: 2.5rem;
                 width: 2.5rem;
-                position: relative;
 
                 
                 path {
                     fill: var(--text-color) !important;
                 }
             }
-            
-            :hover {
-                border-radius: 3rem;
-                background-color: var(--primary-color);
-            }
         }
+    }
+
+    .email-wrapper {
+        overflow-y: auto;
+        height: calc(100vh - 6rem);
+    }
+
+    .email-header {
+        position: relative;
+        
+        margin-left: 1rem;
+
+        .email-subject {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-date {
+            position: absolute;
+            right: 1rem;
+            top: 0rem;
+        }
+    }
+
+    .email-body {
+        width: calc(100% - 2rem);
+        margin: 1rem auto;
+        margin-bottom: 0;
+
+        border-radius: 1rem;
+        background-color: white;
     }
 }

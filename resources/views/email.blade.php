@@ -8,9 +8,44 @@
         </a>
     </div>
 
-    Subject: {{ $email->subject }}<br>
-    From: {{ $email->from }} - {{ $email->sender_email }}<br>
-    To: {{ $email->to }}<br>
 
-    {!! $email->html_body !!}
+    <div class='email-wrapper'>
+        <div class='email-header'>
+            <h1 class='email-subject'>{{ $email->subject }}</h1>
+
+            <div class='email-info'>
+                <span class='email-from'>{{ $email->from }}</span> <br>
+                <span class='email-to'>To: {{ $email->to }}</span>
+            </div>
+
+            <div class='email-date'>
+
+                @php
+                    $format = 'D d M, H:i';
+                    $send_at = $email->send_at;
+
+                    // If the date is today, show only the time
+                    if (date('Y-m-d') === $email->created_at->format('Y-m-d')) {
+                        $format = 'H:i';
+                    }
+                @endphp
+
+                {{ $email->created_at->format($format) }}
+            </div>
+        </div>
+
+
+        <iframe srcdoc="{{ $email->html_body }}" class='email-body' onload="resizeIframe(this)"></iframe>
+
+        <script>
+            function resizeIframe(iframe) {
+                try {
+                    const doc = iframe.contentDocument || iframe.contentWindow.document;
+                    iframe.style.height = doc.documentElement.scrollHeight + 'px';
+                } catch (e) {
+                    console.error('Iframe resize failed:', e);
+                }
+            }
+           </script>
+    </div>
 </x-email-layout>
