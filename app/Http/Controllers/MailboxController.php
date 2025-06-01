@@ -50,6 +50,7 @@ class MailboxController extends Controller
 
         return view('email', [
             'email' => $email,
+            'selectedFolder' => $folder->name,
         ]);
     }
 }

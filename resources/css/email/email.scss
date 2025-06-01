@@ -1,3 +1,42 @@
 main {
     color: var(--text-color);
+
+    .option-bar {
+        height: 3rem;
+        background-color: var(--background-color-one);
+
+        border-radius: 3rem;
+
+        width: calc(100% - 2rem);
+        margin: 1rem auto;
+
+        display: flex;
+        align-items: center;
+
+        a {
+            height: 3rem !important;
+            width: 3rem !important;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            
+            svg { 
+                height: 2.5rem;
+                width: 2.5rem;
+                position: relative;
+
+                
+                path {
+                    fill: var(--text-color) !important;
+                }
+            }
+            
+            :hover {
+                border-radius: 3rem;
+                background-color: var(--primary-color);
+            }
+        }
+    }
 }
