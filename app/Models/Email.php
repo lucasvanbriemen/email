@@ -25,4 +25,12 @@ class Email extends Model
         'is_archived',
         'is_starred'
     ];
+
+    public static function getEmails($folder){
+        return Email::where('folder_id', $folder->id)
+            ->where('user_id', auth()->id())
+            ->where('is_archived', false)
+            ->orderBy('sent_at', 'desc')
+            ->get();
+    }
 }

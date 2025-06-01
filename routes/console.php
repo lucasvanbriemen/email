@@ -67,12 +67,15 @@ Artisan::command("get_emails", function () {
                     continue; // Skip if email already exists
                 }
 
+                $date = $message->getAttributes()['date']->first();
+                $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
+
                 // Prepare email data
                 $emailData = [
                     'user_id' => $credential->user_id,
                     'subject' => $message->getSubject(),
                     'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
-                    'sent_at' => date($message->getDate()),
+                    'sent_at' => $dateUtc->format('Y-m-d H:i:s'),
                     'has_read' => $message->getFlags()->has('seen'),
                     'uid' => $message->getUid(),
                     'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
@@ -86,21 +89,21 @@ Artisan::command("get_emails", function () {
                 Email::create($emailData);
 
                 // // Send notification
-                NtfyHelper::sendNofication(
-                    $emailData['from'],
-                    $emailData['subject'],
-                    config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
-                );
+                // NtfyHelper::sendNofication(
+                //     $emailData['from'],
+                //     $emailData['subject'],
+                //     config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
+                // );
             }
         }
     }
 });
 
 Artisan::command('get_folders', function () {
-    $imapCredentials = ImapCredentials::all();
+                    $imapCredentials = ImapCredentials::all();
 
-    // Loop through each IMAP credential
-    foreach ($imapCredentials as $credential) {
+                    // Loop through each IMAP credential
+                    foreach ($imapCredentials as $credential) {
         try {
             $client = Client::make([
                 'host'          => $credential->host,
@@ -138,25 +141,25 @@ Artisan::command('get_folders', function () {
                 'path' => $folder->path,
             ]);
         }
-    }
+                                    }
 });
 
 Schedule::command('get_emails')
     ->everyMinute()
     ->withoutOverlapping()
     ->onSuccess(function () {
-                Log::info('Emails fetched successfully at ' . now());
+                            Log::info('Emails fetched successfully at ' . now());
     })
     ->onFailure(function () {
-                Log::error('Failed to fetch emails at ' . now());
+                            Log::error('Failed to fetch emails at ' . now());
     });
 
 Schedule::command('get_folders')
     ->everyOddHour()
     ->withoutOverlapping()
     ->onSuccess(function () {
-                Log::info('Folders fetched successfully at ' . now());
+                            Log::info('Folders fetched successfully at ' . now());
     })
     ->onFailure(function () {
-                Log::error('Failed to fetch folders at ' . now());
+                            Log::error('Failed to fetch folders at ' . now());
     });
