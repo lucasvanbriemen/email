@@ -88,12 +88,12 @@ Artisan::command("get_emails", function () {
 
                 Email::create($emailData);
 
-                // // Send notification
-                // NtfyHelper::sendNofication(
-                //     $emailData['from'],
-                //     $emailData['subject'],
-                //     config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
-                // );
+                // Send notification
+                NtfyHelper::sendNofication(
+                    $emailData['from'],
+                    $emailData['subject'],
+                    config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
+                );
             }
         }
     }
