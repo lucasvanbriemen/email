@@ -70,4 +70,11 @@ class MailboxController extends Controller
 
         return redirect()->route('mailbox.folder', ['folder' => $folder->name]);
     }
+
+    public function delete($folder, $uid)
+    {
+        Email::deleteEmail($folder, $uid);
+
+        return redirect()->route('mailbox.folder', ['folder' => $folder]);
+    }
 }

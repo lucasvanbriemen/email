@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Folder;
 
 class Email extends Model
 {
@@ -23,14 +24,49 @@ class Email extends Model
         'html_body',
         'folder_id',
         'is_archived',
-        'is_starred'
+        'is_starred',
+        'is_deleted',
     ];
 
     public static function getEmails($folder){
-        return Email::where('folder_id', $folder->id)
+        $query = Email::where('folder_id', $folder->id)
             ->where('user_id', auth()->id())
-            ->where('is_archived', false)
-            ->orderBy('sent_at', 'desc')
-            ->get();
+            ->where('is_archived', false);
+
+        if (!str_contains(strtolower($folder->name), 'trash')) {
+            $query->where('is_deleted', false);
+        }
+
+        return $query->orderBy('sent_at', 'desc')->get();
+    }
+
+    public static function deleteEmail($folder, $uid)
+    {
+        // convert the folder name into an folder id
+        $folder = Folder::where('name', $folder)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        $email = Email::where('uid', $uid)
+            ->where('user_id', auth()->id())
+            ->where('folder_id', $folder->id)
+            ->first();
+
+        if (!$email) {
+            return;
+        }
+
+        $email->is_deleted = true;
+        $email->save();
+
+        // Optionally, you can also move the email to a "Trash" folder
+        $trashFolder = Folder::where('name', 'LIKE', '%trash%')
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if ($trashFolder) {
+            $email->folder_id = $trashFolder->id;
+            $email->save();
+        }
     }
 }

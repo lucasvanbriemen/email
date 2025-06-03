@@ -8,6 +8,7 @@ Route::get('/', [MailboxController::class, 'index'])->middleware(['auth', 'verif
 Route::get('/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 Route::get('/folder/{folder}/mail/{uid}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail');
 Route::get('/folder/{folder}/mail/{uid}/archive', [MailboxController::class, 'archive'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.archive');
+Route::get('/folder/{folder}/mail/{uid}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.star');
 
 
 Route::middleware('auth')->group(function () {
