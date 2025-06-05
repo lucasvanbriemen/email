@@ -48,7 +48,6 @@ Artisan::command("get_emails", function () {
         }
 
         // Process each email
-
         foreach ($folders as $folder) {
             $messages = $folder->messages()->all()->get();
 
@@ -70,6 +69,19 @@ Artisan::command("get_emails", function () {
                 $date = $message->getAttributes()['date']->first();
                 $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
 
+                $folderId = Folder::where('path', $folder->path)
+                    ->where('user_id', $credential->user_id)
+                    ->value('id');
+
+                if (!$folderId) {
+                    // Create folder if it doesn't exist
+                    $folderId = Folder::create([
+                        'user_id' => $credential->user_id,
+                        'name' => $folder->name,
+                        'path' => $folder->path,
+                    ])->id;
+                }
+
                 // Prepare email data
                 $emailData = [
                     'user_id' => $credential->user_id,
@@ -79,7 +91,7 @@ Artisan::command("get_emails", function () {
                     'has_read' => $message->getFlags()->has('seen'),
                     'uid' => $message->getUid(),
                     'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
-                    'folder_id' => Folder::where('path', $folder->path)->where('user_id', $credential->user_id)->value('id') ?: null,
+                    'folder_id' => $folderId,
                     'sender_email' => $message->getFrom()[0]->mail ?? null,
                     'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
                         return $to->mail ?? null;
@@ -89,21 +101,23 @@ Artisan::command("get_emails", function () {
                 Email::create($emailData);
 
                 // Send notification
-                NtfyHelper::sendNofication(
-                    $emailData['from'],
-                    $emailData['subject'],
-                    config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
-                );
+                dispatch(function () use ($emailData) {
+                    NtfyHelper::sendNofication(
+                        $emailData['from'],
+                        $emailData['subject'],
+                        config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
+                    );
+                });
             }
         }
     }
 });
 
 Artisan::command('get_folders', function () {
-                    $imapCredentials = ImapCredentials::all();
+    $imapCredentials = ImapCredentials::all();
 
-                    // Loop through each IMAP credential
-                    foreach ($imapCredentials as $credential) {
+    // Loop through each IMAP credential
+    foreach ($imapCredentials as $credential) {
         try {
             $client = Client::make([
                 'host'          => $credential->host,
@@ -141,11 +155,11 @@ Artisan::command('get_folders', function () {
                 'path' => $folder->path,
             ]);
         }
-                                    }
+    }
 });
 
 Schedule::command('get_emails')
-    ->everyMinute()
+    ->everyFifteenSeconds()
     ->withoutOverlapping()
     ->onSuccess(function () {
                             Log::info('Emails fetched successfully at ' . now());
