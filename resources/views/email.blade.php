@@ -1,21 +1,13 @@
 <x-email-layout :selectedFolder="$selectedFolder">
     @vite(['resources/css/email/email.scss', 'resources/js/theme.js'])
 
-
     <div class='option-bar'>
         <a href='/folder/{{ $selectedFolder }}'>
             {!! App\Helpers\SvgHelper::svg('left-arrow') !!}
         </a>
-
-        <a href='/folder/{{ $selectedFolder }}/mail/{{ $email->uid }}/archive'>
-            {!! App\Helpers\SvgHelper::svg('archive') !!}
-        </a>
-
-        <a href='/folder/{{ $selectedFolder }}/mail/{{ $email->uid }}/delete'>
-            {!! App\Helpers\SvgHelper::svg('bin') !!}
-        </a>
+        
+        @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder])
     </div>
-
 
     <div class='email-wrapper'>
         <div class='email-header'>
