@@ -3,7 +3,7 @@ main {
 
     overflow-y: hidden !important;
 
-    .option-bar {
+    .quick-action-wrapper {
         height: 3rem;
         background-color: var(--background-color-one);
 
@@ -13,33 +13,8 @@ main {
         margin: 1rem auto;
 
         display: flex;
+        justify-content: flex-start;
         align-items: center;
-
-        a {
-            height: 3rem !important;
-            width: 3rem !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease-in-out;
-            
-
-            &:hover {
-                border-radius: 3rem;
-                background-color: var(--primary-color);
-            }
-            
-            
-            svg { 
-                margin: auto;
-                height: 2rem;
-                width: 2rem;
-                
-                path {
-                    fill: var(--text-color) !important;
-                }
-            }
-        }
     }
 
     .email-wrapper {

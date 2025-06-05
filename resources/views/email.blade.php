@@ -1,7 +1,7 @@
 <x-email-layout :selectedFolder="$selectedFolder">
     @vite(['resources/css/email/email.scss', 'resources/js/theme.js'])
 
-    <div class='option-bar'>
+    <div class='quick-action-wrapper'>
         <a href='/folder/{{ $selectedFolder }}'>
             {!! App\Helpers\SvgHelper::svg('left-arrow') !!}
         </a>
