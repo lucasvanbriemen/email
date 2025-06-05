@@ -1,3 +1,5 @@
+@vite('resources/css/email/quick_actions.scss')
+
 <a href='/folder/{{ $selectedFolder }}/mail/{{ $email->uid }}/archive'>
     {!! App\Helpers\SvgHelper::svg('archive') !!}
 </a>

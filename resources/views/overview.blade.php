@@ -23,6 +23,10 @@
                 <p class='email-from'>{{ $email['from'] }}</p>
                 <p class='email-subject'>{{ $email['subject'] }}</p>
                 <p class='email-sent-at'>{{ date("H:i", strtotime($email['sent_at'])) }}</p>
+
+                <div class='quick-action-wrapper'>
+                    @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder])
+                </div>
             </div>
     @endforeach
 </x-email-layout>
