@@ -5,8 +5,8 @@ messages.forEach(message => {
     message.addEventListener('click', function (event) {
         const clickedElement = event.target;
         const hasDontGoToUrlClass = DONT_GO_TO_URL_SELECTOR.some(className => 
-            clickedElement.classList.contains(className) || 
-            clickedElement.closest(className) 
+            clickedElement.classList.contains(className) ||
+            clickedElement.closest(className)
         );
 
         if (!hasDontGoToUrlClass) {
