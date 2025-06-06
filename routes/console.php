@@ -113,6 +113,8 @@ Artisan::command("get_emails", function () {
                     })->filter()->all()) ?: null,
                 ];
 
+                Email::create($emailData);
+
                 // Send notification
                 dispatch(function () use ($emailData) {
                     NtfyHelper::sendNofication(
