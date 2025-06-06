@@ -24,7 +24,31 @@ main {
         transition: all 0.3s ease-in-out;
 
         cursor: pointer;
+        position: relative;
 
+        .quick-action-wrapper {
+            display: none;
+
+            position: absolute;
+            right: 0.25rem;
+
+            gap: 0.5rem;
+            
+            top: calc(50%);
+            transform: translateY(-50%);
+
+            transition: all 0.3s ease-in-out;
+
+            a {
+                height: 2rem !important;
+                width: 2rem !important;
+                
+                svg {
+                    height: 1.5rem;
+                    width: 1.5rem;
+                }
+            }
+        }
 
         p {
             text-overflow: ellipsis;
@@ -61,6 +85,17 @@ main {
 
         &:hover {
             border-radius: 2rem;
+
+            .quick-action-wrapper {
+               display: flex;
+               background-color: var(--background-color);
+               padding: 0.5rem;
+                border-radius: 2rem;
+            }
+
+            .email-sent-at {
+                display: none;
+            }
         }
 
         @media screen and (max-width: 768px) {
