@@ -45,6 +45,22 @@
                     console.error('Iframe resize failed:', e);
                 }
             }
-           </script>
+        </script>
+
+        <div class='email-attachments'>
+            @foreach ($attachments as $attachment)
+                @php
+                    $IMG_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'png', 'svg'];
+                    $isImage = in_array(strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION)), $IMG_EXTENSIONS);
+                @endphp
+                <a class='email-attachment' href='/{{ $attachment->path }}' target='_blank' rel='noopener noreferrer'>
+                    @if ($isImage)
+                        <img src="/{{ $attachment->path }}" alt="{{ $attachment->name }}" class='attachment-image'>
+                    @else
+                        <span class='attachment-name'>{{ $attachment->name }}</span>
+                    @endif
+                </a>
+            @endforeach
+        </div>
     </div>
 </x-email-layout>

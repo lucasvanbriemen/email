@@ -55,4 +55,30 @@ main {
         border-radius: 1rem;
         background-color: white;
     }
+
+    .email-attachments {
+        width: 98%;
+        margin: 1rem auto;
+
+        display: flex;
+        gap: 1rem;
+
+        .email-attachment {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 6rem;
+            width: 10rem;
+            background-color: var(--background-color-one);
+            border-radius: 0.5rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 0.5rem;
+            }
+        }
+    }
 }

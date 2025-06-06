@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Webklex\IMAP\Facades\Client;
 use App\Models\Email;
 use App\Models\Folder;
+use App\Models\Attachment;
 
 class MailboxController extends Controller
 {
@@ -42,12 +43,15 @@ class MailboxController extends Controller
             ->where('folder_id', $folder->id)
             ->first();
 
+        $attachments = Attachment::where('email_id', $email->id)->get();
+
         $email->has_read = true;
         $email->save();
 
         return view('email', [
             'email' => $email,
             'selectedFolder' => $folder->name,
+            'attachments' => $attachments,
         ]);
     }
 
