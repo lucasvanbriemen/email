@@ -56,10 +56,25 @@ Artisan::command("get_emails", function () {
             }
 
             foreach ($messages as $message) {
+
+                // possable folders
+                // Optionally, you can also move the email to a "Trash" folder
+                $trashFolder = Folder::where('name', 'LIKE', '%trash%')
+                    ->where('user_id', $credential->user_id)
+                    ->first();
+
                 if (
                     Email::where('uid', $message->getUid())
                     ->where('user_id', $credential->user_id)
                     ->where('folder_id', Folder::where('path', $folder->path)
+                        ->where('user_id', $credential->user_id)
+                        ->value('id') ?? null)->exists()
+
+                    ||
+
+                    Email::where('uid', $message->getUid())
+                    ->where('user_id', $credential->user_id)
+                    ->where('folder_id', Folder::where('name', 'LIKE', '%trash%')->where('user_id', $credential->user_id)
                         ->where('user_id', $credential->user_id)
                         ->value('id') ?? null)->exists()
                 ) {
