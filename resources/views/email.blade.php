@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <iframe srcdoc="<base target='_top'>{{ $email->html_body }}" class='email-body' onload="resizeIframe(this)"></iframe>
+        <iframe srcdoc="<style>body{font-family: sans-serif;}</style><base target='_top'>{{ $email->html_body }}" class='email-body' onload="resizeIframe(this)"></iframe>
 
         <script>
             function resizeIframe(iframe) {
