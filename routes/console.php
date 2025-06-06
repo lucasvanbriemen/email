@@ -61,8 +61,8 @@ Artisan::command("get_emails", function () {
                     ->where('user_id', $credential->user_id)
                     ->where('folder_id', Folder::where('path', $folder->path)
                         ->where('user_id', $credential->user_id)
-                        ->value('id') ?? null)->exists())
-                {
+                        ->value('id') ?? null)->exists()
+                ) {
                     continue; // Skip if email already exists
                 }
 
@@ -97,8 +97,6 @@ Artisan::command("get_emails", function () {
                         return $to->mail ?? null;
                     })->filter()->all()) ?: null,
                 ];
-
-                Email::create($emailData);
 
                 // Send notification
                 dispatch(function () use ($emailData) {
