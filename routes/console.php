@@ -11,6 +11,7 @@ use App\Helpers\NtfyHelper;
 use App\Models\ImapCredentials;
 use App\Models\Email;
 use App\Models\Folder;
+use App\Models\Attachment;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -113,7 +114,35 @@ Artisan::command("get_emails", function () {
                     })->filter()->all()) ?: null,
                 ];
 
-                Email::create($emailData);
+
+                $email = Email::create($emailData);
+
+                // atchements
+                if ($message->hasAttachments()) {
+                    $this->info("Attachment found");
+
+                    $attachments = $message->getAttachments();
+                    foreach ($attachments as $attachment) {
+                        $this->info("Processing attachment: " . $attachment->name);
+                        // Save attachment to storage
+                        $filePath = 'attachments/' . $credential->user_id . '/';
+                        if (!file_exists(public_path($filePath))) {
+                            mkdir(public_path($filePath), 0777, true);
+                        }
+
+                        $filename_to_store = uniqid() . "." . $attachment->getExtension();
+                        $attachment->save(public_path($filePath), $filename_to_store);
+
+                        // Create attachment record
+                        Attachment::create([
+                            'email_id' => $email->id,
+                            'name' => $attachment->name,
+                            'path' => $filePath . $filename_to_store,
+                            'mime_type' => $attachment->mime ?? null,
+                        ]);
+                    }
+                }
+
 
                 // Send notification
                 dispatch(function () use ($emailData) {
