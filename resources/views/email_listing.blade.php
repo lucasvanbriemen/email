@@ -7,8 +7,14 @@
 
 
 <div class='{{ $class }}' data-url='{{ $dataUrl }}'>
-    <p class='email-from'>{{ $email['from'] }}</p>
+    <p class='email-from'>
+        {{ $email['from'] }} 
+        @if ($size != null)
+            <span class='email-size'>({{ $size }})</span>
+        @endif
+    </p>
     <p class='email-subject'>{{ $email['subject'] }}</p>
+
     <p class='email-sent-at'>{{ date($format, strtotime($email['sent_at'])) }}</p>
     @if ($quickAction)
         <div class='quick-action-wrapper'>

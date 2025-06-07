@@ -25,6 +25,7 @@
                     'dataUrl' => '',
                     'quickAction' => false,
                     'current_iteration_date' => $current_iteration_date,
+                    'size' => count($emailThread),
                 ])
         @endif
 
@@ -35,6 +36,7 @@
                 'dataUrl' => '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
                 'quickAction' => true,
                 'current_iteration_date' => $current_iteration_date,
+                'size' => null,
             ])
         @endforeach
 
