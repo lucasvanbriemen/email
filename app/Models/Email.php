@@ -73,6 +73,7 @@ class Email extends Model
             return;
         }
         $email->is_deleted = true;
+        $email->save();
 
         // Remove to trash
         $trashFolder = Folder::where('name', 'LIKE', '%trash%')

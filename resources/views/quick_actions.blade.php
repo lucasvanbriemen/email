@@ -1,9 +1,11 @@
-@vite('resources/css/email/quick_actions.scss')
+@vite(['resources/css/email/quick_actions.scss', 'resources/js/email/quick_actions.js'])
 
-<a href='/folder/{{ $selectedFolder }}/mail/{{ $email->uid }}/archive'>
+@csrf
+
+<a data-url='/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/archive' data-function='archive' class='quick-action'>
     {!! App\Helpers\SvgHelper::svg('archive') !!}
 </a>
 
-<a href='/folder/{{ $selectedFolder }}/mail/{{ $email->uid }}/delete'>
+<a data-url='/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/delete' data-function="delete" class='quick-action'>
     {!! App\Helpers\SvgHelper::svg('bin') !!}
 </a>

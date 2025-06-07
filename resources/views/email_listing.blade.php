@@ -5,10 +5,9 @@
     @php $format = 'H:i'; @endphp
 @endif
 
-
 <div class='{{ $class }}' data-url='{{ $dataUrl }}'>
     <p class='email-from'>
-        {{ $email['from'] }} 
+        {{ $email['from'] }}
         @if ($size != null)
             <span class='email-size'>({{ $size }})</span>
         @endif

@@ -77,7 +77,7 @@ class MailboxController extends Controller
 
     public function archive($folder, $uuid)
     {
-        $email = Email::where('uid', $uuid)
+        $email = Email::where('uuid', $uuid)
             ->where('user_id', auth()->id())
             ->first();
 
@@ -88,13 +88,19 @@ class MailboxController extends Controller
             $email->save();
         }
 
-        return redirect()->route('mailbox.folder', ['folder' => $folder]);
+        return [
+            'status' => 'success',
+            'message' => 'Email archived successfully.'
+        ];
     }
 
     public function delete($folder, $uuid)
     {
-        Email::deleteEmail( $uuid);
+        Email::deleteEmail($uuid);
 
-        return redirect()->route('mailbox.folder', ['folder' => $folder]);
+        return [
+            'status' => 'success',
+            'message' => 'Email deleted successfully.'
+        ];
     }
 }
