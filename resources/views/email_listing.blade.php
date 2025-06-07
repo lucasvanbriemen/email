@@ -1,3 +1,5 @@
+@vite(['resources/css/email/email_listing.scss'])
+
 <div class='{{ $class }}' data-url='{{ $dataUrl }}'>
     <p class='email-from'>{{ $email['from'] }}</p>
     <p class='email-subject'>{{ $email['subject'] }}</p>
