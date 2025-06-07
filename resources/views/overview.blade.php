@@ -16,7 +16,18 @@
             @php $last_iterated_date = $current_iteration_date; @endphp
         @endif
 
-        <hr>
+
+        @if (count($emailThread) > 1)
+            <div class='email-thread'>
+                <div class='thead-top-message {{ $emailThread[0]['has_read'] ? 'read' : 'unread' }}'
+                    <p class='email-from'>{{ $emailThread[0]['from'] }}</p>
+                    <p class='thead-size'>{{ count($emailThread) }}</p>
+
+                    <p class='email-subject'>{{ $emailThread[0]['subject'] }}</p>
+                    <p class='email-sent-at'>{{ date("H:i", strtotime($emailThread[0]['sent_at'])) }}</p>
+                </div>
+        @endif
+
         @foreach ($emailThread as $email)
             <div class='message {{ $email['has_read'] ? 'read' : 'unread' }}' data-url='/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}'>
                 <p class='email-from'>{{ $email['from'] }}</p>
@@ -27,6 +38,9 @@
                 </div>
             </div>
         @endforeach
-        <hr>
+
+        @if (count($emailThread) > 1)
+            </div>
+        @endif
     @endforeach
 </x-email-layout>

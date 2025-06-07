@@ -10,7 +10,23 @@ main {
         border-bottom: 1px solid var(--text-color);
     }
 
-    .message {
+    .email-thread {
+        .message {
+            display: none;
+        }
+
+        &.open {
+            .message {
+                display: flex;
+            }
+        }
+
+        .thead-top-message {
+            display: flex;
+        }
+    }
+
+    .message, .thead-top-message {
         background-color: var(--background-color-one);
         width: 98%;
         margin: 1rem auto;

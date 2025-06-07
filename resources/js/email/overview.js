@@ -14,3 +14,25 @@ messages.forEach(message => {
         }
     });
 });
+
+
+const threadElements = document.querySelectorAll('.email-thread');
+const DONT_TOGGLE_CLASS_SELECTOR = ['.message'];
+
+threadElements.forEach(threadElement => {
+    threadElement.addEventListener('click', function (event) {
+        // Add the open class to the clicked thread element
+
+        const clickedElement = event.target;
+        const hasDontToggleClass = DONT_TOGGLE_CLASS_SELECTOR.some(className => 
+            clickedElement.classList.contains(className) ||
+            clickedElement.closest(className)
+        );
+
+        console.log(hasDontToggleClass);
+
+        if (!hasDontToggleClass) {
+            threadElement.classList.toggle('open');
+        }
+    });
+});
