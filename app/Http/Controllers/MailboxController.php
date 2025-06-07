@@ -24,7 +24,7 @@ class MailboxController extends Controller
 
         $emails = Email::getEmails($folder);
 
-        $sortedEmails = [];
+        $emailThreads = [];
         $email_sorted_uuids = [];
 
         foreach ($emails as $email) {
@@ -45,12 +45,11 @@ class MailboxController extends Controller
                 }
             }
 
-            $sortedEmails[] = $currentThread;
+            $emailThreads[] = $currentThread;
         }
 
         return view('overview', [
-            'emails' => $emails,
-            'sortedEmails' => $sortedEmails,
+            'emailThreads' => $emailThreads,
             'folder' => $folder,
             'selectedFolder' => $selectedFolder,
         ]);
