@@ -31,17 +31,13 @@ class MailboxController extends Controller
         ]);
     }
 
-    public function show($folder, $uid)
+    public function show($folder, $uuid)
     {
-        // convert the folder name into an folder id
-        $folder = Folder::where('name', $folder)
+        $email = Email::where('uuid', $uuid)
             ->where('user_id', auth()->id())
             ->first();
 
-        $email = Email::where('uuid', $uid)
-            ->where('user_id', auth()->id())
-            ->where('folder_id', $folder->id)
-            ->first();
+        $selectedFolder = $email->folder->name;
 
         $attachments = Attachment::where('email_id', $email->id)->get();
 
@@ -50,34 +46,30 @@ class MailboxController extends Controller
 
         return view('email', [
             'email' => $email,
-            'selectedFolder' => $folder->name,
+            'selectedFolder' => $selectedFolder,
             'attachments' => $attachments,
         ]);
     }
 
-    public function archive($folder, $uid)
+    public function archive($folder, $uuid)
     {
-        // convert the folder name into an folder id
-        $folder = Folder::where('name', $folder)
+        $email = Email::where('uid', $uuid)
             ->where('user_id', auth()->id())
             ->first();
 
-        $email = Email::where('uid', $uid)
-            ->where('user_id', auth()->id())
-            ->where('folder_id', $folder->id)
-            ->first();
+        $folder = $email->folder->name;
 
         if ($email) {
             $email->is_archived = true;
             $email->save();
         }
 
-        return redirect()->route('mailbox.folder', ['folder' => $folder->name]);
+        return redirect()->route('mailbox.folder', ['folder' => $folder]);
     }
 
-    public function delete($folder, $uid)
+    public function delete($folder, $uuid)
     {
-        Email::deleteEmail($folder, $uid);
+        Email::deleteEmail($folder, $uuid);
 
         return redirect()->route('mailbox.folder', ['folder' => $folder]);
     }
