@@ -29,8 +29,6 @@ threadElements.forEach(threadElement => {
             clickedElement.closest(className)
         );
 
-        console.log(hasDontToggleClass);
-
         if (!hasDontToggleClass) {
             threadElement.classList.toggle('open');
         }

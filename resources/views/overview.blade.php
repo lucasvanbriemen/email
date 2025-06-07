@@ -19,24 +19,21 @@
 
         @if (count($emailThread) > 1)
             <div class='email-thread'>
-                <div class='thead-top-message {{ $emailThread[0]['has_read'] ? 'read' : 'unread' }}'
-                    <p class='email-from'>{{ $emailThread[0]['from'] }}</p>
-                    <p class='thead-size'>{{ count($emailThread) }}</p>
-
-                    <p class='email-subject'>{{ $emailThread[0]['subject'] }}</p>
-                    <p class='email-sent-at'>{{ date("H:i", strtotime($emailThread[0]['sent_at'])) }}</p>
-                </div>
+                @include('email_listing', [
+                    'email' => $emailThread[0],
+                    'class' => 'thead-top-message ' . (in_array(false, array_column($emailThread, 'has_read')) ? 'unread' : 'read'),
+                    'dataUrl' => '',
+                    'quickAction' => false,
+                ])
         @endif
 
         @foreach ($emailThread as $email)
-            <div class='message {{ $email['has_read'] ? 'read' : 'unread' }}' data-url='/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}'>
-                <p class='email-from'>{{ $email['from'] }}</p>
-                <p class='email-subject'>{{ $email['subject'] }}</p>
-                <p class='email-sent-at'>{{ date("H:i", strtotime($email['sent_at'])) }}</p>
-                <div class='quick-action-wrapper'>
-                    @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder])
-                </div>
-            </div>
+            @include('email_listing', [
+                'email' => $email,
+                'class' => 'message ' . ($email['has_read'] ? 'read' : 'unread'),
+                'dataUrl' => '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
+                'quickAction' => true,
+            ])
         @endforeach
 
         @if (count($emailThread) > 1)
