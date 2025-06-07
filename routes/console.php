@@ -139,7 +139,6 @@ Artisan::command("get_emails", function () {
                     }
                 }
 
-
                 // Send notification
                 dispatch(function () use ($emailData) {
                     NtfyHelper::sendNofication(
