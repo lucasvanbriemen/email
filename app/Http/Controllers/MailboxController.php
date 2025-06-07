@@ -38,7 +38,7 @@ class MailboxController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
-        $email = Email::where('uid', $uid)
+        $email = Email::where('uuid', $uid)
             ->where('user_id', auth()->id())
             ->where('folder_id', $folder->id)
             ->first();

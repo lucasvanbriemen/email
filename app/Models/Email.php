@@ -51,7 +51,8 @@ class Email extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function getEmails($folder){
+    public static function getEmails($folder)
+    {
         $query = Email::where('folder_id', $folder->id)
             ->where('user_id', auth()->id())
             ->where('is_archived', false);

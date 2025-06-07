@@ -13,7 +13,7 @@
             @php $last_iterated_date = $current_iteration_date; @endphp
         @endif
 
-        <div class='message {{ $email['has_read'] ? 'read' : 'unread' }}' data-url='/folder/{{ $selectedFolder }}/mail/{{ $email['uid'] }}'>
+        <div class='message {{ $email['has_read'] ? 'read' : 'unread' }}' data-url='/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}'>
             <p class='email-from'>{{ $email['from'] }}</p>
             <p class='email-subject'>{{ $email['subject'] }}</p>
             <p class='email-sent-at'>{{ date("H:i", strtotime($email['sent_at'])) }}</p>
