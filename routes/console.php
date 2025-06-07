@@ -141,13 +141,13 @@ Artisan::command("get_emails", function () {
 
 
                 // Send notification
-                // dispatch(function () use ($emailData) {
-                //     NtfyHelper::sendNofication(
-                //         $emailData['from'],
-                //         $emailData['subject'],
-                //         config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
-                //     );
-                // });
+                dispatch(function () use ($emailData) {
+                    NtfyHelper::sendNofication(
+                        $emailData['from'],
+                        $emailData['subject'],
+                        config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
+                    );
+                });
             }
         }
     }
