@@ -60,10 +60,6 @@ Artisan::command("get_emails", function () {
 
                 // possable folders
                 // Optionally, you can also move the email to a "Trash" folder
-                $trashFolder = Folder::where('name', 'LIKE', '%trash%')
-                    ->where('user_id', $credential->user_id)
-                    ->first();
-
                 if (
                     Email::where('uid', $message->getUid())
                     ->where('user_id', $credential->user_id)

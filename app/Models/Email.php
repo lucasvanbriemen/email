@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Folder;
+use Illuminate\Support\Str;
 
 class Email extends Model
 {
@@ -27,6 +28,28 @@ class Email extends Model
         'is_starred',
         'is_deleted',
     ];
+
+    /**
+     * values that should be set by the model.
+     *
+     * @var array
+     */
+    protected static function booted()
+    {
+        static::creating(function ($email) {
+            $email->uuid = Str::uuid()->toString();
+        });
+    }
+
+    public function folder()
+    {
+        return $this->belongsTo(Folder::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public static function getEmails($folder){
         $query = Email::where('folder_id', $folder->id)

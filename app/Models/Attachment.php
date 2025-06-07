@@ -13,4 +13,10 @@ class Attachment extends Model
         'path',
         'mime_type',
     ];
+
+
+    public function email()
+    {
+        return $this->belongsTo(Email::class);
+    }
 }
