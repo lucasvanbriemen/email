@@ -29,11 +29,10 @@ class Email extends Model
         'is_deleted',
     ];
 
-    /**
-     * values that should be set by the model.
-     *
-     * @var array
-     */
+    protected $garded = [
+        'uuid',
+    ];
+
     protected static function booted()
     {
         static::creating(function ($email) {
@@ -64,33 +63,26 @@ class Email extends Model
         return $query->orderBy('sent_at', 'desc')->get();
     }
 
-    public static function deleteEmail($folder, $uid)
+    public static function deleteEmail($uuid)
     {
-        // convert the folder name into an folder id
-        $folder = Folder::where('name', $folder)
+        $email = Email::where('uuid', $uuid)
             ->where('user_id', auth()->id())
-            ->first();
-
-        $email = Email::where('uid', $uid)
-            ->where('user_id', auth()->id())
-            ->where('folder_id', $folder->id)
             ->first();
 
         if (!$email) {
             return;
         }
-
         $email->is_deleted = true;
-        $email->save();
 
-        // Optionally, you can also move the email to a "Trash" folder
+        // Remove to trash
         $trashFolder = Folder::where('name', 'LIKE', '%trash%')
             ->where('user_id', auth()->id())
             ->first();
 
         if ($trashFolder) {
             $email->folder_id = $trashFolder->id;
-            $email->save();
         }
+
+        $email->save();
     }
 }
