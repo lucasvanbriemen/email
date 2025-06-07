@@ -24,8 +24,23 @@ class MailboxController extends Controller
 
         $emails = Email::getEmails($folder);
 
+        $sortedEmails = [];
+        $currentThread = [];
+
+        foreach ($emails as $email) {
+            foreach ($emails as $threadEmail) {
+                if ($email->sernder === $threadEmail->sender && $email->subject === $threadEmail->subject) {
+                    $currentThread[] = $threadEmail;
+                }
+            }
+
+            $sortedEmails[] = $currentThread;
+        }
+
+
         return view('overview', [
             'emails' => $emails,
+            'sortedEmails' => $sortedEmails,
             'folder' => $folder,
             'selectedFolder' => $selectedFolder,
         ]);
