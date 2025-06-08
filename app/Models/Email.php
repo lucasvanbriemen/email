@@ -33,6 +33,11 @@ class Email extends Model
         'uuid',
     ];
 
+    public static $customViewFolders = [
+        'trash',
+        'all'
+    ];
+
     protected static function booted()
     {
         static::creating(function ($email) {
@@ -52,12 +57,25 @@ class Email extends Model
 
     public static function getEmails($folder)
     {
-        $query = Email::where('folder_id', $folder->id)
-            ->where('user_id', auth()->id())
-            ->where('is_archived', false);
+        $query = Email::where('user_id', auth()->id());
 
-        if (!str_contains(strtolower($folder->name), 'trash')) {
+        // If the folder is NOT a custom view folder, we filter by folder ID
+        if (!in_array($folder->path, Email::$customViewFolders)) {
+            $query->where('folder_id', $folder->id);
+
+            return $query->orderBy('sent_at', 'desc')->get();
+        }
+
+        if ($folder->path == 'trash') {
+            $query->where('is_deleted', true);
+        }
+
+        if ($folder->path == 'spam') {
             $query->where('is_deleted', false);
+        }
+
+        if ($folder->path != 'all') {
+            $query->where('is_archived', false);
         }
 
         return $query->orderBy('sent_at', 'desc')->get();
@@ -76,13 +94,11 @@ class Email extends Model
         $email->save();
 
         // Remove to trash
-        $trashFolder = Folder::where('name', 'LIKE', '%trash%')
-            ->where('user_id', auth()->id())
+        $trashFolder = Folder::where('path', 'trash')
+            ->where('user_id', User::find(auth()->id())->credentials->id)
             ->first();
 
-        if ($trashFolder) {
-            $email->folder_id = $trashFolder->id;
-        }
+        $email->folder_id = $trashFolder->id;
 
         $email->save();
     }

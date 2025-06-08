@@ -38,7 +38,6 @@ Artisan::command("get_emails", function () {
         // Fetch folders
         try {
             $folder = $client->getFolder("INBOX");
-
         } catch (\Exception $e) {
             $this->info('Failed to fetch emails: ' . $e->getMessage());
             continue;
@@ -51,7 +50,6 @@ Artisan::command("get_emails", function () {
         }
 
         foreach ($messages as $message) {
-
             // possable folders
             // Optionally, you can also move the email to a "Trash" folder
 
@@ -92,7 +90,6 @@ Artisan::command("get_emails", function () {
 
             // atchements
             if ($message->hasAttachments()) {
-
                 $attachments = $message->getAttachments();
                 foreach ($attachments as $attachment) {
                     // Save attachment to storage
@@ -131,8 +128,8 @@ Schedule::command('get_emails')
     ->everyFifteenSeconds()
     ->withoutOverlapping()
     ->onSuccess(function () {
-                            Log::info('Emails fetched successfully at ' . now());
+        Log::info('Emails fetched successfully at ' . now());
     })
     ->onFailure(function () {
-                            Log::error('Failed to fetch emails at ' . now());
+        Log::error('Failed to fetch emails at ' . now());
     });

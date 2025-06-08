@@ -24,7 +24,6 @@ class MailboxController extends Controller
             ->where('imap_credential_id', User::find(auth()->id())->imapCredential->id)
             ->first();
 
-
         $emails = Email::getEmails($folder);
 
         $emailThreads = [];
