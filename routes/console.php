@@ -13,11 +13,6 @@ use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
-
-
 Artisan::command("get_emails", function () {
     $imapCredentials = ImapCredentials::all();
 
