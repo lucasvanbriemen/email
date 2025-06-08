@@ -110,7 +110,7 @@ class MailboxController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
-        $emails = Email::where('sender', $email->sender)
+        $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
             ->where('user_id', auth()->id())
@@ -133,7 +133,7 @@ class MailboxController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
-        $emails = Email::where('sender', $email->sender)
+        $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
             ->where('user_id', auth()->id())
