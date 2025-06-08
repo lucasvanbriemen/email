@@ -1,5 +1,16 @@
 @vite(['resources/css/email/email_listing.scss'])
 
+@props(
+    [
+        'email',
+        'class' => '',
+        'dataUrl' => '',
+        'quickAction' => true,
+        'current_iteration_date' => null,
+        'size' => null,
+    ]
+)
+
 @php $format = 'D, d M Y'; @endphp
 @if($current_iteration_date == date("Y-m-d", strtotime($email['sent_at'])))
     @php $format = 'H:i'; @endphp

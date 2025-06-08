@@ -8,8 +8,6 @@ quickActions.forEach(action => {
         const url = this.getAttribute('data-url');
         const token = quickActionsWrapper.querySelector('input[name="_token"]').value;
 
-        const folowUpFunction = this.getAttribute('data-function');
-
         if (!url) {
             return;
         }
@@ -22,8 +20,3 @@ quickActions.forEach(action => {
         });
     });
 });
-
-
-function archiveEmail() {
-    alert('Email archived successfully!');
-}
