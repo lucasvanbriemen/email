@@ -22,9 +22,9 @@
                 @include('email_listing', [
                     'email' => $emailThread[0],
                     'class' => 'thead-top-message ' . (in_array(false, array_column($emailThread, 'has_read')) ? 'unread' : 'read'),
-                    'quickAction' => false,
                     'current_iteration_date' => $current_iteration_date,
                     'size' => count($emailThread),
+                    'thread' => true,
                 ])
         @endif
 
