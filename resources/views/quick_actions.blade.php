@@ -1,10 +1,8 @@
 @vite(['resources/css/email/quick_actions.scss', 'resources/js/email/quick_actions.js'])
 
-@props(
-    [
-        'theard' => false,
-    ]
-)
+@props([
+    'theard' => false,
+])
 
 @php
     $archive = $theard ? 'archive_thread' : 'archive';
