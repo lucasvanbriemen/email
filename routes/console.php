@@ -37,112 +37,91 @@ Artisan::command("get_emails", function () {
 
         // Fetch folders
         try {
-            $folders = $client->getFolders(false);
+            $folder = $client->getFolder("INBOX");
+
         } catch (\Exception $e) {
             $this->info('Failed to fetch emails: ' . $e->getMessage());
             continue;
         }
 
-        // Process each email
-        foreach ($folders as $folder) {
-            $messages = $folder->messages()->all()->get();
+        $messages = $folder->messages()->all()->get();
 
-            if ($messages->isEmpty()) {
-                continue; // Skip if no messages found
+        if ($messages->isEmpty()) {
+            continue; // Skip if no messages found
+        }
+
+        foreach ($messages as $message) {
+
+            // possable folders
+            // Optionally, you can also move the email to a "Trash" folder
+
+            $date = $message->getAttributes()['date']->first();
+            $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
+            if (
+                Email::where('uid', $message->getUid())
+                ->where('user_id', $credential->user_id)
+                ->where('sender_email', $message->getFrom()[0]->mail ?? null)
+                ->where('sent_at', $dateUtc->format('Y-m-d H:i:s'))
+                ->exists()
+            ) {
+                continue; // Skip if email already exists
             }
 
-            foreach ($messages as $message) {
+            $folderId = Folder::where('path', 'inbox')
+                ->where('imap_credential_id', $credential->id)
+                ->value('id');
 
-                // possable folders
-                // Optionally, you can also move the email to a "Trash" folder
-                if (
-                    Email::where('uid', $message->getUid())
-                    ->where('user_id', $credential->user_id)
-                    ->where('folder_id', Folder::where('path', $folder->path)
-                        ->where('user_id', $credential->user_id)
-                        ->value('id') ?? null)->exists()
-
-                    ||
-
-                    Email::where('uid', $message->getUid())
-                    ->where('user_id', $credential->user_id)
-                    ->where('folder_id', Folder::where('name', 'LIKE', '%trash%')->where('user_id', $credential->user_id)
-                        ->where('user_id', $credential->user_id)
-                        ->value('id') ?? null)->exists()
-                ) {
-                    continue; // Skip if email already exists
-                }
-
-                $date = $message->getAttributes()['date']->first();
-                $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
-
-                $folderId = Folder::where('path', $folder->path)
-                    ->where('user_id', $credential->user_id)
-                    ->value('id');
-
-                if (!$folderId) {
-                    // Create folder if it doesn't exist
-                    $folderId = Folder::create([
-                        'user_id' => $credential->user_id,
-                        'name' => $folder->name,
-                        'path' => $folder->path,
-                    ])->id;
-                }
-
-                // Prepare email data
-                $emailData = [
-                    'user_id' => $credential->user_id,
-                    'subject' => $message->getSubject(),
-                    'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
-                    'sent_at' => $dateUtc->format('Y-m-d H:i:s'),
-                    'has_read' => $message->getFlags()->has('seen'),
-                    'uid' => $message->getUid(),
-                    'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
-                    'folder_id' => $folderId,
-                    'sender_email' => $message->getFrom()[0]->mail ?? null,
-                    'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
-                        return $to->mail ?? null;
-                    })->filter()->all()) ?: null,
-                ];
+            // Prepare email data
+            $emailData = [
+                'user_id' => $credential->user_id,
+                'subject' => $message->getSubject(),
+                'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
+                'sent_at' => $dateUtc->format('Y-m-d H:i:s'),
+                'has_read' => $message->getFlags()->has('seen'),
+                'uid' => $message->getUid(),
+                'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
+                'folder_id' => $folderId,
+                'sender_email' => $message->getFrom()[0]->mail ?? null,
+                'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
+                    return $to->mail ?? null;
+                })->filter()->all()) ?: null,
+            ];
 
 
-                $email = Email::create($emailData);
+            $email = Email::create($emailData);
 
-                // atchements
-                if ($message->hasAttachments()) {
-                    $this->info("Attachment found");
+            // atchements
+            if ($message->hasAttachments()) {
 
-                    $attachments = $message->getAttachments();
-                    foreach ($attachments as $attachment) {
-                        $this->info("Processing attachment: " . $attachment->name);
-                        // Save attachment to storage
-                        $filePath = 'attachments/' . $credential->user_id . '/';
-                        if (!file_exists(public_path($filePath))) {
-                            mkdir(public_path($filePath), 0777, true);
-                        }
-
-                        $filename_to_store = uniqid() . "." . $attachment->getExtension();
-                        $attachment->save(public_path($filePath), $filename_to_store);
-
-                        // Create attachment record
-                        Attachment::create([
-                            'email_id' => $email->id,
-                            'name' => $attachment->name,
-                            'path' => $filePath . $filename_to_store,
-                            'mime_type' => $attachment->mime ?? null,
-                        ]);
+                $attachments = $message->getAttachments();
+                foreach ($attachments as $attachment) {
+                    // Save attachment to storage
+                    $filePath = 'attachments/' . $credential->user_id . '/';
+                    if (!file_exists(public_path($filePath))) {
+                        mkdir(public_path($filePath), 0777, true);
                     }
-                }
 
-                // Send notification
-                dispatch(function () use ($emailData) {
-                    NtfyHelper::sendNofication(
-                        $emailData['from'],
-                        $emailData['subject'],
-                        config('app.url') . '/folder/INBOX/mail/' . $emailData['uid']
-                    );
-                });
+                    $filename_to_store = uniqid() . "." . $attachment->getExtension();
+                    $attachment->save(public_path($filePath), $filename_to_store);
+
+                    // Create attachment record
+                    Attachment::create([
+                        'email_id' => $email->id,
+                        'name' => $attachment->name,
+                        'path' => $filePath . $filename_to_store,
+                        'mime_type' => $attachment->mime ?? null,
+                    ]);
+                }
             }
+
+            // Send notification
+            dispatch(function () use ($emailData) {
+                NtfyHelper::sendNofication(
+                    $emailData['from'],
+                    $emailData['subject'],
+                    config('app.url') . '/folder/inbox/mail/' . $emailData['uid']
+                );
+            });
         }
     }
 });
