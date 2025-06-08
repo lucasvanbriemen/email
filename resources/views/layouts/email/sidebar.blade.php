@@ -10,7 +10,7 @@
     <div class='sidebar'>
         {{-- Menu icon --}}
         @foreach ($folders as $folder)
-            <div class='folder @if ($folder->name == $selectedFolder) selected @endif' data-folder-name="{{ $folder->name }}">
+            <div class='folder @if ($folder->path == $selectedFolder) selected @endif'">
                 <a href='/folder/{{ $folder->path }}'>
                     {{ strtolower($folder->name) }}
                 </a>
