@@ -6,12 +6,7 @@ class NtfyHelper
 {
     public static function sendNofication($title, $message, $url)
     {
-
-        if (!config("ntfy.enabled")) {
-            return;
-        }
-
-        $result = file_get_contents(config("ntfy.url"), false, stream_context_create([
+        $result = file_get_contents('https://ntfy.sh/lukaas_test', false, stream_context_create([
             'http' => [
                 'method'  => 'POST',
                 'header'  => [

@@ -123,11 +123,4 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
-    'ntfy' => [
-        'enabled' => env('NTFY_ENABLED', false),
-        'topic' => env('NTFY_TOPIC', 'lukaas_test'),
-        'url' => env('NTFY_URL', 'https://ntfy.sh'),
-    ],
-
 ];
