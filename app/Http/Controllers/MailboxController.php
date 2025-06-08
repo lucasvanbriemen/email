@@ -103,4 +103,49 @@ class MailboxController extends Controller
             'message' => 'Email deleted successfully.'
         ];
     }
+
+    public function archiveThread($folder, $uuid)
+    {
+        $email = Email::where('uuid', $uuid)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        $emails = Email::where('sender', $email->sender)
+            ->where('subject', $email->subject)
+            ->where('folder_id', $email->folder_id)
+            ->where('user_id', auth()->id())
+            ->get();
+
+        foreach ($emails as $threadEmail) {
+            $threadEmail->is_archived = true;
+            $threadEmail->save();
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Thread archived successfully.'
+        ];
+    }
+
+    public function deleteThread($folder, $uuid)
+    {
+        $email = Email::where('uuid', $uuid)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        $emails = Email::where('sender', $email->sender)
+            ->where('subject', $email->subject)
+            ->where('folder_id', $email->folder_id)
+            ->where('user_id', auth()->id())
+            ->get();
+
+        foreach ($emails as $threadEmail) {
+            Email::deleteEmail($threadEmail->uuid);
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Thread deleted successfully.'
+        ];
+    }
 }
