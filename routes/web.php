@@ -15,7 +15,6 @@ Route::post('/folder/{folder}/mail/{uuid}/delete', [MailboxController::class, 'd
 Route::post('/folder/{folder}/mail/{uuid}/archive_thread', [MailboxController::class, 'archiveThread'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.archive_thread');
 Route::post('/folder/{folder}/mail/{uuid}/delete_thread', [MailboxController::class, 'deleteThread'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.delete_thread');
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
     Route::patch('/account', [AccountController::class, 'update'])->name('profile.update');

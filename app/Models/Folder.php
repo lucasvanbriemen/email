@@ -12,8 +12,18 @@ class Folder extends Model
      *
      * @var list<string>
      */
+
+    public static $defaultFolders = [
+        'inbox' => 'Inbox',
+        'sent' => 'Sent',
+        'drafts' => 'Drafts',
+        'trash' => 'Trash',
+        'spam' => 'Spam',
+        'all' => 'All Emails',
+    ];
+
     protected $fillable = [
-        'user_id',
+        'imap_credential_id',
         'name',
         'path',
     ];

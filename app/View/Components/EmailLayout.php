@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 use App\Models\Folder;
+use App\Models\User;
 
 class EmailLayout extends Component
 {
@@ -13,7 +14,7 @@ class EmailLayout extends Component
      */
 
     protected $client;
-    protected $DEFAULT_FOLDER = 'INBOX';
+    protected $DEFAULT_FOLDER = 'inbox';
     protected $selectedFolder;
 
     public function __construct($selectedFolder = null)
@@ -28,7 +29,7 @@ class EmailLayout extends Component
 
     public function render(): View
     {
-        $folders = Folder::where('user_id', auth()->id())->get();
+        $folders = Folder::where('imap_credential_id', User::find(auth()->id())->imapCredential->id)->get();
 
         return view('layouts.email',
             [

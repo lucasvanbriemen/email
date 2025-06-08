@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use  App\Models\Folder;
 
 class ImapCredentials extends Authenticatable
 {
@@ -24,4 +24,20 @@ class ImapCredentials extends Authenticatable
         'username',
         'password',
     ];
+
+    // On create
+    protected static function booted()
+    {
+        // If an credential is made, we also want to create a folder for it
+        static::created(function ($credential) {
+            // Create default folders for the user
+            foreach (Folder::$defaultFolders as $key => $name) {
+                Folder::create([
+                    'imap_credential_id' => $credential->id,
+                    'name' => $name,
+                    'path' => $key,
+                ]);
+            }
+        });
+    }
 }

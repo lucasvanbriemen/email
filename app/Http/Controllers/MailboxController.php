@@ -8,19 +8,22 @@ use Webklex\IMAP\Facades\Client;
 use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
+use App\Models\User;
+use App\Models\ImapCredentials;
 
 class MailboxController extends Controller
 {
     protected $client;
-    protected $DEFAULT_FOLDER = 'INBOX';
+    protected $DEFAULT_FOLDER = 'inbox';
 
     public function index($folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
-        $folder = Folder::where('name', $selectedFolder)
-            ->where('user_id', auth()->id())
+        $folder = Folder::where('path', $selectedFolder)
+            ->where('imap_credential_id', User::find(auth()->id())->imapCredential->id)
             ->first();
+
 
         $emails = Email::getEmails($folder);
 
@@ -47,7 +50,6 @@ class MailboxController extends Controller
 
             $emailThreads[] = $currentThread;
         }
-
         return view('overview', [
             'emailThreads' => $emailThreads,
             'folder' => $folder,
