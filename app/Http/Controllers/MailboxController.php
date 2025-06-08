@@ -63,7 +63,7 @@ class MailboxController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
-        $selectedFolder = $email->folder->name;
+        $selectedFolder = $email->folder->path;
 
         $attachments = Attachment::where('email_id', $email->id)->get();
 
