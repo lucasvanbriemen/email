@@ -16,7 +16,7 @@ class MailboxController extends Controller
     protected $client;
     protected $DEFAULT_FOLDER = 'inbox';
 
-    public function index($credential_id, $folder = null)
+    public function index($credential_id = null, $folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
@@ -24,7 +24,7 @@ class MailboxController extends Controller
             ->where('imap_credential_id', $credential_id)
             ->first();
 
-        $emails = Email::getEmails($folder);
+        $emails = Email::getEmails($folder, $credential_id);
 
         $emailThreads = [];
         $email_sorted_uuids = [];

@@ -57,7 +57,7 @@ Artisan::command("get_emails", function () {
             $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
             if (
                 Email::where('uid', $message->getUid())
-                ->where('user_id', $credential->user_id)
+                ->where('credential_id', $credential->id)
                 ->where('sender_email', $message->getFrom()[0]->mail ?? null)
                 ->where('sent_at', $dateUtc->format('Y-m-d H:i:s'))
                 ->exists()
@@ -71,7 +71,7 @@ Artisan::command("get_emails", function () {
 
             // Prepare email data
             $emailData = [
-                'user_id' => $credential->user_id,
+                'credential_id' => $credential->id,
                 'subject' => $message->getSubject(),
                 'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
                 'sent_at' => $dateUtc->format('Y-m-d H:i:s'),
@@ -112,13 +112,13 @@ Artisan::command("get_emails", function () {
             }
 
             // Send notification
-            dispatch(function () use ($emailData) {
-                NtfyHelper::sendNofication(
-                    $emailData['from'],
-                    $emailData['subject'],
-                    config('app.url') . '/folder/inbox/mail/' . $emailData['uid']
-                );
-            });
+            // dispatch(function () use ($emailData) {
+            //     NtfyHelper::sendNofication(
+            //         $emailData['from'],
+            //         $emailData['subject'],
+            //         config('app.url') . '/folder/inbox/mail/' . $emailData['uid']
+            //     );
+            // });
         }
     }
 });

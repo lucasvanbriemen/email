@@ -14,7 +14,7 @@ class Email extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'user_id',
+        'credential_id',
         'subject',
         'from',
         'sender_email',
@@ -55,9 +55,9 @@ class Email extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function getEmails($folder)
+    public static function getEmails($folder, $credential_id)
     {
-        $query = Email::where('user_id', auth()->id());
+        $query = Email::where('folder_id', $folder->id);
 
         // If the folder is NOT a custom view folder, we filter by folder ID
         if (!in_array($folder->path, Email::$customViewFolders)) {
