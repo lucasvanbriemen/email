@@ -5,15 +5,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailboxController;
 
 Route::get('/', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox');
-Route::get('/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
-Route::get('/folder/{folder}/mail/{uuid}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail');
+Route::get('/{credentials_id}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox');
+Route::get('{credentials_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
+Route::get('{credentials_id}/folder/{folder}/mail/{uuid}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail');
 
-Route::post('/folder/{folder}/mail/{uuid}/archive', [MailboxController::class, 'archive'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.archive');
-Route::post('/folder/{folder}/mail/{uuid}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.delete');
+Route::get('{credentials_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 
 
-Route::post('/folder/{folder}/mail/{uuid}/archive_thread', [MailboxController::class, 'archiveThread'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.archive_thread');
-Route::post('/folder/{folder}/mail/{uuid}/delete_thread', [MailboxController::class, 'deleteThread'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.delete_thread');
+Route::post('{credentials_id}/folder/{folder}/mail/{uuid}/archive', [MailboxController::class, 'archive'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.archive');
+Route::post('{credentials_id}/folder/{folder}/mail/{uuid}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.delete');
+
+
+Route::post('{credentials_id}/folder/{folder}/mail/{uuid}/archive_thread', [MailboxController::class, 'archiveThread'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.archive_thread');
+Route::post('{credentials_id}/folder/{folder}/mail/{uuid}/delete_thread', [MailboxController::class, 'deleteThread'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail.delete_thread');
 
 Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');

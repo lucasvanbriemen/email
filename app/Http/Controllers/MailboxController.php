@@ -16,12 +16,12 @@ class MailboxController extends Controller
     protected $client;
     protected $DEFAULT_FOLDER = 'inbox';
 
-    public function index($folder = null)
+    public function index($credentials_id, $folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
         $folder = Folder::where('path', $selectedFolder)
-            ->where('imap_credential_id', User::find(auth()->id())->imapCredential->id)
+            ->where('imap_credential_id', $credentials_id)
             ->first();
 
         $emails = Email::getEmails($folder);
