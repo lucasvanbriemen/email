@@ -10,6 +10,7 @@
         'size' => null,
         'thread' => false,
         'selectedCredential' => null,
+        'uuid' => uniqid('email-')
     ]
 )
 
@@ -18,7 +19,7 @@
     @php $format = 'H:i'; @endphp
 @endif
 
-<div class='{{ $class }}' data-url='{{ $dataUrl }}'>
+<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}'>
     <p class='email-from'>
         {{ $email['from'] }}
         @if ($size != null)
@@ -30,7 +31,7 @@
     <p class='email-sent-at'>{{ date($format, strtotime($email['sent_at'])) }}</p>
     @if ($quickAction)
         <div class='quick-action-wrapper'>
-            @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'theard' => $thread, 'selectedCredential' => $selectedCredential])
+            @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'theard' => $thread, 'selectedCredential' => $selectedCredential, 'action' => 'remove_email', 'action_hint' => $uuid ])
         </div>
     @endif
 </div>

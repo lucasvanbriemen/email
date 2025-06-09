@@ -2,11 +2,11 @@
     @vite(['resources/css/email/email.scss', 'resources/js/theme.js'])
 
     <div class='quick-action-wrapper'>
-        <a href='{{ $selectedCredential->id }}/folder/{{ $selectedFolder }}'>
+        <a href='/{{ $selectedCredential->id }}/folder/{{ $selectedFolder }}'>
             {!! App\Helpers\SvgHelper::svg('left-arrow') !!}
         </a>
         
-        @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'selectedCredential' => $selectedCredential])
+        @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'selectedCredential' => $selectedCredential, 'action' => 'go_back_to_folder', 'action_hint' => '/' . $selectedCredential->id . '/folder/' .  $selectedFolder]) 
     </div>
 
     <div class='email-wrapper'>
@@ -21,13 +21,13 @@
             <div class='email-date'>
 
                 @php
-                    $format = 'D d M, H:i';
-                    $send_at = $email->send_at;
+$format = 'D d M, H:i';
+$send_at = $email->send_at;
 
-                    // If the date is today, show only the time
-                    if (date('Y-m-d') === $email->created_at->format('Y-m-d')) {
-                        $format = 'H:i';
-                    }
+// If the date is today, show only the time
+if (date('Y-m-d') === $email->created_at->format('Y-m-d')) {
+    $format = 'H:i';
+}
                 @endphp
 
                 {{ $email->created_at->format($format) }}
@@ -50,8 +50,8 @@
         <div class='email-attachments'>
             @foreach ($attachments as $attachment)
                 @php
-                    $IMG_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'png', 'svg'];
-                    $isImage = in_array(strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION)), $IMG_EXTENSIONS);
+    $IMG_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'png', 'svg'];
+    $isImage = in_array(strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION)), $IMG_EXTENSIONS);
                 @endphp
                 <a class='email-attachment' href='/{{ $attachment->path }}' target='_blank' rel='noopener noreferrer'>
                     @if ($isImage)
