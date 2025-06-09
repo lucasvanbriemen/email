@@ -20,6 +20,16 @@ class MailboxController extends Controller
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
+        if (!$credential_id) {
+            $credential_id = ImapCredentials::where('user_id', auth()->id())
+                ->value('id');
+
+            // If that doesnt exist redircht to /account
+            if (!$credential_id) {
+                return redirect('/account');
+            }
+        }
+
         $folder = Folder::where('path', $selectedFolder)
             ->where('imap_credential_id', $credential_id)
             ->first();
