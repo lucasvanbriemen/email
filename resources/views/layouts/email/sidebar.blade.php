@@ -10,7 +10,7 @@
     <div class='sidebar'>
         @foreach ($folders as $folder)
             <div class='folder @if ($folder->path == $selectedFolder) selected @endif'>
-                <a href='/folder/{{ $folder->path }}'>
+                <a href='/{{ $selectedCredential->id }}/folder/{{ $folder->path }}'>
                     {{ strtolower($folder->name) }}
                 </a>
             </div>
@@ -19,7 +19,7 @@
 
         <div class='account-selector'>
             @foreach ($imapCredentials as $credential)
-                <a class='account' href='/account'>
+                <a class='account' href='/{{ $credential->id }}/folder/{{ $selectedFolder }}'>
                     <img src='{{ \App\Helpers\GravatarHelper::gravar($credential->username, 64) }}' alt='{{ $credential->username }}' class='avatar'>
                     <span class='text'>{{ $credential->username }}</span>
                 </a>

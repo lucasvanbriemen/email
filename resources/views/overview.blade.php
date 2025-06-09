@@ -1,4 +1,4 @@
-<x-email-layout :selectedFolder="$selectedFolder">
+<x-email-layout :selectedFolder="$selectedFolder" :selectedCredential="$selectedCredential">
 
     @vite(['resources/css/email/overview.scss', 'resources/js/email/overview.js'])
 

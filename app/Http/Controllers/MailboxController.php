@@ -16,12 +16,12 @@ class MailboxController extends Controller
     protected $client;
     protected $DEFAULT_FOLDER = 'inbox';
 
-    public function index($credentials_id, $folder = null)
+    public function index($credential_id, $folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
         $folder = Folder::where('path', $selectedFolder)
-            ->where('imap_credential_id', $credentials_id)
+            ->where('imap_credential_id', $credential_id)
             ->first();
 
         $emails = Email::getEmails($folder);
@@ -49,14 +49,16 @@ class MailboxController extends Controller
 
             $emailThreads[] = $currentThread;
         }
+
         return view('overview', [
             'emailThreads' => $emailThreads,
             'folder' => $folder,
             'selectedFolder' => $selectedFolder,
+            'selectedCredential' => ImapCredentials::find($credential_id),
         ]);
     }
 
-    public function show($folder, $uuid)
+    public function show($credential_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
             ->where('user_id', auth()->id())
@@ -73,6 +75,7 @@ class MailboxController extends Controller
             'email' => $email,
             'selectedFolder' => $selectedFolder,
             'attachments' => $attachments,
+            'selectedCredential' => ImapCredentials::find($credential_id),
         ]);
     }
 

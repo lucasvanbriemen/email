@@ -18,10 +18,10 @@ class EmailLayout extends Component
     protected $DEFAULT_FOLDER = 'inbox';
     protected $selectedFolder;
     protected $imapCredentials = [];
+    protected $selectedCredential;
 
-    public function __construct($selectedFolder = null)
+    public function __construct($selectedCredential = null, $selectedFolder = null)
     {
-
         if ($selectedFolder) {
             $this->selectedFolder = $selectedFolder;
         } else {
@@ -31,6 +31,8 @@ class EmailLayout extends Component
         $this->imapCredentials = DB::table('imap_credentials')
             ->where('user_id', auth()->id())
             ->get();
+
+        $this->selectedCredential = $selectedCredential;
     }
 
     public function render(): View
@@ -42,6 +44,7 @@ class EmailLayout extends Component
                 'folders' => $folders,
                 'selectedFolder' => $this->selectedFolder,
                 'imapCredentials' => $this->imapCredentials,
+                'selectedCredential' => $this->selectedCredential
             ]
         );
     }

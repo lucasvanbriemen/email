@@ -1,4 +1,4 @@
-<x-email-layout :selectedFolder="$selectedFolder">
+<x-email-layout :selectedFolder="$selectedFolder", :selectedCredential="$selectedCredential">
     @vite(['resources/css/email/email.scss', 'resources/js/theme.js'])
 
     <div class='quick-action-wrapper'>
