@@ -112,13 +112,13 @@ Artisan::command("get_emails", function () {
             }
 
             // Send notification
-            dispatch(function () use ($emailData, $credential) {
-                NtfyHelper::sendNofication(
-                    $emailData['from'],
-                    $emailData['subject'],
-                    config('app.url') . '/' . $credential->id  . '/inbox/inbox/mail/' . $emailData['uid']
-                );
-            });
+            // dispatch(function () use ($emailData, $credential) {
+            //     NtfyHelper::sendNofication(
+            //         $emailData['from'],
+            //         $emailData['subject'],
+            //         config('app.url') . '/' . $credential->id  . '/inbox/inbox/mail/' . $emailData['uid']
+            //     );
+            // });
         }
     }
 });
