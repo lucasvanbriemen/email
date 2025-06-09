@@ -96,7 +96,8 @@
         }
 
         .account-selector {
-            display: none;
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
 
             background-color: var(--background-color);
 
@@ -143,7 +144,7 @@
 
 
             &.open {
-                display: flex;
+                opacity: 1;
             }
         }
     }
