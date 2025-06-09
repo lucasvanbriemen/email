@@ -85,6 +85,11 @@
             .text {
                 color: var(--text-color);
                 font-weight: 700;
+
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                width: 70%;
             }
 
             img {
@@ -112,9 +117,12 @@
                 padding: 0.5rem 0.25rem;
                 border-radius: 0.5rem;
 
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
+
+                .text {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
 
                 img {
                     width: 15%;
