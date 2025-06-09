@@ -6,6 +6,7 @@ use Illuminate\View\Component;
 use Illuminate\View\View;
 use App\Models\Folder;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class EmailLayout extends Component
 {
@@ -16,6 +17,7 @@ class EmailLayout extends Component
     protected $client;
     protected $DEFAULT_FOLDER = 'inbox';
     protected $selectedFolder;
+    protected $imapCredentials = [];
 
     public function __construct($selectedFolder = null)
     {
@@ -25,6 +27,10 @@ class EmailLayout extends Component
         } else {
             $this->selectedFolder = $this->DEFAULT_FOLDER;
         }
+
+        $this->imapCredentials = DB::table('imap_credentials')
+            ->where('user_id', auth()->id())
+            ->get();
     }
 
     public function render(): View
@@ -35,6 +41,7 @@ class EmailLayout extends Component
             [
                 'folders' => $folders,
                 'selectedFolder' => $this->selectedFolder,
+                'imapCredentials' => $this->imapCredentials,
             ]
         );
     }

@@ -8,9 +8,8 @@
     </div>
 
     <div class='sidebar'>
-        {{-- Menu icon --}}
         @foreach ($folders as $folder)
-            <div class='folder @if ($folder->path == $selectedFolder) selected @endif'">
+            <div class='folder @if ($folder->path == $selectedFolder) selected @endif'>
                 <a href='/folder/{{ $folder->path }}'>
                     {{ strtolower($folder->name) }}
                 </a>
@@ -18,9 +17,24 @@
         @endforeach
 
 
-        <a href='/account' class='account'>
+        <div class='account-selector'>
+            {{-- @foreach ($imapCredentials as $credential)
+                <div class='account'>
+                    <img src='{{ \App\Helpers\GravatarHelper::gravar(auth()->user()->email, 64) }}' alt='{{ auth()->user()->name }}' class='avatar'>
+                    <span class='text'>{{ auth()->user()->name }}</span>
+                </div>
+            @endforeach--}}
+
+            <div class='settings'>
+                <a href='/settings'>
+                    <span class='text'>Settings</span>
+                </a>
+            </div>
+        </div>
+
+        <div class='current-account'>
             <img src='{{ \App\Helpers\GravatarHelper::gravar(auth()->user()->email, 64) }}' alt='{{ auth()->user()->name }}' class='avatar'>
             <span class='text'>{{ auth()->user()->name }}</span>
-        </a>
+        </div>
     </div>
 </div>
