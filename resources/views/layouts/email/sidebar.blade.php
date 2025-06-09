@@ -18,12 +18,12 @@
 
 
         <div class='account-selector'>
-            {{-- @foreach ($imapCredentials as $credential)
-                <div class='account'>
-                    <img src='{{ \App\Helpers\GravatarHelper::gravar(auth()->user()->email, 64) }}' alt='{{ auth()->user()->name }}' class='avatar'>
-                    <span class='text'>{{ auth()->user()->name }}</span>
-                </div>
-            @endforeach--}}
+            @foreach ($imapCredentials as $credential)
+                <a class='account' href='/account'>
+                    <img src='{{ \App\Helpers\GravatarHelper::gravar($credential->username, 64) }}' alt='{{ $credential->username }}' class='avatar'>
+                    <span class='text'>{{ $credential->username }}</span>
+                </a>
+            @endforeach
 
             <div class='settings'>
                 <a href='/settings'>

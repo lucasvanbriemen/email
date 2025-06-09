@@ -80,6 +80,8 @@
             padding: 0.5rem;
             border-radius: 1rem;
 
+            cursor: pointer;
+
             .text {
                 color: var(--text-color);
                 font-weight: 700;
@@ -97,6 +99,33 @@
             display: none;
 
             background-color: var(--background-color);
+
+            flex-direction: column;
+
+            .account {
+                display: flex;
+                align-items: center;
+
+                gap: 0.5rem;
+
+                padding: 0.5rem 0.25rem;
+                border-radius: 0.5rem;
+
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+
+                img {
+                    width: 15%;
+                    height: 15%;
+
+                    border-radius: 50%;
+                }
+
+                &:hover {
+                    background-color: var(--primary-color);
+                }
+            }
 
             width: 95%;
             left: 2.5%;
