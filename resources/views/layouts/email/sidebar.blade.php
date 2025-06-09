@@ -33,8 +33,8 @@
         </div>
 
         <div class='current-account'>
-            <img src='{{ \App\Helpers\GravatarHelper::gravar(auth()->user()->email, 64) }}' alt='{{ auth()->user()->name }}' class='avatar'>
-            <span class='text'>{{ auth()->user()->name }}</span>
+            <img src='{{ \App\Helpers\GravatarHelper::gravar($selectedCredential->username, 64) }}' alt='{{ $selectedCredential->username }}' class='avatar'>
+            <span class='text'>{{ $selectedCredential->username }}</span>
         </div>
     </div>
 </div>
