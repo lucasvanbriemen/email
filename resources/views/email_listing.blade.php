@@ -9,6 +9,7 @@
         'current_iteration_date' => null,
         'size' => null,
         'thread' => false,
+        'selectedCredential' => null,
     ]
 )
 
@@ -29,7 +30,7 @@
     <p class='email-sent-at'>{{ date($format, strtotime($email['sent_at'])) }}</p>
     @if ($quickAction)
         <div class='quick-action-wrapper'>
-            @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'theard' => $thread])
+            @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'theard' => $thread, 'selectedCredential' => $selectedCredential])
         </div>
     @endif
 </div>

@@ -57,11 +57,12 @@ class Email extends Model
 
     public static function getEmails($folder, $credential_id)
     {
-        $query = Email::where('folder_id', $folder->id);
+        $query = Email::where('credential_id', $credential_id);
 
         // If the folder is NOT a custom view folder, we filter by folder ID
         if (!in_array($folder->path, Email::$customViewFolders)) {
             $query->where('folder_id', $folder->id);
+            $query->where('is_archived', false);
 
             return $query->orderBy('sent_at', 'desc')->get();
         }
@@ -74,17 +75,12 @@ class Email extends Model
             $query->where('is_deleted', false);
         }
 
-        if ($folder->path != 'all') {
-            $query->where('is_archived', false);
-        }
-
         return $query->orderBy('sent_at', 'desc')->get();
     }
 
-    public static function deleteEmail($uuid)
+    public static function deleteEmail($uuid, $credential_id)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('user_id', auth()->id())
             ->first();
 
         if (!$email) {
@@ -95,7 +91,7 @@ class Email extends Model
 
         // Remove to trash
         $trashFolder = Folder::where('path', 'trash')
-            ->where('user_id', User::find(auth()->id())->credentials->id)
+            ->where('imap_credential_id', $credential_id)
             ->first();
 
         $email->folder_id = $trashFolder->id;

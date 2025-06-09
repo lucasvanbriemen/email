@@ -61,7 +61,7 @@ class MailboxController extends Controller
     public function show($credential_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('user_id', auth()->id())
+            ->where('credential_id', $credential_id)
             ->first();
 
         $selectedFolder = $email->folder->path;
@@ -79,13 +79,11 @@ class MailboxController extends Controller
         ]);
     }
 
-    public function archive($folder, $uuid)
+    public function archive($credential_id = null, $folder = null, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('user_id', auth()->id())
+            ->where('credential_id', $credential_id)
             ->first();
-
-        $folder = $email->folder->name;
 
         if ($email) {
             $email->is_archived = true;
@@ -98,9 +96,9 @@ class MailboxController extends Controller
         ];
     }
 
-    public function delete($folder, $uuid)
+    public function delete($credential_id, $folder, $uuid)
     {
-        Email::deleteEmail($uuid);
+        Email::deleteEmail($uuid, $credential_id);
 
         return [
             'status' => 'success',
@@ -108,16 +106,16 @@ class MailboxController extends Controller
         ];
     }
 
-    public function archiveThread($folder, $uuid)
+    public function archiveThread($credential_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('user_id', auth()->id())
+            ->where('credential_id', $credential_id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('user_id', auth()->id())
+            ->where('credential_id', $credential_id)
             ->get();
 
         foreach ($emails as $threadEmail) {
@@ -131,20 +129,20 @@ class MailboxController extends Controller
         ];
     }
 
-    public function deleteThread($folder, $uuid)
+    public function deleteThread($credential_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('user_id', auth()->id())
+            ->where('credential_id', $credential_id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('user_id', auth()->id())
+            ->where('credential_id', $credential_id)
             ->get();
 
         foreach ($emails as $threadEmail) {
-            Email::deleteEmail($threadEmail->uuid);
+            Email::deleteEmail($threadEmail->uuid, $threadEmail->credential_id);
         }
 
         return [

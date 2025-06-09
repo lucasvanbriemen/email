@@ -2,6 +2,8 @@
 
 @props([
     'theard' => false,
+
+    'selectedCredential' => null,
 ])
 
 @php
@@ -11,10 +13,10 @@
 
 @csrf
 
-<a data-url='/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/{{ $archive }}' data-function='archive' class='quick-action'>
+<a data-url='/{{ $selectedCredential->id }}/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/{{ $archive }}' data-function='archive' class='quick-action'>
     {!! App\Helpers\SvgHelper::svg('archive') !!}
 </a>
 
-<a data-url='/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/{{ $delete }}' data-function="delete" class='quick-action'>
+<a data-url='/{{ $selectedCredential->id }}/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/{{ $delete }}' data-function="delete" class='quick-action'>
     {!! App\Helpers\SvgHelper::svg('bin') !!}
 </a>
