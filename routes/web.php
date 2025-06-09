@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailboxController;
 
 Route::get('/', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox');
-Route::get('/{credential_id}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox');
 Route::get('{credential_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 Route::get('{credential_id}/folder/{folder}/mail/{uuid}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.folder.mail');
 

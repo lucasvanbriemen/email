@@ -32,7 +32,11 @@ class EmailLayout extends Component
             ->where('user_id', auth()->id())
             ->get();
 
-        $this->selectedCredential = $selectedCredential;
+        if ($selectedCredential) {
+            $this->selectedCredential = $selectedCredential;
+        } else {
+            $this->selectedCredential = $this->imapCredentials[0] ?? null;
+        }
     }
 
     public function render(): View

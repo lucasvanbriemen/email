@@ -57,6 +57,11 @@ class Email extends Model
 
     public static function getEmails($folder, $credential_id)
     {
+
+        if (!$folder) {
+            return collect();
+        }
+
         $query = Email::where('credential_id', $credential_id);
 
         // If the folder is NOT a custom view folder, we filter by folder ID

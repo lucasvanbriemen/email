@@ -21,4 +21,4 @@
             {{ __('Add IMAP Credential') }}
         </button>
     </form>
-    </x-account-layout>
+</x-account-layout>
