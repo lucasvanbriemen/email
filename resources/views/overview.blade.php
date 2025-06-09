@@ -33,7 +33,7 @@
             @include('email_listing', [
                 'email' => $email,
                 'class' => 'message ' . ($email['has_read'] ? 'read' : 'unread'),
-                'dataUrl' => $selectedCredential->id . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
+                'dataUrl' => '/' . $selectedCredential->id . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
                 'current_iteration_date' => $current_iteration_date,
                 'selectedCredential' => $selectedCredential
             ])
