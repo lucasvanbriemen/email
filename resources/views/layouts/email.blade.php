@@ -18,5 +18,7 @@
         <main>
             {{ $slot }}
         </main>
+
+        @include('compose_email')
     </body>
 </html>

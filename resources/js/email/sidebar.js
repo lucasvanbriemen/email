@@ -12,3 +12,11 @@ const accountSelector = document.querySelector('.account-selector');
 currentAccount.addEventListener('click', function() {
     accountSelector.classList.toggle('open');
 });
+
+
+const newEmailButton = document.querySelector('.new-email');
+const emailForm = document.querySelector('.compose-email-wrapper');
+
+newEmailButton.addEventListener('click', function() {
+    emailForm.classList.toggle('open');
+});

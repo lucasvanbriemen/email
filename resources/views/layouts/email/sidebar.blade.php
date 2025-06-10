@@ -10,7 +10,7 @@
     <div class='sidebar'>
 
         <div class='new-email'>
-            
+            New email
         </div>
 
         @foreach ($folders as $folder)

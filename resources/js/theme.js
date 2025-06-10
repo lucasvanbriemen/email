@@ -30,8 +30,8 @@ const colors = {
     },
 
     "primary-color-dark": {
-        light: '#4285F4',
-        dark: '#2e60b1',
+        light: '#224887',
+        dark: '#224887',
     },
 
     "font-family": {

@@ -38,6 +38,16 @@
         width: 100%;
         height: 100vh;
 
+        .new-email {
+            background-color: var(--primary-color);
+            width: 60%;
+            margin: 1rem 0.5rem;
+            padding: 1rem 1rem;
+            border-radius: 2rem;
+
+            cursor: pointer;
+        }
+
         .folder {
             width: 95%;
 
