@@ -112,11 +112,11 @@ Artisan::command("get_emails", function () {
             }
 
             // Send notification
-            dispatch(function () use ($emailData, $credential) {
+            dispatch(function () use ($emailData, $credential, $email) {
                 NtfyHelper::sendNofication(
                     $emailData['from'],
                     $emailData['subject'],
-                    config('app.url') . '/' . $credential->id  . '/inbox/inbox/mail/' . $emailData['uid']
+                    config('app.url') . '/' . $credential->id  . '/inbox/mail/' . $email['uuid']
                 );
             });
         }
