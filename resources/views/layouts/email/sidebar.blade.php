@@ -8,6 +8,11 @@
     </div>
 
     <div class='sidebar'>
+
+        <div class='new-email'>
+            
+        </div>
+
         @foreach ($folders as $folder)
             <div class='folder @if ($folder->path == $selectedFolder) selected @endif'>
                 <a href='/{{ $selectedCredential->id }}/folder/{{ $folder->path }}'>
@@ -26,7 +31,7 @@
             @endforeach
 
             <div class='settings'>
-                <a href='/settings'>
+                <a href='/account'>
                     <span class='text'>Settings</span>
                 </a>
             </div>
