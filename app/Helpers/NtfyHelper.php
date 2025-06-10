@@ -6,6 +6,11 @@ class NtfyHelper
 {
     public static function sendNofication($title, $message, $url)
     {
+
+        if (config('app.ntfy.enabled') !== true) {
+            return true;
+        }
+
         $result = file_get_contents('https://ntfy.sh/lukaas_test', false, stream_context_create([
             'http' => [
                 'method'  => 'POST',
