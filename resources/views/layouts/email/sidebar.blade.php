@@ -8,11 +8,6 @@
     </div>
 
     <div class='sidebar'>
-
-        <div class='new-email'>
-            New email
-        </div>
-
         @foreach ($folders as $folder)
             <div class='folder @if ($folder->path == $selectedFolder) selected @endif'>
                 <a href='/{{ $selectedCredential->id }}/folder/{{ $folder->path }}'>
