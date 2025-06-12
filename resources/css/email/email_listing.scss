@@ -31,6 +31,18 @@
     }
 }
 
+.email-thread {
+    .message.starred {
+        border: 0px solid transparent;
+    }
+
+    &.open {
+        .message.starred {
+            border: 2px solid var(--primary-color);
+        }
+    }
+}
+
 .message,
 .thead-top-message {
     background-color: var(--background-color-one);
@@ -73,7 +85,7 @@
     }
 
     &.starred {
-        // border: 2px solid var(--primary-color);
+        border: 2px solid var(--primary-color);
     }
 
     p {
