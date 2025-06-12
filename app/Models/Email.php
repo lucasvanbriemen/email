@@ -83,7 +83,6 @@ class Email extends Model
 
         if ($folder->path == 'stared') {
             $query->where('is_starred', true);
-            $query->where('is_deleted', false);
         }
 
         return $query->orderBy('sent_at', 'desc')->get();

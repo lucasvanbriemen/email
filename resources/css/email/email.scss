@@ -45,6 +45,10 @@ main {
             top: 50%;
             transform: translateY(-50%);
         }
+
+        &.starred {
+            border: 2px solid var(--primary-color);
+        }
     }
 
     .email-body {

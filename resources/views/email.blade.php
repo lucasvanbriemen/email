@@ -10,7 +10,7 @@
     </div>
 
     <div class='email-wrapper'>
-        <div class='email-header'>
+        <div class='email-header @if($email->is_starred) starred @endif'>
             <h1 class='email-subject'>{{ $email->subject }}</h1>
 
             <div class='email-info'>
