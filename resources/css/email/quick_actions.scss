@@ -28,4 +28,13 @@
             }
         }
     }
+
+    a.no-fill {
+        svg {
+            path {
+                stroke: var(--text-color) !important;
+                fill: transparent !important;
+            }
+        }
+    }
 }
