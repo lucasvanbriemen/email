@@ -72,6 +72,10 @@
         }
     }
 
+    &.starred {
+        border: 2px solid var(--primary-color);
+    }
+
     p {
         text-overflow: ellipsis;
         white-space: nowrap;

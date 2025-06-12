@@ -35,7 +35,9 @@ class Email extends Model
 
     public static $customViewFolders = [
         'trash',
-        'all'
+        'all',
+        'spam',
+        'stared',
     ];
 
     protected static function booted()
@@ -57,7 +59,6 @@ class Email extends Model
 
     public static function getEmails($folder, $credential_id)
     {
-
         if (!$folder) {
             return collect();
         }
@@ -77,6 +78,11 @@ class Email extends Model
         }
 
         if ($folder->path == 'spam') {
+            $query->where('is_deleted', false);
+        }
+
+        if ($folder->path == 'stared') {
+            $query->where('is_starred', true);
             $query->where('is_deleted', false);
         }
 

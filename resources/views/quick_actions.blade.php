@@ -11,7 +11,7 @@
 @php
 $archive = $theard ? 'archive_thread' : 'archive';
 $delete = $theard ? 'delete_thread' : 'delete';
-$star = $theard ? 'star_thead' : 'star';
+$star = $theard ? 'star_thread' : 'star';
 @endphp
 
 @csrf
@@ -20,7 +20,7 @@ $star = $theard ? 'star_thead' : 'star';
     {!! App\Helpers\SvgHelper::svg('archive') !!}
 </a>
 
-<a data-url='/{{ $selectedCredential->id }}/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/{{ $star }}' data-action='{{ $action }}' data-action-hint='{{ $action_hint }}' class='quick-action no-fill'>
+<a data-url='/{{ $selectedCredential->id }}/folder/{{ $selectedFolder }}/mail/{{ $email->uuid }}/{{ $star }}' data-action='reload' data-action-hint='{{ $action_hint }}' class='quick-action no-fill'>
     {!! App\Helpers\SvgHelper::svg('star') !!}
 </a>
 

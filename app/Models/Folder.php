@@ -15,6 +15,7 @@ class Folder extends Model
 
     public static $defaultFolders = [
         'inbox' => 'Inbox',
+        'stared' => 'Stared',
         'sent' => 'Sent',
         'drafts' => 'Drafts',
         'trash' => 'Trash',
