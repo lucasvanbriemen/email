@@ -23,7 +23,7 @@
                 @include('email_listing', [
                     'email' => $emailThread[0],
                     'class' => 'thead-top-message ' .
-                        (in_array(false, array_column($emailThread, 'has_read')) ? 'unread' : 'read') .
+                        (in_array(false, array_column($emailThread, 'has_read')) ? 'unread' : 'read') . ' ' .
                         ($emailThread[0]['is_starred'] == 1 ? ' starred' : 'unstarred'),
                     'current_iteration_date' => $current_iteration_date,
                     'size' => count($emailThread),
@@ -36,7 +36,7 @@
         @foreach ($emailThread as $email)
             @include('email_listing', [
                 'email' => $email,
-                'class' => 'message ' . ($email['has_read'] ? 'read' : 'unread') .
+                'class' => 'message ' . ($email['has_read'] ? 'read' : 'unread') .  ' ' .
                     ($email['is_starred'] == 1 ? ' starred' : 'unstarred'),
                 'dataUrl' => '/' . $selectedCredential->id . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
                 'current_iteration_date' => $current_iteration_date,
