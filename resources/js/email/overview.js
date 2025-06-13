@@ -34,3 +34,7 @@ threadElements.forEach(threadElement => {
         }
     });
 });
+
+messages.forEach(message => {
+    message.addEventListener("contextmenu", (e) => { e.preventDefault() });
+});
