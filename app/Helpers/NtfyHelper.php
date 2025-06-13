@@ -18,6 +18,7 @@ class NtfyHelper
                     'Content-Type: text/plain',
                     'Title: ' . $title,
                     'Click: ' . $url,
+                    'Priority: 5',
                 ],
                 'content' => (string) $message
             ]
