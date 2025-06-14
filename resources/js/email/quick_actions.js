@@ -25,7 +25,7 @@ quickActions.forEach(action => {
 
             const actionHint = this.getAttribute('data-action-hint');
             if (action === 'add_class') {
-                document.querySelector('email-header').classList.add(actionHint); 
+                document.querySelector('.email-header').classList.add(actionHint); 
             } 
 
             if (action === 'go_back') {
