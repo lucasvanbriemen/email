@@ -5,7 +5,7 @@
         'email',
         'class' => '',
         'dataUrl' => '',
-        'quickAction' => true,
+        'context_menu' => true,
         'current_iteration_date' => null,
         'size' => null,
         'thread' => false,
@@ -29,9 +29,4 @@
     <p class='email-subject'>{{ $email['subject'] }}</p>
 
     <p class='email-sent-at'>{{ date($format, strtotime($email['sent_at'])) }}</p>
-    @if ($quickAction)
-        <div class='quick-action-wrapper'>
-            @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'theard' => $thread, 'selectedCredential' => $selectedCredential, 'action' => 'remove_email', 'action_hint' => $uuid ])
-        </div>
-    @endif
 </div>

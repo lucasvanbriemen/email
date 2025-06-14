@@ -36,5 +36,5 @@ threadElements.forEach(threadElement => {
 });
 
 messages.forEach(message => {
-    message.addEventListener("contextmenu", (e) => { e.preventDefault() });
+    message.addEventListener("contextmenu", (e) => { alert("Right click on the message to open the context menu."); });
 });

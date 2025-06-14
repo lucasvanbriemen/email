@@ -10,6 +10,7 @@
 ## Todo's
 - Delete email from email server (https://www.php-imap.com/api/message)
 - Dashboard for all emails of a user
+- Context menu for email
 
 ## About Laravel
 
