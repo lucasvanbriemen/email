@@ -36,6 +36,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
+            "app/Support/helpers.php",
             "app/Helpers/NtfyHelper.php",
             "app/Helpers/GravatarHelper.php"
         ]

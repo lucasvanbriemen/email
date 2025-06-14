@@ -11,3 +11,10 @@ class GravatarHelper
         return "https://www.gravatar.com/avatar/{$hash}?s={$size}&d=identicon";
     }
 }
+
+if (!function_exists('gravar')) {
+    function gravar(string $email, int $size = 80): string
+    {
+        return \App\Helpers\GravatarHelper::gravar($email, $size);
+    }
+}

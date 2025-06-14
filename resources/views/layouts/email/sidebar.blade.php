@@ -20,7 +20,7 @@
         <div class='account-selector'>
             @foreach ($imapCredentials as $credential)
                 <a class='account' href='/{{ $credential->id }}/folder/{{ $selectedFolder }}'>
-                    <img src='{{ \App\Helpers\GravatarHelper::gravar($credential->username, 64) }}' alt='{{ $credential->username }}' class='avatar'>
+                    <img src='{{ gravar($credential->username, 64) }}' alt='{{ $credential->username }}' class='avatar'>
                     <span class='text'>{{ $credential->username }}</span>
                 </a>
             @endforeach
@@ -33,7 +33,7 @@
         </div>
 
         <div class='current-account'>
-            <img src='{{ \App\Helpers\GravatarHelper::gravar($selectedCredential->username, 64) }}' alt='{{ $selectedCredential->username }}' class='avatar'>
+            <img src='{{ gravar($selectedCredential->username, 64) }}' alt='{{ $selectedCredential->username }}' class='avatar'>
             <span class='text'>{{ $selectedCredential->username }}</span>
         </div>
     </div>
