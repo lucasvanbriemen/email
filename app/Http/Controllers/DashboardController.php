@@ -20,7 +20,6 @@ class DashboardController extends Controller
 
         // get the last time the user logged in
         $last_activity = auth()->user()->last_activity;
-        var_dump($last_activity);
 
         // Get all emails for the authenticated user after the last activity
         $emails = Email::whereIn('credential_id', $credentials->pluck('id'))
@@ -28,9 +27,14 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        var_dump($emails);
-
-        return view('dashboard');
+        return view(
+            'dashboard',
+            [
+                'credentials' => $credentials,
+                'emails' => $emails,
+                'last_activity' => $last_activity
+            ]
+        );
     }
 
 }

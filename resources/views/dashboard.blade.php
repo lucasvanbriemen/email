@@ -1,3 +1,5 @@
 <x-app-layout>
-    hello
+    @foreach ($emails as $email)
+        {{ $email->subject }}
+    @endforeach
 </x-app-layout>
