@@ -70,7 +70,7 @@ class Email extends Model
             $query->where('folder_id', $folder->id);
             $query->where('is_archived', false);
 
-            return $query->orderBy('sent_at', 'desc')->get();
+            return $query->orderBy('sent_at', 'desc')->limit(50)->get();
         }
 
         if ($folder->path == 'trash') {
@@ -85,7 +85,7 @@ class Email extends Model
             $query->where('is_starred', true);
         }
 
-        return $query->orderBy('sent_at', 'desc')->get();
+        return $query->orderBy('sent_at', 'desc')->limit(50)->get();
     }
 
     public static function deleteEmail($uuid, $credential_id)
