@@ -110,7 +110,7 @@ Artisan::command("get_emails", function () {
             }
 
             // Since we have created a copy of the email, we can delete it from the server to make run time faster.
-            $message->delete();
+            // $message->delete();
 
             if (!config('app.ntfy.enabled')) {
                 continue; // Skip notification if not enabled
