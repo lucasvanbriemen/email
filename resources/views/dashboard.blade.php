@@ -13,7 +13,10 @@
                 </div>
             @endforeach
         </div>
-        <canvas id="email-count"></canvas>
+        
+        <div class='ai-overview'>
+            {{ $ollama_response['response'] }}
+        </div>
     </div>
 
     <div class='new-emails'>
@@ -31,43 +34,4 @@
     ])
         @endforeach
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
-    <script>
-        const xValues = [
-            @foreach ($credentials as $credential)
-                "{{ $credential->username }}",
-            @endforeach
-        ];
-        const yValues = [
-            @foreach ($credentials as $credential)
-                {{ $emails->where('credential_id', $credential->id)->count() }},
-            @endforeach
-        ];
-        const barColors = [
-            "#2e60b1",
-            "#b12e60",
-            "#60b12e",
-            "#b1602e",
-        ];
-        
-        new Chart("email-count", {
-          type: "pie",
-          data: {
-            labels: xValues,
-            datasets: [{
-              backgroundColor: barColors,
-              data: yValues
-            }]
-          },
-          options: {
-            title: {
-              display: true,
-              text: "Email count per account"
-            }
-          }
-        });
-        </script>
-
 </x-app-layout>
