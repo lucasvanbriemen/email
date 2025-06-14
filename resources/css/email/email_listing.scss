@@ -124,17 +124,6 @@
 
     &:hover {
         border-radius: 2rem;
-
-        .quick-action-wrapper {
-            display: flex;
-            background-color: var(--background-color);
-            padding: 0.5rem;
-            border-radius: 2rem;
-        }
-
-        .email-sent-at {
-            opacity: 0.0;
-        }
     }
 
     @media screen and (max-width: 768px) {

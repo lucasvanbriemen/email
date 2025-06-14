@@ -17,7 +17,6 @@ class DashboardController extends Controller
         // Get all IMAP credentials for the authenticated user
         $credentials = ImapCredentials::where('user_id', auth()->id())->get();
 
-
         // get the last time the user logged in
         $last_activity = auth()->user()->last_activity;
 
