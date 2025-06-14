@@ -13,6 +13,7 @@ use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
 
+
 Artisan::command("get_emails", function () {
     $imapCredentials = ImapCredentials::all();
 
@@ -50,9 +51,6 @@ Artisan::command("get_emails", function () {
         }
 
         foreach ($messages as $message) {
-            // possable folders
-            // Optionally, you can also move the email to a "Trash" folder
-
             $date = $message->getAttributes()['date']->first();
             $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
             if (
@@ -111,6 +109,13 @@ Artisan::command("get_emails", function () {
                 }
             }
 
+            // Since we have created a copy of the email, we can delete it from the server to make run time faster.
+            $message->delete();
+
+            if (!config('app.ntfy.enabled')) {
+                continue; // Skip notification if not enabled
+            }
+
             // Send notification
             dispatch(function () use ($emailData, $credential, $email) {
                 NtfyHelper::sendNofication(
@@ -122,7 +127,6 @@ Artisan::command("get_emails", function () {
         }
     }
 });
-
 
 Schedule::command('get_emails')
     ->everyFifteenSeconds()

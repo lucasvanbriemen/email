@@ -125,6 +125,9 @@ return [
     ],
 
     'ntfy' => [
-        'enabled' => env('NTFY_ENABLED', false),
+        'test' => 'test_value',
+        'enabled' => env('NTFY_ENABLED', true),
     ],
+
+    'test' => 'test_value',
 ];
