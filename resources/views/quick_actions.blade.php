@@ -1,11 +1,7 @@
 @vite(['resources/css/email/quick_actions.scss', 'resources/js/email/quick_actions.js'])
 
 @props([
-    'theard' => false,
-
     'selectedCredential' => null,
-    'action' => null,
-    'action_hint' => null
 ])
 
 @csrf
