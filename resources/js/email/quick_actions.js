@@ -1,7 +1,7 @@
 const quickActions = document.querySelectorAll('.quick-action');
 const quickActionsWrapper = document.querySelector('.quick-action-wrapper');
 
-const ALLOWED_ACTIONS = ['goback_to_overview', 'remove_email'];
+const ALLOWED_ACTIONS = ['go_back', 'add_class'];
 
 quickActions.forEach(action => {
     action.addEventListener('click', function(event) {
@@ -24,11 +24,11 @@ quickActions.forEach(action => {
             }
 
             const actionHint = this.getAttribute('data-action-hint');
-            if (action === 'remove_email') {
-                document.querySelector('.' + actionHint).remove(); 
+            if (action === 'add_class') {
+                document.querySelector('email-header').classList.add(actionHint); 
             } 
 
-            if (action === 'go_back_to_folder') {
+            if (action === 'go_back') {
                 window.location.href = actionHint;
             }
         });

@@ -2,10 +2,6 @@
     @vite(['resources/css/email/email.scss', 'resources/js/theme.js'])
 
     <div class='quick-action-wrapper'>
-        <a href='/{{ $selectedCredential->id }}/folder/{{ $selectedFolder }}'>
-            {!! App\Helpers\SvgHelper::svg('left-arrow') !!}
-        </a>
-        
         @include('quick_actions', ['email' => $email, 'selectedFolder' => $selectedFolder, 'selectedCredential' => $selectedCredential, 'action' => 'go_back_to_folder', 'action_hint' => '/' . $selectedCredential->id . '/folder/' .  $selectedFolder]) 
     </div>
 
