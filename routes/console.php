@@ -13,7 +13,6 @@ use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
 
-
 Artisan::command("get_emails", function () {
     $imapCredentials = ImapCredentials::all();
 
