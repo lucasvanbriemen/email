@@ -27,27 +27,18 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $ollama_system_prompt = "You are an AI assistant that helps users summarize their emails. " .
-            "You will be given a list of emails and you need to provide a concise summary of the most important information contained within them Try to be as concise as possible, but also provide enough information to understand the context of the emails. 100 words max.";
+        $ollama_system_prompt = "You are an AI assistant analyzing emails from a user's inbox since their last activity. Extract only relevant key events, tasks, decisions, deadlines, or important updates. Exclude emails without meaningful content. Provide a clean, bullet-pointed list with no greetings, signatures, filler, or markup. Deliver strictly factual, concise points only.";
         $ollama_prompt = "Here is the list of emails:\n\n";
 
-        foreach ($credentials as $credential) {
-            foreach ($emails as $email) {
-
-                if ($email->credential_id !== $credential->id) {
-                    continue; // Skip emails that do not belong to the current credential
-                }
-
-                $ollama_prompt .= "Email account: {$credential->username}\n" .
-                    "Email subject: {$email->subject}\n" .
-                    "Email body: {$email->body}\n\n";
-            }
+        foreach ($emails as $email) {
+            $ollama_prompt .= "Email subject: {$email->subject}\n" .
+                "Email body: {$email->body}\n\n";
         }
 
 
         $response = Ollama::agent($ollama_system_prompt)
             ->prompt($ollama_prompt)
-            ->options(['temperature' => 0.8])
+            ->options(['temperature' => 1])
             ->stream(false)
             ->ask();
 
