@@ -113,7 +113,11 @@ contextMenuItems.forEach(item => {
                 }
             }
 
-            alert(data.message);
+            const contextMenu = document.querySelector('.context-menu');
+            if (contextMenu) {
+                contextMenu.classList.remove('open');
+                contextFocusedOn = null;
+            }
         })
     });
 });
