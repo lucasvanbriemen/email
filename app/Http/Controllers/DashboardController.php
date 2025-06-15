@@ -34,8 +34,16 @@ class DashboardController extends Controller
         }
 
 
-        $ai_summery = ollama($ollama_system_prompt, $ollama_prompt);
-        
+        if (count($emails) > 0) {
+            $ai_summery = ollama($ollama_system_prompt, $ollama_prompt);
+        } else {
+            $ai_summery = [
+                'status' => 'success',
+                'response' => 'No new emails since your last activity.',
+                'data' => []
+            ];
+        }
+
         return view(
             'dashboard',
             [
