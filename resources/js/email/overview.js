@@ -36,5 +36,23 @@ threadElements.forEach(threadElement => {
 });
 
 messages.forEach(message => {
-    message.addEventListener("contextmenu", (e) => { alert("Right click on the message to open the context menu."); });
+    message.addEventListener("contextmenu", (e) => { 
+        e.preventDefault();
+
+        const contextMenu = document.querySelector('.context-menu');
+
+        contextMenu.classList.add('open');
+        contextMenu.style.top = `${e.clientY}px`;
+        contextMenu.style.left = `${e.clientX}px`;
+    });
+});
+
+document.addEventListener('click', (e) => {
+    const contextMenu = document.querySelector('.context-menu');
+    if (!contextMenu) return;
+
+    const isClickInside = contextMenu.contains(e.target);
+    if (!isClickInside && contextMenu.classList.contains('open')) {
+        contextMenu.classList.remove('open');
+    }
 });

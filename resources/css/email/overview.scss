@@ -9,4 +9,18 @@ main {
         width: 75%;
         border-bottom: 1px solid var(--text-color);
     }
+
+    .context-menu {
+        display: none;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        background-color: red;
+
+        &.open {
+            display: flex;
+        }
+    }
 }
