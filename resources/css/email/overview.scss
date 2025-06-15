@@ -11,12 +11,13 @@ main {
     }
 
     .context-menu {
-        display: none;
+        display: flex;
         flex-direction: column;
         gap: 0.5rem;
 
+        transition: all 0.3s ease-in-out;
 
-        width: 15rem;
+        width: 0rem;
 
         position: absolute;
         top: 0;
@@ -24,9 +25,11 @@ main {
 
         background-color: var(--background-color-one);
         border-radius: 1rem;
-        padding: 0.5rem;
+        padding: 0;
 
-        border: 1px solid var(--text-color);
+        overflow: hidden;
+        border: none;
+
         box-shadow: 0 0 3rem var(--primary-color); 
 
         .context-menu-item {
@@ -37,13 +40,19 @@ main {
 
             border-radius: 1rem;
 
+            text-wrap: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
             &:hover {
                 background-color: var(--primary-color);
             }
         }
 
         &.open {
-            display: flex;
+            width: 15rem;
+            padding: 0.5rem;
+            // border: 1px solid var(--text-color);
         }
     }
 }

@@ -36,16 +36,31 @@ threadElements.forEach(threadElement => {
 });
 
 messages.forEach(message => {
-    message.addEventListener("contextmenu", (e) => { 
+    message.addEventListener("contextmenu", (e) => {
         e.preventDefault();
 
         const contextMenu = document.querySelector('.context-menu');
-
         contextMenu.classList.add('open');
-        contextMenu.style.top = `${e.clientY}px`;
-        contextMenu.style.left = `${e.clientX}px`;
+
+        const menuWidth =  15 * 16 
+        const menuHeight = contextMenu.offsetHeight;
+
+        let left = e.clientX;
+        let top = e.clientY;
+
+        if (left + menuWidth > window.innerWidth) {
+            left = window.innerWidth - menuWidth;
+        }
+
+        if (top + menuHeight > window.innerHeight) {
+            top = window.innerHeight - menuHeight;
+        }
+
+        contextMenu.style.top = `${top}px`;
+        contextMenu.style.left = `${left}px`;
     });
 });
+
 
 document.addEventListener('click', (e) => {
     const contextMenu = document.querySelector('.context-menu');
