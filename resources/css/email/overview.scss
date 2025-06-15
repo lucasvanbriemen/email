@@ -34,7 +34,7 @@ main {
 
         .context-menu-item {
             cursor: pointer;
-            padding: 0.5rem;
+            padding: 0.5rem 1rem;
             color: var(--text-color);
             transition: all 0.3s ease-in-out;
 
@@ -52,7 +52,6 @@ main {
         &.open {
             width: 15rem;
             padding: 0.5rem;
-            // border: 1px solid var(--text-color);
         }
     }
 }
