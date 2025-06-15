@@ -51,6 +51,9 @@ $last_iterated_date = null;
 
     
     <div class='context-menu'>
+
+        @csrf
+
         <div class="context-menu-item" data-action="read">
             <span>Mark as Read</span>
         </div>

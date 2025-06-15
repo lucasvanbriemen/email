@@ -78,12 +78,21 @@ contextMenuItems.forEach(item => {
             currentUrl = currentUrl.slice(0, -1);
         }
 
-        const action = clickedElement.dataset.action;
+        const action = e.target.closest('[data-action]').dataset.action;
         const messageUuid = contextFocusedOn;
 
         let url = currentUrl + '/mail/' + messageUuid + '/' + action;
 
-        alert(url)
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value 
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
     });
 });
 
