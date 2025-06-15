@@ -33,5 +33,13 @@
         'dataUrl' => '/' . $email->credential_id . '/folder/inbox/mail/' . $email->uuid,
     ])
         @endforeach
+
+
+        @if (count($emails) == 0)
+            <div class='no-emails'>
+                <h2>No new emails</h2>
+                <p>Check back later for updates.</p>
+            </div>
+        @endif
     </div>
 </x-app-layout>
