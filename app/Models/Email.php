@@ -70,6 +70,7 @@ class Email extends Model
             $query->where('folder_id', $folder->id);
             $query->where('is_archived', false);
 
+
             return $query->orderBy('sent_at', 'desc')->limit(50)->get();
         }
 
@@ -78,7 +79,8 @@ class Email extends Model
         }
 
         if ($folder->path == 'spam') {
-            $query->where('is_deleted', false);
+            $query->where('is_deleted', false)
+                ->where("credential_id", "-1");
         }
 
         if ($folder->path == 'stared') {
