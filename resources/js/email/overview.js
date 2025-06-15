@@ -62,7 +62,6 @@ messages.forEach(message => {
 
         const uuidElement = e.target.closest('[data-uuid]');
         contextFocusedOn = uuidElement ? uuidElement.dataset.uuid : null;
-        console.log(contextFocusedOn);
     });
 });
 
@@ -71,8 +70,20 @@ const contextMenuItems = document.querySelectorAll('.context-menu-item');
 contextMenuItems.forEach(item => {
     item.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log(contextFocusedOn);
-        alert(`Action: ${item.dataset.action} on message with UUID: ${contextFocusedOn}`);
+        const clickedElement = e.target;
+
+        // Get the current URL and remove the trailing slash if it exists
+        let currentUrl = window.location.href;
+        if (currentUrl.endsWith('/')) {
+            currentUrl = currentUrl.slice(0, -1);
+        }
+
+        const action = clickedElement.dataset.action;
+        const messageUuid = contextFocusedOn;
+
+        let url = currentUrl + '/mail/' + messageUuid + '/' + action;
+
+        alert(url)
     });
 });
 
