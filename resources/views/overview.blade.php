@@ -51,7 +51,7 @@ $last_iterated_date = null;
 
     
     <div class='context-menu'>
-        <div class="context-menu-item" data-action="mark-as-read">
+        <div class="context-menu-item" data-action="read">
             <span>Mark as Read</span>
         </div>
 
@@ -66,6 +66,5 @@ $last_iterated_date = null;
         <div class="context-menu-item" data-action="delete">
             <span>Delete</span>
         </div>
-
     </div>
 </x-email-layout>
