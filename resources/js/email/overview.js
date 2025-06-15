@@ -70,8 +70,6 @@ const contextMenuItems = document.querySelectorAll('.context-menu-item');
 contextMenuItems.forEach(item => {
     item.addEventListener('click', (e) => {
         e.preventDefault();
-        const clickedElement = e.target;
-
         // Get the current URL and remove the trailing slash if it exists
         let currentUrl = window.location.href;
         if (currentUrl.endsWith('/')) {
@@ -91,6 +89,30 @@ contextMenuItems.forEach(item => {
         })
         .then(response => response.json())
         .then(data => {
+
+            if (action === 'delete' || action === 'archive') {
+                const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
+                if (messageElement) {
+                    messageElement.remove();
+                }
+            }
+
+            if (action === 'read') {
+                const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
+                if (messageElement) {
+                    messageElement.classList.remove('unread');
+                    messageElement.classList.add('read');
+                }
+            }
+
+            if (action === 'star') {
+                const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
+                if (messageElement) {
+                    messageElement.classList.remove('unstarred');
+                    messageElement.classList.add('starred');
+                }
+            }
+
             alert(data.message);
         })
     });
