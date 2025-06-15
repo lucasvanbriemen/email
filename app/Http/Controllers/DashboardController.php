@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ImapCredentials;
 use App\Models\Email;
-use Cloudstudio\Ollama\Facades\Ollama;
 
 class DashboardController extends Controller
 {
@@ -35,19 +34,15 @@ class DashboardController extends Controller
         }
 
 
-        $response = Ollama::agent($ollama_system_prompt)
-            ->prompt($ollama_prompt)
-            ->options(['temperature' => 0.8])
-            ->stream(false)
-            ->ask();
-
+        $ai_summery = ollama($ollama_system_prompt, $ollama_prompt);
+        
         return view(
             'dashboard',
             [
                 'credentials' => $credentials,
                 'emails' => $emails,
                 'last_activity' => $last_activity,
-                'ollama_response' => $response,
+                'ollama_response' => $ai_summery,
             ]
         );
     }
