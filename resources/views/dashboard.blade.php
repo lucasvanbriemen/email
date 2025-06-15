@@ -1,16 +1,15 @@
 <x-app-layout>
     
-    @vite(['resources/css/dashboard.scss', 'resources/js/theme.js'])
-
+    @vite(['resources/css/dashboard.scss', 'resources/js/theme.js', 'resources/js/email/overview.js'])
 
     <div class='left-panel'>
         <div class='linked-accounts'>
             @foreach ($credentials as $credential)
-                <div class='linked-account'>
+                <a class='linked-account' href='/{{ $credential->id }}/folder/inbox'>
                     <img src='{{ gravar($credential->username, 64) }}'>
                     {{ $credential->username }}
                     <hr>
-                </div>
+                </a>
             @endforeach
         </div>
         
@@ -30,7 +29,8 @@
             @include('email_listing', [
         'email' => $email,
         'class' => 'message',
-        'uuid' => uniqid('email-')
+        'uuid' => uniqid('email-'),
+        'dataUrl' => '/' . $email->credential_id . '/folder/inbox/mail/' . $email->uuid,
     ])
         @endforeach
     </div>

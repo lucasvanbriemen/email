@@ -29,7 +29,6 @@ class DashboardController extends Controller
 
         $ollama_system_prompt = "You are an AI assistant analyzing emails from a user's inbox since their last activity. Extract only relevant key events, tasks, decisions, deadlines, or important updates. Exclude emails without meaningful content. Provide a clean, bullet-pointed list with no greetings, signatures, filler, or markup. Deliver strictly factual, concise points only.";
         $ollama_prompt = "Here is the list of emails:\n\n";
-
         foreach ($emails as $email) {
             $ollama_prompt .= "Email subject: {$email->subject}\n" .
                 "Email body: {$email->body}\n\n";
@@ -38,7 +37,7 @@ class DashboardController extends Controller
 
         $response = Ollama::agent($ollama_system_prompt)
             ->prompt($ollama_prompt)
-            ->options(['temperature' => 1])
+            ->options(['temperature' => 0.8])
             ->stream(false)
             ->ask();
 
