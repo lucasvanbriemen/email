@@ -19,7 +19,7 @@
     @php $format = 'H:i'; @endphp
 @endif
 
-<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}'>
+<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}' data-uuid='{{ $email['uuid'] }}' data-thread='{{ $thread ? 'true' : 'false' }}'>
     <p class='email-from'>
         {{ $email['from'] }}
         @if ($size != null)
