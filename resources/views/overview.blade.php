@@ -3,12 +3,12 @@
     @vite(['resources/css/email/overview.scss', 'resources/js/email/overview.js'])
 
     @php
-        $last_iterated_date = null;
+$last_iterated_date = null;
     @endphp
     @foreach ($emailThreads as $emailThread)
 
         @php
-            $current_iteration_date = date("Y-m-d", strtotime($emailThread[0]['sent_at']));
+    $current_iteration_date = date("Y-m-d", strtotime($emailThread[0]['sent_at']));
         @endphp
 
         @if ($last_iterated_date != $current_iteration_date)
@@ -18,30 +18,30 @@
 
 
         @if (count($emailThread) > 1)
-            <?php $uuid = uniqid('thread-'); ?>
+            <?php        $uuid = uniqid('thread-'); ?>
             <div class='email-thread {{ $uuid }} '>
                 @include('email_listing', [
-                    'email' => $emailThread[0],
-                    'class' => 'thead-top-message ' .
-                        (in_array(false, array_column($emailThread, 'has_read')) ? 'unread' : 'read') . ' ' .
-                        ($emailThread[0]['is_starred'] == 1 ? ' starred' : 'unstarred'),
-                    'current_iteration_date' => $current_iteration_date,
-                    'size' => count($emailThread),
-                    'thread' => true,
-                    'selectedCredential' => $selectedCredential,
-                    'uuid' => $uuid
-                ])
+            'email' => $emailThread[0],
+            'class' => 'thead-top-message ' .
+                (in_array(false, array_column($emailThread, 'has_read')) ? 'unread' : 'read') . ' ' .
+                ($emailThread[0]['is_starred'] == 1 ? ' starred' : 'unstarred'),
+            'current_iteration_date' => $current_iteration_date,
+            'size' => count($emailThread),
+            'thread' => true,
+            'selectedCredential' => $selectedCredential,
+            'uuid' => $uuid
+        ])
         @endif
 
         @foreach ($emailThread as $email)
             @include('email_listing', [
-                'email' => $email,
-                'class' => 'message ' . ($email['has_read'] ? 'read' : 'unread') .  ' ' .
-                    ($email['is_starred'] == 1 ? ' starred' : 'unstarred'),
-                'dataUrl' => '/' . $selectedCredential->id . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
-                'current_iteration_date' => $current_iteration_date,
-                'selectedCredential' => $selectedCredential
-            ])
+            'email' => $email,
+            'class' => 'message ' . ($email['has_read'] ? 'read' : 'unread') . ' ' .
+                ($email['is_starred'] == 1 ? ' starred' : 'unstarred'),
+            'dataUrl' => '/' . $selectedCredential->id . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
+            'current_iteration_date' => $current_iteration_date,
+            'selectedCredential' => $selectedCredential
+        ])
         @endforeach
 
         @if (count($emailThread) > 1)
@@ -51,6 +51,21 @@
 
     
     <div class='context-menu'>
-        hello
+        <div class="context-menu-item" data-action="mark-as-read">
+            <span>Mark as Read</span>
+        </div>
+
+        <div class="context-menu-item" data-action="star">
+            <span>Star</span>
+        </div>
+
+        <div class="context-menu-item" data-action="archive">
+            <span>Archive</span>
+        </div>
+
+        <div class="context-menu-item" data-action="delete">
+            <span>Delete</span>
+        </div>
+
     </div>
 </x-email-layout>
