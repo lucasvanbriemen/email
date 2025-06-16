@@ -25,7 +25,41 @@
     }
 @endphp
 
-<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}' data-uuid='{{ $email['uuid'] }}' data-thread='{{ $thread ? 'true' : 'false' }}'>
+@php
+    $context_menu_requirements = '';
+
+    if ($email['has_read']) {
+        $context_menu_requirements .= 'read ';
+    } else {
+        $context_menu_requirements .= 'unread ';
+    }
+
+    if ($email['is_starred'] == 1) {
+        $context_menu_requirements .= 'starred ';
+    } else {
+        $context_menu_requirements .= 'unstarred ';
+    }
+
+    if ($thread) {
+        $context_menu_requirements .= 'thread ';
+    } else {
+        $context_menu_requirements .= 'single-message ';
+    }
+
+    if ($email['is_archived'] == 1) {
+        $context_menu_requirements .= 'archived ';
+    } else {
+        $context_menu_requirements .= 'not-archived ';
+    }
+
+    if ($email['is_deleted'] == 1) {
+        $context_menu_requirements .= 'deleted ';
+    } else {
+        $context_menu_requirements .= 'not-deleted ';
+    }
+@endphp
+
+<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}' data-uuid='{{ $email['uuid'] }}' data-thread='{{ $thread ? 'true' : 'false' }}' data-context-menu='{{ $context_menu_requirements }}'>
     <p class='email-from'>
         {{ $email['from'] }}
         @if ($size != null)
