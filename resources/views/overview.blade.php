@@ -54,19 +54,19 @@ $last_iterated_date = null;
 
         @csrf
 
-        <div class="context-menu-item" data-action="read">
+        <div class="context-menu-item" data-action="read" data-requirement="unread single-message">
             <span>Mark as Read</span>
         </div>
 
-        <div class="context-menu-item" data-action="star">
+        <div class="context-menu-item" data-action="star" data-requirement="unstarred single-message">
             <span>Star</span>
         </div>
 
-        <div class="context-menu-item" data-action="archive">
+        <div class="context-menu-item" data-action="archive" data-requirement="unarchived single-message">
             <span>Archive</span>
         </div>
 
-        <div class="context-menu-item" data-action="delete">
+        <div class="context-menu-item" data-action="delete" data-requirement="unarchived single-message">
             <span>Delete</span>
         </div>
     </div>

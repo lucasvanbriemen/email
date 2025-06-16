@@ -19,6 +19,12 @@
     @php $format = 'H:i'; @endphp
 @endif
 
+@php
+    if ($thread) {
+        $email['uuid'] = $email['uuid'] . '-thread';
+    }
+@endphp
+
 <div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}' data-uuid='{{ $email['uuid'] }}' data-thread='{{ $thread ? 'true' : 'false' }}'>
     <p class='email-from'>
         {{ $email['from'] }}
