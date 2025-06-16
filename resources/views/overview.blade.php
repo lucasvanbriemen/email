@@ -40,7 +40,9 @@ $last_iterated_date = null;
                 ($email['is_starred'] == 1 ? ' starred' : 'unstarred'),
             'dataUrl' => '/' . $selectedCredential->id . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
             'current_iteration_date' => $current_iteration_date,
-            'selectedCredential' => $selectedCredential
+            'selectedCredential' => $selectedCredential,
+            'thead' => false,
+            'uuid' => uniqid('message-')
         ])
         @endforeach
 

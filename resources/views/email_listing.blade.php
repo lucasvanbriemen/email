@@ -21,7 +21,9 @@
 
 @php
     if ($thread) {
-        $email['uuid'] = $email['uuid'] . '-thread';
+        $data_uuid = $email['uuid'] . '-thread';
+    }else {
+        $data_uuid = $email['uuid'];
     }
 @endphp
 
@@ -59,7 +61,7 @@
     }
 @endphp
 
-<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}' data-uuid='{{ $email['uuid'] }}' data-thread='{{ $thread ? 'true' : 'false' }}' data-context-menu='{{ $context_menu_requirements }}'>
+<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}' data-uuid='{{ $data_uuid }}' data-thread='{{ $thread ? 'true' : 'false' }}' data-context-menu='{{ $context_menu_requirements }}'>
     <p class='email-from'>
         {{ $email['from'] }}
         @if ($size != null)
