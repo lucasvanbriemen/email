@@ -14,6 +14,8 @@ Route::get('{credential_id}/folder/{folder}', [MailboxController::class, 'index'
 
 
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/read', [MailboxController::class, 'read'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.read');
+Route::post('{credential_id}/folder/{folder}/mail/{uuid}/unread', [MailboxController::class, 'unread'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.unread');
+
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/archive', [MailboxController::class, 'archive'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.archive');
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.delete');
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/star', [MailboxController::class, 'star'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.star');

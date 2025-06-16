@@ -58,6 +58,10 @@ $last_iterated_date = null;
             <span>Mark as Read</span>
         </div>
 
+        <div class="context-menu-item" data-action="unread" data-requirement="read single-message">
+            <span>Mark as unread</span>
+        </div>
+
         <div class="context-menu-item" data-action="star" data-requirement="unstarred single-message">
             <span>Star</span>
         </div>

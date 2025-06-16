@@ -123,6 +123,23 @@ class MailboxController extends Controller
         ];
     }
 
+    public function unread($credential_id, $folder, $uuid)
+    {
+        $email = Email::where('uuid', $uuid)
+            ->where('credential_id', $credential_id)
+            ->first();
+
+        if ($email) {
+            $email->has_read = false;
+            $email->save();
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Email marked as unread successfully.'
+        ];
+    }
+
     public function delete($credential_id, $folder, $uuid)
     {
         Email::deleteEmail($uuid, $credential_id);
