@@ -116,11 +116,11 @@ contextMenuItems.forEach(item => {
                 }
             }
 
-            if (action === 'read') {
+            if (action === 'read' || action === 'unread') {
                 const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
                 if (messageElement) {
-                    messageElement.classList.remove('unread');
-                    messageElement.classList.add('read');
+                    messageElement.classList.toggle('unread');
+                    messageElement.classList.toggle('read');
                 }
             }
 
