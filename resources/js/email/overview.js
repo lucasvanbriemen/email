@@ -43,13 +43,9 @@ messages.forEach(message => {
         const contextMenuItems = contextMenu.querySelectorAll('.context-menu-item');
 
         contextMenuItems.forEach(contextMenuItem => { 
-            // Get all the required data attributes
-
             contextMenuItem.classList.remove('hidden');
 
             const contextMenuRequirement = contextMenuItem.dataset.requirement.split(' ');
-
-            // get the context-menu from the message
             const messageRequirement = message.dataset.contextMenu.split(' ');
 
             let canShow = true;
