@@ -39,8 +39,31 @@ let contextFocusedOn = null;
 messages.forEach(message => {
     message.addEventListener("contextmenu", (e) => {
         e.preventDefault();
-
         const contextMenu = document.querySelector('.context-menu');
+        const contextMenuItems = contextMenu.querySelectorAll('.context-menu-item');
+
+        contextMenuItems.forEach(contextMenuItem => { 
+            // Get all the required data attributes
+
+            contextMenuItem.classList.remove('hidden');
+
+            const contextMenuRequirement = contextMenuItem.dataset.requirement.split(' ');
+
+            // get the context-menu from the message
+            const messageRequirement = message.dataset.contextMenu.split(' ');
+
+            let canShow = true;
+            contextMenuRequirement.forEach(requirement => {
+                if (!messageRequirement.includes(requirement)) {
+                    canShow = false;
+                }
+            });
+
+            if (!canShow) {
+                contextMenuItem.classList.add('hidden');
+            }
+        });
+
         contextMenu.classList.add('open');
 
         const menuWidth =  15 * 16 
