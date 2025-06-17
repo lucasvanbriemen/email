@@ -185,6 +185,28 @@ class MailboxController extends Controller
         ];
     }
 
+    public function readThread($credential_id, $folder, $uuid)
+    {
+        $email = Email::where('uuid', $uuid)
+            ->where('credential_id', $credential_id)
+            ->first();
+
+        $emails = Email::where('sender_email', $email->sender_email)
+            ->where('subject', $email->subject)
+            ->where('folder_id', $email->folder_id)
+            ->where('credential_id', $credential_id)
+            ->get();
+
+        foreach ($emails as $threadEmail) {
+            $threadEmail->has_read = true;
+            $threadEmail->save();
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Thread marked as read successfully.'
+        ];
+    }
 
     public function archiveThread($credential_id, $folder, $uuid)
     {
