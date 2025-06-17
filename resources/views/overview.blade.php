@@ -79,5 +79,9 @@ $last_iterated_date = null;
         <div class="context-menu-item" data-action="delete" data-requirement="not-deleted single-message">
             <span>Delete</span>
         </div>
+
+        <div class="context-menu-item" data-action="delete_thread" data-requirement="not-deleted thread">
+            <span>Delete thread</span>
+        </div>
     </div>
 </x-email-layout>

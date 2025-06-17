@@ -22,7 +22,6 @@ const DONT_TOGGLE_CLASS_SELECTOR = ['.message'];
 threadElements.forEach(threadElement => {
     threadElement.addEventListener('click', function (event) {
         // Add the open class to the clicked thread element
-
         const clickedElement = event.target;
         const hasDontToggleClass = DONT_TOGGLE_CLASS_SELECTOR.some(className => 
             clickedElement.classList.contains(className) ||
@@ -36,7 +35,7 @@ threadElements.forEach(threadElement => {
 });
 
 let contextFocusedOn = null;
-messages.forEach(message => {
+document.querySelectorAll('.message, .thead-top-message').forEach(message => {
     message.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         const contextMenu = document.querySelector('.context-menu');
@@ -98,7 +97,7 @@ contextMenuItems.forEach(item => {
         const action = e.target.closest('[data-action]').dataset.action;
         const messageUuid = contextFocusedOn;
 
-        let url = currentUrl + '/mail/' + messageUuid + '/' + action;
+        let url = currentUrl + '/mail/' + messageUuid.replace('-thread', '') + '/' + action;
 
         fetch(url, {
             method: 'POST',
@@ -129,6 +128,13 @@ contextMenuItems.forEach(item => {
                 if (messageElement) {
                     messageElement.classList.toggle('unstarred');
                     messageElement.classList.toggle('starred');
+                }
+            }
+
+            if (action === 'delete_thread') {
+                const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
+                if (messageElement) {
+                    messageElement.remove();
                 }
             }
 
