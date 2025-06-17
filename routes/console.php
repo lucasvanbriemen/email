@@ -59,6 +59,8 @@ Artisan::command("get_emails", function () {
                 ->where('sent_at', $dateUtc->format('Y-m-d H:i:s'))
                 ->exists()
             ) {
+                // If email already exists, delete it from the server to avoid long run time
+                $message->delete();
                 continue; // Skip if email already exists
             }
 
@@ -109,7 +111,7 @@ Artisan::command("get_emails", function () {
             }
 
             // Since we have created a copy of the email, we can delete it from the server to make run time faster.
-            // $message->delete();
+            $message->delete();
 
             if (!config('app.ntfy.enabled')) {
                 continue; // Skip notification if not enabled
