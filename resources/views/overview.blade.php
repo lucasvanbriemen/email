@@ -29,7 +29,8 @@ $last_iterated_date = null;
             'size' => count($emailThread),
             'thread' => true,
             'selectedCredential' => $selectedCredential,
-            'uuid' => $uuid
+            'uuid' => $uuid,
+            'is_fully_read' => !in_array(false, array_column($emailThread, 'has_read')),
         ])
         @endif
 
@@ -42,7 +43,8 @@ $last_iterated_date = null;
             'current_iteration_date' => $current_iteration_date,
             'selectedCredential' => $selectedCredential,
             'thead' => false,
-            'uuid' => uniqid('message-')
+            'uuid' => uniqid('message-'),
+            'is_fully_read' => !in_array(false, array_column($emailThread, 'has_read')),
         ])
         @endforeach
 

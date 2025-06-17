@@ -30,7 +30,7 @@
 @php
     $context_menu_requirements = '';
 
-    if ($email['has_read']) {
+    if ($is_fully_read) {
         $context_menu_requirements .= 'read ';
     } else {
         $context_menu_requirements .= 'unread ';
