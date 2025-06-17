@@ -122,7 +122,7 @@ Artisan::command("get_emails", function () {
                 NtfyHelper::sendNofication(
                     $emailData['from'],
                     $emailData['subject'],
-                    config('app.url') . '/' . $credential->id  . '/inbox/mail/' . $email['uuid']
+                    config('app.url') . '/' . $credential->id  . '/folder/inbox/mail/' . $email['uuid']
                 );
             });
         }
