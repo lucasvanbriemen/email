@@ -131,6 +131,30 @@ contextMenuItems.forEach(item => {
                 }
             }
 
+            if (action === 'read_thread'  || action === 'unread_thread') {
+                const readAction = action === 'read_thread' ? 'read' : 'unread';
+                const notAction = readAction === 'read' ? 'unread' : 'read';
+
+                const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
+                if (messageElement) {
+                    messageElement.classList.remove(notAction);
+                    messageElement.classList.add(readAction);
+
+                    const messageThread = messageElement.closest('.email-thread');
+                    if (readAction === 'read') {
+                        messageThread.classList.remove('open');
+                    } else {
+                        messageThread.classList.add('open');
+                    }
+
+                    const threadMessages = messageThread.querySelectorAll('.message');
+                    threadMessages.forEach(threadMessage => {
+                        threadMessage.classList.remove(notAction);
+                        threadMessage.classList.add(readAction);
+                    });
+                }
+            }
+
             if (action === 'delete_thread') {
                 const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
                 if (messageElement) {
