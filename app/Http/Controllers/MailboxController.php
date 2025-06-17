@@ -167,6 +167,25 @@ class MailboxController extends Controller
         ];
     }
 
+
+    public function unstar($credential_id, $folder, $uuid)
+    {
+        $email = Email::where('uuid', $uuid)
+            ->where('credential_id', $credential_id)
+            ->first();
+
+        if ($email) {
+            $email->is_starred = false;
+            $email->save();
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Email starred successfully.'
+        ];
+    }
+
+
     public function archiveThread($credential_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)

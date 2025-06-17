@@ -124,11 +124,11 @@ contextMenuItems.forEach(item => {
                 }
             }
 
-            if (action === 'star') {
+            if (action === 'star'  || action === 'unstar') {
                 const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
                 if (messageElement) {
-                    messageElement.classList.remove('unstarred');
-                    messageElement.classList.add('starred');
+                    messageElement.classList.toggle('unstarred');
+                    messageElement.classList.toggle('starred');
                 }
             }
 

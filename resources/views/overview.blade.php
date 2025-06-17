@@ -68,6 +68,10 @@ $last_iterated_date = null;
             <span>Star</span>
         </div>
 
+        <div class="context-menu-item" data-action="unstar" data-requirement="starred single-message">
+            <span>Remove star</span>
+        </div>
+
         <div class="context-menu-item" data-action="archive" data-requirement="not-archived single-message">
             <span>Archive</span>
         </div>
