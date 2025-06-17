@@ -59,7 +59,7 @@ $last_iterated_date = null;
         @csrf
 
         <div class="context-menu-item" data-action="read" data-requirement="unread single-message">
-            <span>Mark as Read</span>
+            <span>Mark as read</span>
         </div>
 
         <div class="context-menu-item" data-action="unread" data-requirement="read single-message">
@@ -80,6 +80,10 @@ $last_iterated_date = null;
 
         <div class="context-menu-item" data-action="delete" data-requirement="not-deleted single-message">
             <span>Delete</span>
+        </div>
+
+        <div class="context-menu-item" data-action="read_thread" data-requirement="unread thread">
+            <span>Mark thread as read</span>
         </div>
 
         <div class="context-menu-item" data-action="delete_thread" data-requirement="not-deleted thread">
