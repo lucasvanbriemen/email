@@ -30,6 +30,13 @@ class MailboxController extends Controller
             }
         }
 
+        // If the selected credential does not exist to the user, show a 404 error
+        if (!ImapCredentials::where('id', $credential_id)
+            ->where('user_id', auth()->id())
+            ->exists()) {
+            abort(404);
+        }
+
         $folder = Folder::where('path', $selectedFolder)
             ->where('imap_credential_id', $credential_id)
             ->first();
