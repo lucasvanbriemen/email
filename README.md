@@ -8,9 +8,8 @@
 </p>
 
 ## Todo's
-- Delete email from email server (https://www.php-imap.com/api/message)
-- Dashboard for all emails of a user
-- Context menu for email
+- Tagging emails
+- sending emails
 
 ## About Laravel
 
