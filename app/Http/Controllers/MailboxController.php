@@ -10,6 +10,15 @@ use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Models\ImapCredentials;
+use Illuminate\Mail\Transport\SmtpTransport;
+use Illuminate\Support\Facades\View;
+use Swift_Mailer;
+use Swift_SmtpTransport;
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\TransportManager;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Illuminate\Container\Container;
 
 class MailboxController extends Controller
 {
@@ -31,9 +40,11 @@ class MailboxController extends Controller
         }
 
         // If the selected credential does not exist to the user, show a 404 error
-        if (!ImapCredentials::where('id', $credential_id)
+        if (
+            !ImapCredentials::where('id', $credential_id)
             ->where('user_id', auth()->id())
-            ->exists()) {
+            ->exists()
+        ) {
             abort(404);
         }
 
@@ -281,5 +292,28 @@ class MailboxController extends Controller
             'status' => 'success',
             'message' => 'Thread starred successfully.'
         ];
+    }
+
+    public function test()
+    {
+        $transport = new EsmtpTransport('lucasvanbriemen.nl', 465);
+        $transport->setUsername('development@lucasvanbriemen.nl');
+        $transport->setPassword('13November.2006');
+
+        $events = app()->get('events');
+        $viewFactory = app()->get('view');
+
+        $mailer = new Mailer('test_mailer', $viewFactory, app()->get('mailer')->getSymfonyTransport(), $events);
+        $mailer->setSymfonyTransport($transport);
+
+        $mailer->alwaysFrom("development@lucasvanbriemen.nl", "Lucas van Briemen");
+        $mailer->alwaysReplyTo("development@lucasvanbriemen.nl", "Lucas van Briemen");
+
+        $mailer->send('auth.login', ['name' => 'Lucas'], function ($message) {
+            $message->to('contact@lucasvanbriemen.nl', 'Lucas van Briemen')
+                ->subject('Test Email');
+        });
+
+        return response('SMTP transport initialized.');
     }
 }

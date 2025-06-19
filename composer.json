@@ -16,6 +16,7 @@
         "laravel/sanctum": "^4.1",
         "laravel/tinker": "^2.10.1",
         "plesk/ext-laravel-integration": "*",
+        "swiftmailer/swiftmailer": "^5.4",
         "symfony/mailer": "^7.3",
         "webklex/laravel-imap": "^4.1",
         "webklex/php-imap": "^4.1"
