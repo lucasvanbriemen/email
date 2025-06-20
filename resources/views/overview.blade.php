@@ -1,6 +1,6 @@
 <x-email-layout :selectedFolder="$selectedFolder" :selectedCredential="$selectedCredential">
 
-    @vite(['resources/css/email/overview.scss', 'resources/js/email/overview.js'])
+    @vite(['resources/css/email/overview.scss', 'resources/js/email/overview.js', 'resources/css/email/compose_email.scss'])
 
     @php
         $last_iterated_date = null;
@@ -67,4 +67,10 @@
     @endforeach
 
     @include('context_menu')
+
+    <div class="compose-email-wrapper open">
+        <div class="compose-email-background">
+            test
+        </div>
+    </div>
 </x-email-layout>
