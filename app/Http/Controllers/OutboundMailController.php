@@ -10,8 +10,14 @@ use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 
 class OutboundMailController extends Controller
 {
-    public function test()
+    public function sendEmail(Request $request)
     {
+        $request->validate([
+            'to' => 'required|email',
+            'subject' => 'required|string|max:255',
+            'body' => 'required|string',
+        ]);
+
         $transport = new EsmtpTransport('lucasvanbriemen.nl', 465);
         $transport->setUsername('development@lucasvanbriemen.nl');
         $transport->setPassword('13November.2006');
@@ -25,11 +31,15 @@ class OutboundMailController extends Controller
         $mailer->alwaysFrom("development@lucasvanbriemen.nl", "Lucas van Briemen");
         $mailer->alwaysReplyTo("development@lucasvanbriemen.nl", "Lucas van Briemen");
 
-        $mailer->send('auth.login', ['name' => 'Lucas'], function ($message) {
-            $message->to('contact@lucasvanbriemen.nl', 'Lucas van Briemen')
-                ->subject('Test Email');
+        $mailer->send([], [], function ($message) use ($request) {
+            $message->to($request->input('to'))
+                ->subject($request->input('subject'))
+                ->html($request->input('body'));
         });
 
-        return response('SMTP transport initialized.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Email sent successfully.',
+        ]);
     }
 }

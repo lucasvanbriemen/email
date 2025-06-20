@@ -69,8 +69,20 @@
     @include('context_menu')
 
     <div class="compose-email-wrapper">
-        <div class="compose-email-background">
-            test
+        <div class="compose-email-background"></div>
+
+        <div class="compose-email">
+            <form id="compose-email-form" method="POST" action="/test">
+                @csrf
+                <input type="text" name="to" value="" placeholder="To">
+                <input type="text" name="cc" value="" placeholder="Cc">
+                <input type="text" name="bcc" value="" placeholder="Bcc">
+                <input type="text" name="reply_to" value="" placeholder="Reply To">
+                <input type="text" name="reply_to_all" value="" placeholder="Reply To All">
+                <input type="text" name="subject" value="" placeholder="Subject">
+                <textarea name="body" placeholder="Body"></textarea>
+                <button type="submit">Send</button>
+            </form>
         </div>
     </div>
 </x-email-layout>
