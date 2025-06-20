@@ -4,7 +4,7 @@ use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\OutboundMailController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('{credential_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder');
@@ -12,8 +12,7 @@ Route::get('{credential_id}/folder/{folder}/mail/{uuid}', [MailboxController::cl
 
 Route::get('{credential_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 
-Route::get('/test', [MailboxController::class, 'test'])->middleware(['auth', 'verified'])->name('mailbox.folder');
-
+Route::get('/test', [OutboundMailController::class, 'test'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/read', [MailboxController::class, 'read'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.read');
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/unread', [MailboxController::class, 'unread'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.unread');
