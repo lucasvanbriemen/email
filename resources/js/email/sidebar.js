@@ -6,7 +6,6 @@ menuicon.addEventListener('click', function() {
     menuicon.classList.toggle('active');
 });
 
-
 const currentAccount = document.querySelector('.current-account');
 const accountSelector = document.querySelector('.account-selector');
 currentAccount.addEventListener('click', function() {

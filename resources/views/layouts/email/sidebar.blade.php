@@ -8,6 +8,11 @@
     </div>
 
     <div class='sidebar'>
+
+        <div class='compose-email'>
+            <span class='compose-mail-text'>Compose</span>
+        </div>
+
         @foreach ($folders as $folder)
             <div class='folder @if ($folder->path == $selectedFolder) selected @endif'>
                 <a href='/{{ $selectedCredential->id }}/folder/{{ $folder->path }}'>
