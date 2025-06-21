@@ -1,10 +1,24 @@
 .input-wrapper {
     position: relative;
 
+    margin-top: 1rem;
+
     input {
-        
+        width: 100%;
+
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+        border: 1px solid var(--border-color);
+
+        background-color: var(--background-color-one);
+        color: var(--text-color);
     }
 
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px var(--background-color-one) inset !important;
+        -webkit-text-fill-color: var(--text-color) !important;
+    }
+   
     label {
         position: absolute;
         top: 50%;
