@@ -6,7 +6,7 @@
     height: 100%;
     z-index: 1000;
 
-    transition: all 0.3s ease-in-out;
+    transition: all 0.5s ease-in-out;
     overflow: hidden;
 
     &.open {
@@ -28,9 +28,13 @@
         transform: translate(-50%, -50%);
 
         width: 50%;
+        height: 100%;
+        overflow-y: auto;
+
         display: flex;
         gap: 0.5rem;
         flex-direction: column;
+        justify-content: center;
 
         button.send-email {
             background-color: red;
