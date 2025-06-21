@@ -158,7 +158,7 @@ contextMenuItems.forEach(item => {
             if (action === 'delete_thread') {
                 const messageElement = document.querySelector(`[data-uuid="${messageUuid}"]`);
                 if (messageElement) {
-                    messageElement.remove();
+                    messageElement.parentElement.remove();
                 }
             }
 
