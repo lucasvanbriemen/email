@@ -15,9 +15,5 @@
 
 
         <button class='send-email'>Send</button>
-
-
-        <script> 
-        </script>
     </div>
 </div>

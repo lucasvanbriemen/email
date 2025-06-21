@@ -6,7 +6,7 @@
     height: 100%;
     z-index: 1000;
 
-    transition: all 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out;
     overflow: hidden;
 
     &.open {
@@ -23,7 +23,21 @@
 
     .compose-email {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 50%;
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
+
+        button.send-email {
+            background-color: red;
+        }
+
+        #fr-logo {
+            display: none;
+        }
     }
 }
