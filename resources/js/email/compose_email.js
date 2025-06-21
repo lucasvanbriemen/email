@@ -4,7 +4,8 @@ const composeEmailWrapper = document.querySelector('.compose-email-wrapper');
 const editor = new FroalaEditor('#email-body-wysiwyg');
 
 composeEmailButton.addEventListener('click', function() {
-    composeEmailWrapper.classList.toggle('open');
+    composeEmailWrapper.classList.add('open');
+    composeEmailWrapper.querySelector('.email-to').focus();
 });
 
 const composeEmailBackground = document.querySelector('.compose-email-background');
@@ -17,7 +18,6 @@ const sendEmailButton = composeEmailWrapper.querySelector('.send-email');
 sendEmailButton.addEventListener('click', function() {
     const emailBodyInput = composeEmailWrapper.querySelector('.email-body');
     emailBodyInput.value = editor.html.get();
-
 
     const formData = new FormData();
 
