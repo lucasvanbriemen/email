@@ -12,7 +12,7 @@ Route::get('{credential_id}/folder/{folder}/mail/{uuid}', [MailboxController::cl
 
 Route::get('{credential_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 
-Route::post('/compose_email', [OutboundMailController::class, 'sendEmail'])->middleware(['auth', 'verified'])->name('mailbox.folder');
+Route::post('{credential_id}/compose_email', [OutboundMailController::class, 'sendEmail'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/read', [MailboxController::class, 'read'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.read');
 Route::post('{credential_id}/folder/{folder}/mail/{uuid}/unread', [MailboxController::class, 'unread'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.unread');
@@ -31,7 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
     Route::patch('/account', [AccountController::class, 'update'])->name('profile.update');
     Route::delete('/account', [AccountController::class, 'destroy'])->name('profile.destroy');
+
     Route::post('/account/credentials', [AccountController::class, 'storeImapCredentials'])->name('account.credentials.store');
+    Route::post('/account/smtp_credentials', [AccountController::class, 'storeSmtpCredentials'])->name('account.credentials.store.smtp');
 });
 
 require __DIR__.'/auth.php';

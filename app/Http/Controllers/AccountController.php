@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ImapCredentials;
+use App\Models\SmtpCredentials;
 
 class AccountController extends Controller
 {
@@ -37,6 +38,25 @@ class AccountController extends Controller
                 'port' => request('port'),
                 'username' => request('username'),
                 'password' => request('password'),
+            ]
+        );
+
+        return redirect()->route('account.edit')->with('status', 'IMAP credentials updated successfully.');
+    }
+
+    public function storeSmtpCredentials()
+    {
+        SmtpCredentials::create(
+            [
+                'imap_credential_id' => request('imap_credential_id'),
+                'host' => request('host'),
+                'port' => request('port'),
+                'username' => request('username'),
+                'password' => request('password'),
+                'reply_to_name' => request('reply_to_name'),
+                'reply_to_email' => request('reply_to_email'),
+                'from_name' => request('from_name'),
+                'from_email' => request('from_email')
             ]
         );
 

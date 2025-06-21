@@ -29,7 +29,9 @@ sendEmailButton.addEventListener('click', function() {
     formData.append('subject', composeEmailWrapper.querySelector('.email-subject').value);
     formData.append('body', composeEmailWrapper.querySelector('.email-body').value);
 
-    fetch('/compose_email', {
+    const url = "/" + composeEmailWrapper.querySelector(".email-credential-id").value + '/compose_email';
+
+    fetch(url, {
         method: 'POST',
         body: formData
     })
