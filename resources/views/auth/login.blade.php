@@ -8,7 +8,6 @@
         <x-input type="email" name="email" :value="old('email')" autocomplete="username" />
         <x-input type="password" name="password" :value="old('password')" autocomplete="password" />
             
-        <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox" class="text-indigo-600 border-gray-300 rounded shadow-sm focus:ring-indigo-500" name="remember">

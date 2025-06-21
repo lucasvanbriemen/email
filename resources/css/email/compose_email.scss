@@ -27,13 +27,24 @@
         left: 50%;
         transform: translate(-50%, -50%);
 
-        width: 50%;
+        width: 55%;
         max-height: 80%;
         overflow-y: auto;
+
+        background-color: var(--background-color);
+
+        padding: 2rem;
+        border-radius: 1rem; 
 
         display: flex;
         gap: 0.5rem;
         flex-direction: column;
+
+        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+
+        .input-wrapper {
+            margin-top: 0;
+        }
 
 
         button.send-email {
