@@ -26,7 +26,6 @@ sendEmailButton.addEventListener('click', function() {
     formData.append('_token', document.querySelector('input[name="_token"]').value);
     formData.append('to', composeEmailWrapper.querySelector('.email-to').value);
     formData.append('cc', composeEmailWrapper.querySelector('.email-cc').value);
-    formData.append('bcc', composeEmailWrapper.querySelector('.email-bcc').value);
     formData.append('subject', composeEmailWrapper.querySelector('.email-subject').value);
     formData.append('body', composeEmailWrapper.querySelector('.email-body').value);
 

@@ -5,9 +5,9 @@
 
     <div class="compose-email">
         @csrf
-        <x-input type="email" name="to" />
-        <x-input type="email" name="cc" label="cc" />
-        <x-input type="text" name="subject" label="subject" />
+        <x-input type="email" name="to" class='email-to'/>
+        <x-input type="email" name="cc" label="cc" class='email-cc'/>
+        <x-input type="text" name="subject" label="subject" class='email-subject'/>
 
         <input name="body" hidden class='email-body'></textarea>
         <div id="email-body-wysiwyg"></div>
