@@ -5,10 +5,10 @@
 
     <div class="compose-email">
         @csrf
-        <input type="text" name="to" value="" placeholder="To">
-        <input type="text" name="cc" value="" placeholder="Cc">
-        <input type="text" name="bcc" value="" placeholder="Bcc">
-        <input type="text" name="subject" value="" placeholder="Subject">
+        <input type="text" name="to" value="" class='email-to' placeholder="To">
+        <input type="text" name="cc" value="" class='email-cc' placeholder="Cc">
+        <input type="text" name="bcc" value="" class='email-bcc' placeholder="Bcc">
+        <input type="text" name="subject" value="" class='email-subject' placeholder="Subject">
         
         <input name="body" hidden class='email-body'></textarea>
         <div id="email-body-wysiwyg"></div>

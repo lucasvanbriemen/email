@@ -18,5 +18,22 @@ sendEmailButton.addEventListener('click', function() {
     const emailBodyInput = composeEmailWrapper.querySelector('.email-body');
     emailBodyInput.value = editor.html.get();
 
-    alert(emailBodyInput.value);
+
+    const formData = new FormData();
+
+    formData.append('_token', document.querySelector('input[name="_token"]').value);
+    formData.append('to', composeEmailWrapper.querySelector('.email-to').value);
+    formData.append('cc', composeEmailWrapper.querySelector('.email-cc').value);
+    formData.append('bcc', composeEmailWrapper.querySelector('.email-bcc').value);
+    formData.append('subject', composeEmailWrapper.querySelector('.email-subject').value);
+    formData.append('body', composeEmailWrapper.querySelector('.email-body').value);
+
+    fetch('/compose_email', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
 });
