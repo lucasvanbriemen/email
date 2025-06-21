@@ -28,13 +28,13 @@
         transform: translate(-50%, -50%);
 
         width: 50%;
-        height: 100%;
+        max-height: 80%;
         overflow-y: auto;
 
         display: flex;
         gap: 0.5rem;
         flex-direction: column;
-        justify-content: center;
+
 
         button.send-email {
             background-color: var(--primary-color);
