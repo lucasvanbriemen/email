@@ -22,7 +22,7 @@
     label {
         position: absolute;
         top: 50%;
-        left: 10px;
+        left: 1rem;
         transform: translateY(-50%);
         pointer-events: none;
         transition: all 0.2s ease-in-out;
@@ -33,7 +33,7 @@
     }
 
     input:focus + label, input:not(:placeholder-shown) + label {
-        top: 0rem;
+        top: 0;
         font-size: 0.75rem;
 
         background-color: var(--background-color-one);
