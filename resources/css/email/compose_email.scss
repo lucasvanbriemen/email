@@ -37,7 +37,25 @@
         justify-content: center;
 
         button.send-email {
-            background-color: red;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+
+            width: 50%;
+            padding: 0.5rem 2rem;
+            border-radius: 1rem;
+
+            font-weight: 700;
+            font-size: 1.25rem;
+
+            transition: all 0.3s ease-in-out;
+
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--primary-color-dark);
+                color: var(--text-color-secondary);
+                border-radius: 2rem;
+            }
         }
 
         #fr-logo {
