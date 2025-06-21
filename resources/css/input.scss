@@ -1,0 +1,32 @@
+.input-wrapper {
+    position: relative;
+
+    input {
+        
+    }
+
+    label {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: all 0.2s ease-in-out;
+
+        background-color: transparent;
+        color: var(--text-color);
+        border: none;
+    }
+
+    input:focus + label, input:not(:placeholder-shown) + label {
+        top: 0rem;
+        font-size: 0.75rem;
+
+        background-color: var(--background-color-one);
+        border: 1px solid var(--primary-color);
+        color: var(--text-color);
+
+        padding: 0.25rem 0.5rem;
+        border-radius: 1rem;
+    }
+}
