@@ -1,8 +1,10 @@
 const composeEmailButton = document.querySelector('.compose-email');
 const composeEmailWrapper = document.querySelector('.compose-email-wrapper');
 
-const editor = new FroalaEditor('#email-body-wysiwyg');
-
+const editor = new FroalaEditor('#email-body-wysiwyg', {
+    heightMin: 15 * 16, // 15rem
+});
+  
 composeEmailButton.addEventListener('click', function() {
     composeEmailWrapper.classList.add('open');
     composeEmailWrapper.querySelector('.email-to').focus();

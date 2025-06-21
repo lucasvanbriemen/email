@@ -73,4 +73,54 @@
             display: none;
         }
     }
+
+    #email-body-wysiwyg  {
+        background-color: var(--background-color-one);
+
+
+        .fr-wrapper, .fr-toolbar, .fr-more-toolbar {
+            background: var(--background-color-one);
+            border: 1px solid var(--border-color);
+        }
+
+        .fr-more-toolbar {
+            border: none;
+        }
+
+        .fr-newline {
+            display: none;
+        }
+
+        .fr-wrapper {
+            border-radius: 0 0 1rem 1rem;
+
+            * {
+                color: var(--text-color);
+            }
+        }
+
+        .fr-second-toolbar {
+            display: none;
+        }
+
+        .fr-btn, .fr-open {
+            background-color: var(--background-color-one);
+
+            .fr-svg *, {
+                fill: var(--text-color);
+            }
+            
+            &:hover {
+                background-color: var(--primary-color-dark);
+                color: var(--text-color-secondary);
+            }
+        }
+
+        .fr-open {
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            margin: 0.5rem 0;
+            background-color: var(--primary-color);
+        }
+    }
 }
