@@ -1,7 +1,7 @@
 <x-account-layout>
-    @foreach ($imap_credentials as $credential)
+    @foreach ($profiles as $profile)
         <div class="mb-4">
-            {{ $credential->username }} 
+            {{ $profile->name }}
         </div>
     @endforeach
 
@@ -28,12 +28,12 @@
     <form action="/account/smtp_credentials" method="post">
         @csrf
 
-        <select name='imap_credential_id' required>
+        {{-- <select name='imap_credential_id' required>
             <option value=''>{{ __('Select IMAP Credential') }}</option>
             @foreach ($imap_credentials as $credential)
                 <option value='{{ $credential->id }}'>{{ $credential->username }}</option>
             @endforeach
-        </select>
+        </select> --}}
 
         <input type='text' name='host' placeholder="{{ __('SMTP host') }}" required >
         <input type='text' name='port' placeholder="{{ __('SMTP port') }}" required >

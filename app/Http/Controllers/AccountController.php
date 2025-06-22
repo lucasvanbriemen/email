@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ImapCredentials;
 use App\Models\SmtpCredentials;
+use App\Models\Profiles;
 
 class AccountController extends Controller
 {
     //
     public function edit()
     {
-
         // get the current user's IMAP credentials
-        $imapCredentials = ImapCredentials::where('user_id', auth()->id())->get();
+        $profiles = Profiles::where('user_id', auth()->id())->get();
 
         return view('account.credentials', [
-            'imap_credentials' => $imapCredentials,
+            'profiles' => $profiles,
         ]);
     }
 
