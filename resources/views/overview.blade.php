@@ -1,4 +1,4 @@
-<x-email-layout :selectedFolder="$selectedFolder" :selectedCredential="$selectedCredential">
+<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile">
 
     @vite(['resources/css/email/overview.scss', 'resources/js/email/overview.js'])
 
@@ -37,7 +37,7 @@
                     'current_iteration_date' => $current_iteration_date,
                     'size' => count($emailThread),
                     'thread' => true,
-                    'selectedCredential' => $selectedCredential,
+                    'selectedCredential' => $selectedProfile,
                     'uuid' => $uuid,
                     'is_fully_read' => !in_array(false, array_column($emailThread, 'has_read')),
                 ])
@@ -52,9 +52,9 @@
                     ' ' .
                     ($email['is_starred'] == 1 ? ' starred' : 'unstarred'),
                 'dataUrl' =>
-                    '/' . $selectedCredential->id . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
+                    '/' . $selectedProfile->linked_profile_count . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
                 'current_iteration_date' => $current_iteration_date,
-                'selectedCredential' => $selectedCredential,
+                'selectedProfile' => $selectedProfile,
                 'thead' => false,
                 'uuid' => uniqid('message-'),
                 'is_fully_read' => !in_array(false, array_column($emailThread, 'has_read')),

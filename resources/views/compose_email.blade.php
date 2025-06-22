@@ -6,7 +6,7 @@
     <div class="compose-email">
         @csrf
 
-        <input type='hidden' name='credential_id' class='email-credential-id' value='{{ $selectedCredential->id }}'/>
+        <input type='hidden' name='credential_id' class='email-credential-id' value='{{ $selectedProfile->id }}'/>
 
         <x-input type="email" name="to" class='email-to'/>
         <x-input type="email" name="cc" label="cc" class='email-cc'/>

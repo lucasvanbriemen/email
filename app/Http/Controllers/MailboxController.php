@@ -57,17 +57,25 @@ class MailboxController extends Controller
             'emailThreads' => $emailThreads,
             'folder' => $folder,
             'selectedFolder' => $selectedFolder,
-            'selectedCredential' => ImapCredentials::find($linked_profile_id),
+            'selectedProfile' => $profile,
         ]);
     }
 
     public function show($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
-        $selectedFolder = $email->folder->path;
+        if (!$email) {
+            return redirect('/');
+        }
+
+        $selectedFolder = Folder::where('path', $folder)
+            ->where('profile_id', $profile->id)
+            ->first();
 
         $attachments = Attachment::where('email_id', $email->id)->get();
 
@@ -78,7 +86,7 @@ class MailboxController extends Controller
             'email' => $email,
             'selectedFolder' => $selectedFolder,
             'attachments' => $attachments,
-            'selectedCredential' => ImapCredentials::find($linked_profile_id),
+            'selectedProfile' => $profile,
         ]);
     }
 

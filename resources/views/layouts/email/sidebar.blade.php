@@ -15,7 +15,7 @@
 
         @foreach ($folders as $folder)
             <div class='folder @if ($folder->path == $selectedFolder) selected @endif'>
-                <a href='/{{ $selectedCredential->id }}/folder/{{ $folder->path }}'>
+                <a href='/{{ $selectedProfile->id }}/folder/{{ $folder->path }}'>
                     {{ strtolower($folder->name) }}
                 </a>
             </div>
@@ -23,10 +23,10 @@
 
 
         <div class='account-selector'>
-            @foreach ($imapCredentials as $credential)
-                <a class='account' href='/{{ $credential->id }}/folder/{{ $selectedFolder }}'>
-                    <img src='{{ gravar($credential->username, 64) }}' alt='{{ $credential->username }}' class='avatar'>
-                    <span class='text'>{{ $credential->username }}</span>
+            @foreach ($profiles as $profile)
+                <a class='account' href='/{{ $profile->id }}/folder/{{ $selectedFolder }}'>
+                    <img src='{{ gravar($profile->email, 64) }}' alt='{{ $profile->email }}' class='avatar'>
+                    <span class='text'>{{ $profile->name }}</span>
                 </a>
             @endforeach
 
@@ -38,8 +38,8 @@
         </div>
 
         <div class='current-account'>
-            <img src='{{ gravar($selectedCredential->username, 64) }}' alt='{{ $selectedCredential->username }}' class='avatar'>
-            <span class='text'>{{ $selectedCredential->username }}</span>
+            <img src='{{ gravar($selectedProfile->email, 64) }}' alt='{{ $selectedProfile->email }}' class='avatar'>
+            <span class='text'>{{ $selectedProfile->name }}</span>
         </div>
     </div>
 </div>
