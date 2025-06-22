@@ -92,8 +92,10 @@ class MailboxController extends Controller
 
     public function archive($linked_profile_id = null, $folder = null, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         if ($email) {
@@ -109,8 +111,10 @@ class MailboxController extends Controller
 
     public function read($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         if ($email) {
@@ -126,8 +130,10 @@ class MailboxController extends Controller
 
     public function unread($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         if ($email) {
@@ -143,7 +149,9 @@ class MailboxController extends Controller
 
     public function delete($linked_profile_id, $folder, $uuid)
     {
-        Email::deleteEmail($uuid, $linked_profile_id);
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
+        Email::deleteEmail($uuid, $profile->id);
 
         return [
             'status' => 'success',
@@ -153,8 +161,10 @@ class MailboxController extends Controller
 
     public function star($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         if ($email) {
@@ -171,8 +181,10 @@ class MailboxController extends Controller
 
     public function unstar($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         if ($email) {
@@ -188,14 +200,16 @@ class MailboxController extends Controller
 
     public function readThread($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->get();
 
         foreach ($emails as $threadEmail) {
@@ -211,14 +225,16 @@ class MailboxController extends Controller
 
     public function archiveThread($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->get();
 
         foreach ($emails as $threadEmail) {
@@ -234,18 +250,20 @@ class MailboxController extends Controller
 
     public function deleteThread($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->get();
 
         foreach ($emails as $threadEmail) {
-            Email::deleteEmail($threadEmail->uuid, $threadEmail->linked_profile_id);
+            Email::deleteEmail($threadEmail->uuid, $threadEmail->profile_id);
         }
 
         return [
@@ -256,14 +274,16 @@ class MailboxController extends Controller
 
     public function starThread($linked_profile_id, $folder, $uuid)
     {
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
         $email = Email::where('uuid', $uuid)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->get();
 
         foreach ($emails as $threadEmail) {

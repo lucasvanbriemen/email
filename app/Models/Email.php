@@ -91,7 +91,7 @@ class Email extends Model
         return $query->orderBy('sent_at', 'desc')->get();
     }
 
-    public static function deleteEmail($uuid, $credential_id)
+    public static function deleteEmail($uuid, $profile_id)
     {
         $email = Email::where('uuid', $uuid)
             ->first();
@@ -104,7 +104,7 @@ class Email extends Model
 
         // Remove to trash
         $trashFolder = Folder::where('path', 'trash')
-            ->where('imap_credential_id', $credential_id)
+            ->where('profile_id', $profile_id)
             ->first();
 
         $email->folder_id = $trashFolder->id;
