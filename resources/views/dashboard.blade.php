@@ -24,7 +24,7 @@
                 'email' => $email,
                 'class' => 'message',
                 'uuid' => uniqid('email-'),
-                'dataUrl' => '/' . $email->linked_profile_count . '/folder/inbox/mail/' . $email->uuid,
+                'dataUrl' => '/' . $email->profile_id . '/folder/inbox/mail/' . $email->uuid,
                 'is_fully_read' => $email->has_read
             ])
         @endforeach

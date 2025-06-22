@@ -13,6 +13,7 @@ class Email extends Model
      *
      * @var list<string>
      */
+
     protected $fillable = [
         'profile_id',
         'subject',

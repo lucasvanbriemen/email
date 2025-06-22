@@ -17,14 +17,17 @@ class DashboardController extends Controller
 
         $profiles = Profiles::where('user_id', auth()->id())->get();
 
-    // get the last time the user logged in
         $last_activity = auth()->user()->last_activity;
 
-    // Get all emails for the authenticated user after the last activity
         $emails = Email::whereIn('profile_id', $profiles->pluck('id'))
-        ->where('created_at', '>', $last_activity)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->where('created_at', '>', $last_activity)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($emails as $email) {
+            // set the profile_id to the linked_profile_count
+            $email->profile_id = Profiles::where('id', $email->profile_id)->first()->linked_profile_count;
+        }
 
         $ollama_system_prompt = "You are an AI assistant analyzing emails from a user's inbox since their last activity. Extract only relevant key events, tasks, decisions, deadlines, or important updates. Exclude emails without meaningful content. Provide a clean, bullet-pointed list with no greetings, signatures, filler, or markup. Deliver strictly factual, concise points only.";
         $ollama_prompt = "Here is the list of emails:\n\n";
