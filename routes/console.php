@@ -119,7 +119,7 @@ Artisan::command("get_emails", function () {
 
 
             // set the URL for the notification
-            $profile = Profiles::find($email->profile_id);
+            $profile = Profiles::where('id', $email->profile_id)->first();
             if (!$profile) {
                 Log::error('Profile not found for email: ' . $email->id);
                 continue; // Skip if profile not found
