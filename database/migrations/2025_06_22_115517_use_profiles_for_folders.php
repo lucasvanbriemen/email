@@ -14,24 +14,24 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::table('folders', function (Blueprint $table) {
-            // Add profile_id to folders table
-            $table->foreignId('profile_id')->constrained('profiles')->onDelete('cascade');
+        // Schema::table('folders', function (Blueprint $table) {
+        //     // Add profile_id to folders table
+        //     $table->foreignId('profile_id')->constrained('profiles')->onDelete('cascade');
 
-            // Remove user_id from folders table
-            $table->dropForeign(['imap_credential_id']);
-            $table->dropColumn('imap_credential_id');
-        });
+        //     // Remove user_id from folders table
+        //     $table->dropForeign(['imap_credential_id']);
+        //     $table->dropColumn('imap_credential_id');
+        // });
 
-        // set the profile_id to the profile that has the same username as the imap credential username
-        Folder::all()->each(function ($folder) {
-            $profile = Profiles::where('email', $folder->imap_credential->username)->first();
+        // // set the profile_id to the profile that has the same username as the imap credential username
+        // Folder::all()->each(function ($folder) {
+        //     $profile = Profiles::where('email', $folder->imap_credential->username)->first();
 
-            if ($profile) {
-                $folder->profile_id = $profile->id;
-                $folder->save();
-            }
-        });
+        //     if ($profile) {
+        //         $folder->profile_id = $profile->id;
+        //         $folder->save();
+        //     }
+        // });
     }
 
     /**
