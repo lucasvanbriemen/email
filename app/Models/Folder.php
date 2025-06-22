@@ -24,7 +24,7 @@ class Folder extends Model
     ];
 
     protected $fillable = [
-        'imap_credential_id',
+        'profile_id',
         'name',
         'path',
     ];

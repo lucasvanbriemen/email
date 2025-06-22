@@ -8,7 +8,7 @@ class SmtpCredentials extends Model
 {
     //
     protected $fillable = [
-        'imap_credential_id',
+        'profile_id',
         'host',
         'port',
         'username',

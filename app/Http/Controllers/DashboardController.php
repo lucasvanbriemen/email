@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ImapCredentials;
 use App\Models\Email;
+use App\Models\Profiles;
 
 class DashboardController extends Controller
 {
@@ -14,14 +15,13 @@ class DashboardController extends Controller
     public function index()
     {
 
-        // Get all IMAP credentials for the authenticated user
-        $credentials = ImapCredentials::where('user_id', auth()->id())->get();
+        $profiles = Profiles::where('user_id', auth()->id())->get();
 
         // get the last time the user logged in
         $last_activity = auth()->user()->last_activity;
 
         // Get all emails for the authenticated user after the last activity
-        $emails = Email::whereIn('credential_id', $credentials->pluck('id'))
+        $emails = Email::whereIn('profile_id', $profiles->pluck('id'))
             ->where('created_at', '>', $last_activity)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -47,7 +47,7 @@ class DashboardController extends Controller
         return view(
             'dashboard',
             [
-                'credentials' => $credentials,
+                'profiles' => $profiles,
                 'emails' => $emails,
                 'last_activity' => $last_activity,
                 'ollama_response' => $ai_summery,

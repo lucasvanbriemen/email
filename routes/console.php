@@ -54,7 +54,7 @@ Artisan::command("get_emails", function () {
             $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
             if (
                 Email::where('uid', $message->getUid())
-                ->where('credential_id', $credential->id)
+                ->where('profile_id', $credential->profile_id)
                 ->where('sender_email', $message->getFrom()[0]->mail ?? null)
                 ->where('sent_at', $dateUtc->format('Y-m-d H:i:s'))
                 ->exists()
@@ -65,12 +65,12 @@ Artisan::command("get_emails", function () {
             }
 
             $folderId = Folder::where('path', 'inbox')
-                ->where('imap_credential_id', $credential->id)
+                ->where('profile_id', $credential->profile_id)
                 ->value('id');
 
             // Prepare email data
             $emailData = [
-                'credential_id' => $credential->id,
+                'profile_id' => $credential->profile_id,
                 'subject' => $message->getSubject(),
                 'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
                 'sent_at' => $dateUtc->format('Y-m-d H:i:s'),
@@ -83,7 +83,6 @@ Artisan::command("get_emails", function () {
                     return $to->mail ?? null;
                 })->filter()->all()) ?: null,
             ];
-
 
             $email = Email::create($emailData);
 
@@ -111,7 +110,7 @@ Artisan::command("get_emails", function () {
             }
 
             // Since we have created a copy of the email, we can delete it from the server to make run time faster.
-            $message->delete();
+            // $message->delete();
 
             if (!config('app.ntfy.enabled')) {
                 continue; // Skip notification if not enabled
@@ -133,8 +132,8 @@ Schedule::command('get_emails')
     ->everyFifteenSeconds()
     ->withoutOverlapping()
     ->onSuccess(function () {
-        Log::info('Emails fetched successfully at ' . now());
+                Log::info('Emails fetched successfully at ' . now());
     })
     ->onFailure(function () {
-        Log::error('Failed to fetch emails at ' . now());
+                Log::error('Failed to fetch emails at ' . now());
     });

@@ -14,7 +14,7 @@ class Email extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'credential_id',
+        'profile_id',
         'subject',
         'from',
         'sender_email',

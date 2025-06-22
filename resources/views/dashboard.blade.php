@@ -4,10 +4,10 @@
 
     <div class='left-panel'>
         <div class='linked-accounts'>
-            @foreach ($credentials as $credential)
-                <a class='linked-account' href='/{{ $credential->id }}/folder/inbox'>
-                    <img src='{{ gravar($credential->username, 64) }}'>
-                    {{ $credential->username }}
+            @foreach ($profiles as $profile)
+                <a class='linked-account' href='/{{ $profile->linked_profile_count }}/folder/inbox'>
+                    <img src='{{ gravar($profile->email, 64) }}'>
+                    {{ $profile->name }}
                     <hr>
                 </a>
             @endforeach
@@ -24,7 +24,7 @@
                 'email' => $email,
                 'class' => 'message',
                 'uuid' => uniqid('email-'),
-                'dataUrl' => '/' . $email->credential_id . '/folder/inbox/mail/' . $email->uuid,
+                'dataUrl' => '/' . $email->linked_profile_count . '/folder/inbox/mail/' . $email->uuid,
                 'is_fully_read' => $email->has_read
             ])
         @endforeach

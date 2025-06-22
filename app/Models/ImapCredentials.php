@@ -15,7 +15,7 @@ class ImapCredentials extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'user_id',
+        'profile_id',
         'host',
         'port',
         'protocol',
