@@ -29,6 +29,8 @@ Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/star_thread', [Mail
 
 Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
+    Route::get('/account/{linked_profile_id}', [AccountController::class, 'edit'])->name('account.edit.profile');
+
     Route::patch('/account', [AccountController::class, 'update'])->name('profile.update');
     Route::delete('/account', [AccountController::class, 'destroy'])->name('profile.destroy');
 

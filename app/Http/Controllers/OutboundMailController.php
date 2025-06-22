@@ -46,6 +46,7 @@ class OutboundMailController extends Controller
 
         $mailer->send([], [], function ($message) use ($request) {
             $message->to($request->input('to'))
+                ->cc($request->input('cc'))
                 ->subject($request->input('subject'))
                 ->html($request->input('body'));
         });

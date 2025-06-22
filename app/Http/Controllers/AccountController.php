@@ -10,13 +10,21 @@ use App\Models\Profile;
 class AccountController extends Controller
 {
     //
-    public function edit()
+    public function edit($linked_profile_id = null)
     {
         // get the current user's IMAP credentials
         $profiles = Profile::where('user_id', auth()->id())->get();
 
+
+        if ($linked_profile_id) {
+            $seltectedProfile = Profile::linkedProfileIdToProfile($linked_profile_id);
+        } else {
+            $seltectedProfile = Profile::linkedProfileIdToProfile($profiles->first()->id);
+        }
+
         return view('account.credentials', [
             'profiles' => $profiles,
+            'selectedProfile' => $seltectedProfile,
         ]);
     }
 
