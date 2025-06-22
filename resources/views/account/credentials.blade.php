@@ -1,27 +1,28 @@
 <x-account-layout :profiles="$profiles" :selectedProfile="$selectedProfile">
-    @foreach ($profiles as $profile)
-        <div class="mb-4">
-            {{ $profile->name }}
-        </div>
-    @endforeach
 
+    <h1>{{ __('Credentials') }}</h1>
 
-    <form action="/account/credentials" method="post">
+    <form action="/account/{{ $selectedProfile->linked_profile_count }}/imap" method="post">
         @csrf
 
-        <input type='text' name='host' placeholder="{{ __('IMAP host') }}" required>
-        <input type='text' name='port' placeholder="{{ __('IMAP Port') }}" required value='993'>
-        <input type='text' name='protocol' placeholder="{{ __('IMAP Protocol') }}" required value='imap'>
-        <input type='text' name='username' placeholder="{{ __('IMAP Username') }}" required>
-        <input type='password' name='password' placeholder="{{ __('IMAP Password') }}" required>
-        <input type='text' name='encryption' placeholder="{{ __('IMAP Encryption') }}" required value='ssl'>
-        <input type='checkbox' name='validate_cert' placeholder="{{ __('IMAP Validate Cert') }}" required checked>
-
+        <x-input type="text" name="host" label="{{ __('IMAP host') }}" :value="$imapCredentials->host" required />
+        <x-input type="text" name="port" label="{{ __('IMAP Port') }}" :value="$imapCredentials->port" required />
+        <x-input type="text" name="protocol" label="{{ __('IMAP Protocol') }}" :value="$imapCredentials->protocol" required />
+        <x-input type="text" name="username" label="{{ __('IMAP Username') }}" :value="$imapCredentials->username" required />
+        <x-input type="password" name="password" label="{{ __('IMAP Password') }}" :value="$imapCredentials->password" required />
+        <x-input type="text" name="encryption" label="{{ __('IMAP Encryption') }}" :value="$imapCredentials->encryption" required />
         <button type="submit" class="btn btn-primary">
-            {{ __('Add IMAP Credential') }}
+            {{ __('Update IMAP Credential') }}
         </button>
     </form>
 
+    <hr>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <hr>
     <h2>{{ __('SMTP Credentials') }}</h2>
 

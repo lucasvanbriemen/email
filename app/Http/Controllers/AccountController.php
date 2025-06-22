@@ -22,14 +22,29 @@ class AccountController extends Controller
             $seltectedProfile = Profile::linkedProfileIdToProfile($profiles->first()->id);
         }
 
+        $imapCredentials = ImapCredentials::where('profile_id', $seltectedProfile->id)->first();
+        if (!$imapCredentials) {
+            $imapCredentials = new ImapCredentials();
+        }
+
+        $smtpCredentials = SmtpCredentials::where('profile_id', $seltectedProfile->id)->first();
+        if (!$smtpCredentials) {
+            $smtpCredentials = new SmtpCredentials();
+        }
+
         return view('account.credentials', [
             'profiles' => $profiles,
             'selectedProfile' => $seltectedProfile,
+            'imapCredentials' => $imapCredentials,
+            'smtpCredentials' => $smtpCredentials,
         ]);
     }
 
-    public function storeImapCredentials()
+    public function storeImapCredentials($linked_profile_id = null)
     {
+
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
+
         // Validate and store IMAP credentials
         request()->validate([
             'host' => 'required|string|max:255',
@@ -38,18 +53,24 @@ class AccountController extends Controller
             'password' => 'required|string|max:255',
         ]);
 
+        // Check if we have an existing IMAP credential for this profile
+        // If not, create a new one
+        // If we have an existing one, update it
+        $imapCredential = ImapCredentials::where('profile_id', $profile->id)->first();
+        if (!$imapCredential) {
+            $imapCredential = new ImapCredentials();
+        }
 
-        ImapCredentials::create(
-            [
-                'user_id' => auth()->id(),
-                'host' => request('host'),
-                'port' => request('port'),
-                'username' => request('username'),
-                'password' => request('password'),
-            ]
-        );
+        $imapCredential->profile_id = $profile->id;
+        $imapCredential->host = request('host');
+        $imapCredential->port = request('port');
+        $imapCredential->username = request('username');
+        $imapCredential->password = request('password');
+        $imapCredential->encryption = request('encryption', 'ssl');
 
-        return redirect()->route('account.edit')->with('status', 'IMAP credentials updated successfully.');
+        $imapCredential->save();
+
+        return redirect('/account/' . $linked_profile_id)->with('status', 'IMAP credentials updated successfully.');
     }
 
     public function storeSmtpCredentials()

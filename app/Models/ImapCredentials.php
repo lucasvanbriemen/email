@@ -20,8 +20,18 @@ class ImapCredentials extends Authenticatable
         'port',
         'protocol',
         'encryption',
-        'validate_cert',
         'username',
         'password',
     ];
+
+    protected static function booted()
+    {
+        // If an imap is made, we want to set the validate_cert to true by default
+        static::created(function ($imapCedential) {
+            // Set validate_cert to true by default
+            $imapCedential->validate_cert = true;
+            $imapCedential->save();
+        });
+    }
+
 }
