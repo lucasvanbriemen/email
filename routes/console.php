@@ -12,6 +12,7 @@ use App\Models\ImapCredentials;
 use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
+use App\Models\Profiles;
 
 Artisan::command("get_emails", function () {
     $imapCredentials = ImapCredentials::all();
@@ -116,12 +117,22 @@ Artisan::command("get_emails", function () {
                 continue; // Skip notification if not enabled
             }
 
+
+            // set the URL for the notification
+            $profile = Profiles::find($email->profile_id);
+            if (!$profile) {
+                Log::error('Profile not found for email: ' . $email->id);
+                continue; // Skip if profile not found
+            }
+
+            $url = config('app.url') . '/' . $profile->linked_profile_count . '/folder/inbox/mail/' . $email->uuid;
+
             // Send notification
-            dispatch(function () use ($emailData, $credential, $email) {
+            dispatch(function () use ($emailData, $url) {
                 NtfyHelper::sendNofication(
                     $emailData['from'],
                     $emailData['subject'],
-                    config('app.url') . '/' . $credential->id  . '/folder/inbox/mail/' . $email['uuid']
+                    $url
                 );
             });
         }
