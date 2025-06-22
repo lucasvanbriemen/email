@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Transport\SmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
-use App\Models\ImapCredentials;
 use App\Models\SmtpCredentials;
+use App\Models\Profiles;
 
 class OutboundMailController extends Controller
 {
-    public function sendEmail(Request $request, $credentialId)
+    public function sendEmail(Request $request, $linked_profile_id)
     {
         $request->validate([
             'to' => 'required|email',
@@ -20,7 +20,16 @@ class OutboundMailController extends Controller
             'body' => 'required|string',
         ]);
 
-        $smtpCredentials = SmtpCredentials::where('imap_credential_id', $credentialId)->first();
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+
+        $smtpCredentials = SmtpCredentials::where('profile_id', $profile->id)->first();
+
+        if (!$smtpCredentials) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'SMTP credentials not found for the specified profile.',
+            ], 404);
+        }
 
         $transport = new EsmtpTransport('lucasvanbriemen.nl', 465);
         $transport->setUsername($smtpCredentials->username);
