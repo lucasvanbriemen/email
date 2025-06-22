@@ -1,10 +1,12 @@
 <x-account-layout :profiles="$profiles" :selectedProfile="$selectedProfile">
 
-    <h1>{{ __('Credentials') }}</h1>
+@vite(['resources/css/account/credentials.scss'])
+
 
     <form action="/account/{{ $selectedProfile->linked_profile_count }}/imap" method="post">
-        @csrf
+        <h2>{{ __('Credentials') }}</h2>
 
+        @csrf
         <x-input type="text" name="host" label="{{ __('IMAP host') }}" :value="$imapCredentials->host" required />
         <x-input type="text" name="port" label="{{ __('IMAP Port') }}" :value="$imapCredentials->port" required />
         <x-input type="text" name="protocol" label="{{ __('IMAP Protocol') }}" :value="$imapCredentials->protocol" required />
@@ -16,17 +18,8 @@
         </button>
     </form>
 
-    <hr>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <hr>
-    <h2>{{ __('SMTP Credentials') }}</h2>
-
     <form action="/account/{{ $selectedProfile->linked_profile_count }}/smtp" method="post">
+        <h2>{{ __('SMTP Credentials') }}</h2>
         @csrf
 
         <x-input type="text" name="host" label="{{ __('SMTP Host') }}" value="{{ $smtpCredentials->host }}" required />
@@ -39,7 +32,7 @@
         <x-input type="text" name="from_email" label="{{ __('SMTP From Email') }}" value="{{ $smtpCredentials->from_email }}" required />
 
         <button type="submit" class="btn btn-primary">
-            {{ __('Add SMTP Credential') }}
+            {{ __('Update SMTP Credential') }}
         </button>
     </form>
 
