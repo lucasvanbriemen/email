@@ -1,4 +1,4 @@
-<x-account-layout>
+<x-account-layout :profiles="$profiles">
     @foreach ($profiles as $profile)
         <div class="mb-4">
             {{ $profile->name }}
