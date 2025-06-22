@@ -10,38 +10,29 @@ use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Models\ImapCredentials;
-use Illuminate\Mail\Transport\SmtpTransport;
-use Illuminate\Support\Facades\View;
-use Swift_Mailer;
-use Swift_SmtpTransport;
-use Illuminate\Mail\Mailer;
-use Illuminate\Mail\TransportManager;
-use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
-use Symfony\Component\Mailer\Transport\TransportInterface;
-use Illuminate\Container\Container;
 
 class MailboxController extends Controller
 {
     protected $client;
     protected $DEFAULT_FOLDER = 'inbox';
 
-    public function index($credential_id = null, $folder = null)
+    public function index($linked_profile_id = null, $folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
-        if (!$credential_id) {
-            $credential_id = ImapCredentials::where('user_id', auth()->id())
+        if (!$linked_profile_id) {
+            $linked_profile_id = ImapCredentials::where('user_id', auth()->id())
                 ->value('id');
 
             // If that doesnt exist redircht to /account
-            if (!$credential_id) {
+            if (!$linked_profile_id) {
                 return redirect('/account');
             }
         }
 
         // If the selected credential does not exist to the user, show a 404 error
         if (
-            !ImapCredentials::where('id', $credential_id)
+            !ImapCredentials::where('id', $linked_profile_id)
             ->where('user_id', auth()->id())
             ->exists()
         ) {
@@ -49,10 +40,10 @@ class MailboxController extends Controller
         }
 
         $folder = Folder::where('path', $selectedFolder)
-            ->where('imap_credential_id', $credential_id)
+            ->where('imap_linked_profile_id', $linked_profile_id)
             ->first();
 
-        $emails = Email::getEmails($folder, $credential_id);
+        $emails = Email::getEmails($folder, $linked_profile_id);
 
         $emailThreads = [];
         $email_sorted_uuids = [];
@@ -82,14 +73,14 @@ class MailboxController extends Controller
             'emailThreads' => $emailThreads,
             'folder' => $folder,
             'selectedFolder' => $selectedFolder,
-            'selectedCredential' => ImapCredentials::find($credential_id),
+            'selectedCredential' => ImapCredentials::find($linked_profile_id),
         ]);
     }
 
-    public function show($credential_id, $folder, $uuid)
+    public function show($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         $selectedFolder = $email->folder->path;
@@ -103,14 +94,14 @@ class MailboxController extends Controller
             'email' => $email,
             'selectedFolder' => $selectedFolder,
             'attachments' => $attachments,
-            'selectedCredential' => ImapCredentials::find($credential_id),
+            'selectedCredential' => ImapCredentials::find($linked_profile_id),
         ]);
     }
 
-    public function archive($credential_id = null, $folder = null, $uuid)
+    public function archive($linked_profile_id = null, $folder = null, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         if ($email) {
@@ -124,10 +115,10 @@ class MailboxController extends Controller
         ];
     }
 
-    public function read($credential_id, $folder, $uuid)
+    public function read($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         if ($email) {
@@ -141,10 +132,10 @@ class MailboxController extends Controller
         ];
     }
 
-    public function unread($credential_id, $folder, $uuid)
+    public function unread($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         if ($email) {
@@ -158,9 +149,9 @@ class MailboxController extends Controller
         ];
     }
 
-    public function delete($credential_id, $folder, $uuid)
+    public function delete($linked_profile_id, $folder, $uuid)
     {
-        Email::deleteEmail($uuid, $credential_id);
+        Email::deleteEmail($uuid, $linked_profile_id);
 
         return [
             'status' => 'success',
@@ -168,10 +159,10 @@ class MailboxController extends Controller
         ];
     }
 
-    public function star($credential_id, $folder, $uuid)
+    public function star($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         if ($email) {
@@ -186,10 +177,10 @@ class MailboxController extends Controller
     }
 
 
-    public function unstar($credential_id, $folder, $uuid)
+    public function unstar($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         if ($email) {
@@ -203,16 +194,16 @@ class MailboxController extends Controller
         ];
     }
 
-    public function readThread($credential_id, $folder, $uuid)
+    public function readThread($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->get();
 
         foreach ($emails as $threadEmail) {
@@ -226,16 +217,16 @@ class MailboxController extends Controller
         ];
     }
 
-    public function archiveThread($credential_id, $folder, $uuid)
+    public function archiveThread($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->get();
 
         foreach ($emails as $threadEmail) {
@@ -249,20 +240,20 @@ class MailboxController extends Controller
         ];
     }
 
-    public function deleteThread($credential_id, $folder, $uuid)
+    public function deleteThread($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->get();
 
         foreach ($emails as $threadEmail) {
-            Email::deleteEmail($threadEmail->uuid, $threadEmail->credential_id);
+            Email::deleteEmail($threadEmail->uuid, $threadEmail->linked_profile_id);
         }
 
         return [
@@ -271,16 +262,16 @@ class MailboxController extends Controller
         ];
     }
 
-    public function starThread($credential_id, $folder, $uuid)
+    public function starThread($linked_profile_id, $folder, $uuid)
     {
         $email = Email::where('uuid', $uuid)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->first();
 
         $emails = Email::where('sender_email', $email->sender_email)
             ->where('subject', $email->subject)
             ->where('folder_id', $email->folder_id)
-            ->where('credential_id', $credential_id)
+            ->where('linked_profile_id', $linked_profile_id)
             ->get();
 
         foreach ($emails as $threadEmail) {
