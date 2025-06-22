@@ -58,13 +58,13 @@ class Email extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function getEmails($folder, $credential_id)
+    public static function getEmails($folder, $profile)
     {
         if (!$folder) {
             return collect();
         }
 
-        $query = Email::where('credential_id', $credential_id);
+        $query = Email::where('profile_id', $profile->id);
 
         // If the folder is NOT a custom view folder, we filter by folder ID
         if (!in_array($folder->path, Email::$customViewFolders)) {

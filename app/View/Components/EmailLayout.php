@@ -6,6 +6,7 @@ use Illuminate\View\Component;
 use Illuminate\View\View;
 use App\Models\Folder;
 use App\Models\User;
+use App\Models\Profiles;
 use Illuminate\Support\Facades\DB;
 
 class EmailLayout extends Component
@@ -17,10 +18,10 @@ class EmailLayout extends Component
     protected $client;
     protected $DEFAULT_FOLDER = 'inbox';
     protected $selectedFolder;
-    protected $imapCredentials = [];
-    protected $selectedCredential;
+    protected $profiles = [];
+    protected $selectedProfile;
 
-    public function __construct($selectedCredential = null, $selectedFolder = null)
+    public function __construct($selectedProfile = null, $selectedFolder = null)
     {
         if ($selectedFolder) {
             $this->selectedFolder = $selectedFolder;
@@ -28,27 +29,25 @@ class EmailLayout extends Component
             $this->selectedFolder = $this->DEFAULT_FOLDER;
         }
 
-        $this->imapCredentials = DB::table('imap_credentials')
-            ->where('user_id', auth()->id())
-            ->get();
+        $this->profiles = Profiles::where('user_id', auth()->id())->get();
 
-        if ($selectedCredential) {
-            $this->selectedCredential = $selectedCredential;
+        if ($selectedProfile) {
+            $this->selectedProfile = $selectedProfile;
         } else {
-            $this->selectedCredential = $this->imapCredentials[0] ?? null;
+            $this->selectedProfile = $this->profiles[0] ?? null;
         }
     }
 
     public function render(): View
     {
-        $folders = Folder::where('imap_credential_id', User::find(auth()->id())->imapCredential->id)->get();
+        $folders = Folder::where('profile_id', $this->selectedProfile->id)->get();
 
         return view('layouts.email',
             [
                 'folders' => $folders,
                 'selectedFolder' => $this->selectedFolder,
-                'imapCredentials' => $this->imapCredentials,
-                'selectedCredential' => $this->selectedCredential
+                'profiles' => $this->profiles,
+                'selectedProfile' => $this->selectedProfile
             ]
         );
     }

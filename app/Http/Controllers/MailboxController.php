@@ -10,40 +10,24 @@ use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Models\ImapCredentials;
+use App\Models\Profiles;
 
 class MailboxController extends Controller
 {
-    protected $client;
     protected $DEFAULT_FOLDER = 'inbox';
 
     public function index($linked_profile_id = null, $folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
-        if (!$linked_profile_id) {
-            $linked_profile_id = ImapCredentials::where('user_id', auth()->id())
-                ->value('id');
-
-            // If that doesnt exist redircht to /account
-            if (!$linked_profile_id) {
-                return redirect('/account');
-            }
-        }
-
-        // If the selected credential does not exist to the user, show a 404 error
-        if (
-            !ImapCredentials::where('id', $linked_profile_id)
-            ->where('user_id', auth()->id())
-            ->exists()
-        ) {
-            abort(404);
-        }
+        // If a users has not an profile setup, lead them to the account page
+        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
 
         $folder = Folder::where('path', $selectedFolder)
-            ->where('imap_linked_profile_id', $linked_profile_id)
+            ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::getEmails($folder, $linked_profile_id);
+        $emails = Email::getEmails($folder, $profile);
 
         $emailThreads = [];
         $email_sorted_uuids = [];
