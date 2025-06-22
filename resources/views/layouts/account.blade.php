@@ -9,7 +9,7 @@
 
         <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
 
-        @vite(['resources/js/app.js', 'resources/js/theme.js', 'resources/css/root.scss', 'resources/css/account/layout.scss'])
+        @vite(['resources/js/app.js', 'resources/js/theme.js', 'resources/css/root.scss', 'resources/css/account/layout.scss', 'resources/css/app.css'])
     </head>
     <body>
 
