@@ -53,9 +53,6 @@ class AccountController extends Controller
             'password' => 'required|string|max:255',
         ]);
 
-        // Check if we have an existing IMAP credential for this profile
-        // If not, create a new one
-        // If we have an existing one, update it
         $imapCredential = ImapCredentials::where('profile_id', $profile->id)->first();
         if (!$imapCredential) {
             $imapCredential = new ImapCredentials();
@@ -73,22 +70,38 @@ class AccountController extends Controller
         return redirect('/account/' . $linked_profile_id)->with('status', 'IMAP credentials updated successfully.');
     }
 
-    public function storeSmtpCredentials()
+    public function storeSmtpCredentials($linked_profile_id = null)
     {
-        SmtpCredentials::create(
-            [
-                'imap_credential_id' => request('imap_credential_id'),
-                'host' => request('host'),
-                'port' => request('port'),
-                'username' => request('username'),
-                'password' => request('password'),
-                'reply_to_name' => request('reply_to_name'),
-                'reply_to_email' => request('reply_to_email'),
-                'from_name' => request('from_name'),
-                'from_email' => request('from_email')
-            ]
-        );
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
-        return redirect()->route('account.edit')->with('status', 'IMAP credentials updated successfully.');
+        request()->validate([
+            'host' => 'required|string|max:255',
+            'port' => 'required|integer',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
+            'reply_to_name' => 'nullable|string|max:255',
+            'reply_to_email' => 'nullable|email|max:255',
+            'from_name' => 'nullable|string|max:255',
+            'from_email' => 'nullable|email|max:255',
+        ]);
+
+        $smtpCredential = SmtpCredentials::where('profile_id', $profile->id)->first();
+        if (!$smtpCredential) {
+            $smtpCredential = new SmtpCredentials();
+        }
+
+        $smtpCredential->profile_id = $profile->id;
+        $smtpCredential->host = request('host');
+        $smtpCredential->port = request('port');
+        $smtpCredential->username = request('username');
+        $smtpCredential->password = request('password');
+        $smtpCredential->reply_to_name = request('reply_to_name');
+        $smtpCredential->reply_to_email = request('reply_to_email');
+        $smtpCredential->from_name = request('from_name');
+        $smtpCredential->from_email = request('from_email');
+
+        $smtpCredential->save();
+
+        return redirect('/account/' . $linked_profile_id)->with('status', 'SMTP credentials updated successfully.');
     }
 }

@@ -26,24 +26,17 @@
     <hr>
     <h2>{{ __('SMTP Credentials') }}</h2>
 
-    <form action="/account/smtp_credentials" method="post">
+    <form action="/account/{{ $selectedProfile->linked_profile_count }}/smtp" method="post">
         @csrf
 
-        {{-- <select name='imap_credential_id' required>
-            <option value=''>{{ __('Select IMAP Credential') }}</option>
-            @foreach ($imap_credentials as $credential)
-                <option value='{{ $credential->id }}'>{{ $credential->username }}</option>
-            @endforeach
-        </select> --}}
-
-        <input type='text' name='host' placeholder="{{ __('SMTP host') }}" required >
-        <input type='text' name='port' placeholder="{{ __('SMTP port') }}" required >
-        <input type='text' name='username' placeholder="{{ __('SMTP username') }}" required>
-        <input type='password' name='password' placeholder="{{ __('SMTP password') }}" required>
-        <input type='text' name='reply_to_email' placeholder="{{ __('SMTP reply_to_email') }}" required>
-        <input type='text' name='reply_to_name' placeholder="{{ __('SMTP reply_to_name') }}" required>
-        <input type='text' name='from_name' placeholder="{{ __('SMTP from_name') }}" required checked>
-        <input type='text' name='from_email' placeholder="{{ __('SMTP from_email') }}" required checked>
+        <x-input type="text" name="host" label="{{ __('SMTP Host') }}" value="{{ $smtpCredentials->host }}" required />
+        <x-input type="text" name="port" label="{{ __('SMTP Port') }}" value="{{ $smtpCredentials->port }}" required />
+        <x-input type="text" name="username" label="{{ __('SMTP Username') }}" value="{{ $smtpCredentials->username }}" required />
+        <x-input type="password" name="password" label="{{ __('SMTP Password') }}" value="{{ $smtpCredentials->password }}" required />
+        <x-input type="text" name="reply_to_email" label="{{ __('SMTP Reply To Email') }}" value="{{ $smtpCredentials->reply_to_email }}" required />
+        <x-input type="text" name="reply_to_name" label="{{ __('SMTP Reply To Name') }}" value="{{ $smtpCredentials->reply_to_name }}" required />
+        <x-input type="text" name="from_name" label="{{ __('SMTP From Name') }}" value="{{ $smtpCredentials->from_name }}" required />
+        <x-input type="text" name="from_email" label="{{ __('SMTP From Email') }}" value="{{ $smtpCredentials->from_email }}" required />
 
         <button type="submit" class="btn btn-primary">
             {{ __('Add SMTP Credential') }}

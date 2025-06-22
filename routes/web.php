@@ -31,13 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
     Route::get('/account/{linked_profile_id}', [AccountController::class, 'edit'])->name('account.edit.profile');
 
-    Route::post('/account/{linked_profile_id}/imap', [AccountController::class, 'storeImapCredentials'])->name('account.credentials.store');
-
-    Route::patch('/account', [AccountController::class, 'update'])->name('profile.update');
-    Route::delete('/account', [AccountController::class, 'destroy'])->name('profile.destroy');
-
-    Route::post('/account/credentials', [AccountController::class, 'storeImapCredentials'])->name('account.credentials.store');
-    Route::post('/account/smtp_credentials', [AccountController::class, 'storeSmtpCredentials'])->name('account.credentials.store.smtp');
+    Route::post('/account/{linked_profile_id}/imap', [AccountController::class, 'storeImapCredentials'])->name('account.credentials.store.imap');
+    Route::post('/account/{linked_profile_id}/smtp', [AccountController::class, 'storeSmtpCredentials'])->name('account.credentials.store.smtp');
 });
 
 require __DIR__.'/auth.php';
