@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\ImapCredentials;
-use App\Models\Profiles; 
+use App\Models\Profile; 
 
 return new class extends Migration
 {
@@ -18,10 +18,10 @@ return new class extends Migration
         ImapCredentials::all()->each(function ($imapCredential) {
 
             // linked profile count is how many profiles are linked to this user id
-            $linkedProfileCount = Profiles::where('user_id', $imapCredential->user_id)->count() + 1; // Increment by 1 for the new profile
+            $linkedProfileCount = Profile::where('user_id', $imapCredential->user_id)->count() + 1; // Increment by 1 for the new profile
 
 
-            Profiles::create([
+            Profile::create([
                 'user_id' => $imapCredential->user_id,
                 'name' => $imapCredential->username, // Assuming username is used as profile name
                 'email' => $imapCredential->username,

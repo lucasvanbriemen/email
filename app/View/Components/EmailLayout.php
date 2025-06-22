@@ -6,7 +6,7 @@ use Illuminate\View\Component;
 use Illuminate\View\View;
 use App\Models\Folder;
 use App\Models\User;
-use App\Models\Profiles;
+use App\Models\Profile;
 use Illuminate\Support\Facades\DB;
 
 class EmailLayout extends Component
@@ -29,7 +29,7 @@ class EmailLayout extends Component
             $this->selectedFolder = $this->DEFAULT_FOLDER;
         }
 
-        $this->profiles = Profiles::where('user_id', auth()->id())->get();
+        $this->profiles = Profile::where('user_id', auth()->id())->get();
 
         if ($selectedProfile) {
             $this->selectedProfile = $selectedProfile;

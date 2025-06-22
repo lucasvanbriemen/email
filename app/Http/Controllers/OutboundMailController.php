@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Transport\SmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use App\Models\SmtpCredentials;
-use App\Models\Profiles;
+use App\Models\Profile;
 
 class OutboundMailController extends Controller
 {
@@ -20,7 +20,7 @@ class OutboundMailController extends Controller
             'body' => 'required|string',
         ]);
 
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $smtpCredentials = SmtpCredentials::where('profile_id', $profile->id)->first();
 

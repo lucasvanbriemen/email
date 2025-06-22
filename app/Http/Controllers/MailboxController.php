@@ -10,7 +10,7 @@ use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Models\ImapCredentials;
-use App\Models\Profiles;
+use App\Models\Profile;
 
 class MailboxController extends Controller
 {
@@ -21,7 +21,7 @@ class MailboxController extends Controller
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
         // If a users has not an profile setup, lead them to the account page
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $folder = Folder::where('path', $selectedFolder)
             ->where('profile_id', $profile->id)
@@ -63,7 +63,7 @@ class MailboxController extends Controller
 
     public function show($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -92,7 +92,7 @@ class MailboxController extends Controller
 
     public function archive($linked_profile_id = null, $folder = null, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -111,7 +111,7 @@ class MailboxController extends Controller
 
     public function read($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -130,7 +130,7 @@ class MailboxController extends Controller
 
     public function unread($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -149,7 +149,7 @@ class MailboxController extends Controller
 
     public function delete($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         Email::deleteEmail($uuid, $profile->id);
 
@@ -161,7 +161,7 @@ class MailboxController extends Controller
 
     public function star($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -181,7 +181,7 @@ class MailboxController extends Controller
 
     public function unstar($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -200,7 +200,7 @@ class MailboxController extends Controller
 
     public function readThread($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -225,7 +225,7 @@ class MailboxController extends Controller
 
     public function archiveThread($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -250,7 +250,7 @@ class MailboxController extends Controller
 
     public function deleteThread($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
@@ -274,7 +274,7 @@ class MailboxController extends Controller
 
     public function starThread($linked_profile_id, $folder, $uuid)
     {
-        $profile = Profiles::linkedProfileIdToProfile($linked_profile_id);
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)

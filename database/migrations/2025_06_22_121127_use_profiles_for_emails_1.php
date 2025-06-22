@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Profiles;
+use App\Models\Profile;
 use App\Models\Email;
 use App\Models\ImapCredentials;
 
@@ -25,7 +25,7 @@ return new class extends Migration
             // Find the profile associated with the email's imap_credential
             $imapCredential = ImapCredentials::where('id', $email->credential_id)->first();
 
-            $profile = Profiles::where('id', $imapCredential->profile_id)->first();
+            $profile = Profile::where('id', $imapCredential->profile_id)->first();
 
             if ($profile) {
                 $email->profile_id = $profile->id;

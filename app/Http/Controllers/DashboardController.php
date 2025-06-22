@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ImapCredentials;
 use App\Models\Email;
-use App\Models\Profiles;
+use App\Models\Profile;
 
 class DashboardController extends Controller
 {
@@ -15,7 +15,7 @@ class DashboardController extends Controller
     public function index()
     {
 
-        $profiles = Profiles::where('user_id', auth()->id())->get();
+        $profiles = Profile::where('user_id', auth()->id())->get();
 
         $last_activity = auth()->user()->last_activity;
 
@@ -26,7 +26,7 @@ class DashboardController extends Controller
 
         foreach ($emails as $email) {
             // set the profile_id to the linked_profile_count
-            $email->profile_id = Profiles::where('id', $email->profile_id)->first()->linked_profile_count;
+            $email->profile_id = Profile::where('id', $email->profile_id)->first()->linked_profile_count;
         }
 
         $ollama_system_prompt = "You are an AI assistant analyzing emails from a user's inbox since their last activity. Extract only relevant key events, tasks, decisions, deadlines, or important updates. Exclude emails without meaningful content. Provide a clean, bullet-pointed list with no greetings, signatures, filler, or markup. Deliver strictly factual, concise points only.";

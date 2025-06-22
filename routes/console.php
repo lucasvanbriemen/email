@@ -12,7 +12,7 @@ use App\Models\ImapCredentials;
 use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
-use App\Models\Profiles;
+use App\Models\Profile;
 
 Artisan::command("get_emails", function () {
     $imapCredentials = ImapCredentials::all();
@@ -119,7 +119,7 @@ Artisan::command("get_emails", function () {
 
 
             // set the URL for the notification
-            $profile = Profiles::where('id', $email->profile_id)->first();
+            $profile = Profile::where('id', $email->profile_id)->first();
             if (!$profile) {
                 Log::error('Profile not found for email: ' . $email->id);
                 continue; // Skip if profile not found

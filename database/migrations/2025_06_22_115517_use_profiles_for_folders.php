@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Profiles;
+use App\Models\Profile;
 use App\Models\Folder;
 
 return new class extends Migration
@@ -25,7 +25,7 @@ return new class extends Migration
 
         // // set the profile_id to the profile that has the same username as the imap credential username
         // Folder::all()->each(function ($folder) {
-        //     $profile = Profiles::where('email', $folder->imap_credential->username)->first();
+        //     $profile = Profile::where('email', $folder->imap_credential->username)->first();
 
         //     if ($profile) {
         //         $folder->profile_id = $profile->id;

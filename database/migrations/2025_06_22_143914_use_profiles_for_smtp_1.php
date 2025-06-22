@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Profiles;
+use App\Models\Profile;
 use App\Models\SmtpCredentials;
 use App\Models\ImapCredentials;
 
