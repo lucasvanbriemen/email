@@ -24,20 +24,4 @@ class ImapCredentials extends Authenticatable
         'username',
         'password',
     ];
-
-    // On create
-    protected static function booted()
-    {
-        // If an credential is made, we also want to create a folder for it
-        static::created(function ($credential) {
-            // Create default folders for the user
-            foreach (Folder::$defaultFolders as $key => $name) {
-                Folder::create([
-                    'imap_credential_id' => $credential->id,
-                    'name' => $name,
-                    'path' => $key,
-                ]);
-            }
-        });
-    }
 }
