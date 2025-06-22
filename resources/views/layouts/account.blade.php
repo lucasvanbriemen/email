@@ -9,9 +9,12 @@
 
         <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
 
-        @vite(['resources/js/app.js', 'resources/js/theme.js'])
+        @vite(['resources/js/app.js', 'resources/js/theme.js', 'resources/css/root.scss', 'resources/css/account/layout.scss'])
     </head>
     <body>
+
+        @include('layouts.account.sidebar')
+
         <main>
             {{ $slot }}
         </main>
