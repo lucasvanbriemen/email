@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignId('profile_id')->constrained('profiles')->onDelete('cascade');
 
             // Remove user_id from folders table
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
+            $table->dropForeign(['imap_credential_id']);
+            $table->dropColumn('imap_credential_id');
         });
 
         // set the profile_id to the profile that has the same username as the imap credential username
