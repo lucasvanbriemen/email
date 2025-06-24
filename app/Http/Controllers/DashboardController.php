@@ -37,24 +37,11 @@ class DashboardController extends Controller
         }
 
 
-        if (count($emails) > 0) {
-            $ai_summery = ollama($ollama_system_prompt, $ollama_prompt);
-        } else {
-            $ai_summery = [
-            'status' => 'success',
-            'response' => 'No new emails since your last activity.',
+        $ai_summery = [
+            'status' => 'error',
+            'response' => 'We encountered an issue while processing your emails. Please try again later.',
             'data' => []
-            ];
-        }
-
-        // if it contains 'error' as a key in the response, it means there was an error
-        if (isset($ai_summery['error'])) {
-            $ai_summery = [
-                'status' => 'error',
-                'response' => 'We encountered an issue while processing your emails. Please try again later.',
-                'data' => []
-            ];
-        }
+        ];
 
         return view(
             'dashboard',

@@ -9,7 +9,9 @@
 
 ## Todo's
 - Tagging emails
-- sending emails
+- go back to inbox from account
+- read full thread in email
+- login
 
 ## About Laravel
 
