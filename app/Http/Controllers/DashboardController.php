@@ -29,14 +29,6 @@ class DashboardController extends Controller
             $email->profile_id = Profile::where('id', $email->profile_id)->first()->linked_profile_count;
         }
 
-        $ollama_system_prompt = "You are an AI assistant analyzing emails from a user's inbox since their last activity. Extract only relevant key events, tasks, decisions, deadlines, or important updates. Exclude emails without meaningful content. Provide a clean, bullet-pointed list with no greetings, signatures, filler, or markup. Deliver strictly factual, concise points only.";
-        $ollama_prompt = "Here is the list of emails:\n\n";
-        foreach ($emails as $email) {
-            $ollama_prompt .= "Email subject: {$email->subject}\n" .
-            "Email body: {$email->body}\n\n";
-        }
-
-
         $ai_summery = [
             'status' => 'error',
             'response' => 'We encountered an issue while processing your emails. Please try again later.',
