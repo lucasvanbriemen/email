@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ImapCredentials;
 use App\Models\SmtpCredentials;
 use App\Models\Profile;
+use App\Models\Tag;
 
 class AccountController extends Controller
 {
@@ -32,11 +33,14 @@ class AccountController extends Controller
             $smtpCredentials = new SmtpCredentials();
         }
 
+        $tags = Tag::where('profile_id', $seltectedProfile->id)->get();
+
         return view('account.credentials', [
             'profiles' => $profiles,
             'selectedProfile' => $seltectedProfile,
             'imapCredentials' => $imapCredentials,
             'smtpCredentials' => $smtpCredentials,
+            'tags' => $tags,
         ]);
     }
 

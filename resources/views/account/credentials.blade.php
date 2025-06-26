@@ -36,4 +36,10 @@
         </button>
     </form>
 
+    @foreach ($tags as $tag)
+        <form action="/account/{{ $selectedProfile->linked_profile_count }}/tags/{{ $tag->id }}" method="post" class="delete-tag-form" style="background-color: {{ $tag->color }}">
+            <h2>{{ __('Tag') }}: {{ $tag->name }}</h2>
+        </form>
+    @endforeach
+
 </x-account-layout>
