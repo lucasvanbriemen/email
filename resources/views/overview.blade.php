@@ -1,4 +1,4 @@
-<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile">
+<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile" class="overview"> 
 
     @vite(['resources/css/email/overview.scss', 'resources/js/email/overview.js'])
 

@@ -14,7 +14,7 @@
 
         @vite(['resources/js/app.js', 'resources/css/root.scss'])
     </head>
-    <body>
+    <body class='{{ $class ?? '' }}'>
 
         @include('layouts.email.sidebar')
 

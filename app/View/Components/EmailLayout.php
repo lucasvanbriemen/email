@@ -20,14 +20,17 @@ class EmailLayout extends Component
     protected $selectedFolder;
     protected $profiles = [];
     protected $selectedProfile;
+    protected $class = '';
 
-    public function __construct($selectedProfile = null, $selectedFolder = null)
+    public function __construct($selectedProfile = null, $selectedFolder = null, $class = '')
     {
         if ($selectedFolder) {
             $this->selectedFolder = $selectedFolder;
         } else {
             $this->selectedFolder = $this->DEFAULT_FOLDER;
         }
+
+        $this->class = $class;
 
         $this->profiles = Profile::where('user_id', auth()->id())->get();
 
@@ -42,8 +45,10 @@ class EmailLayout extends Component
     {
         $folders = Folder::where('profile_id', $this->selectedProfile->id)->get();
 
-        return view('layouts.email',
+        return view(
+            'layouts.email',
             [
+                'class' => $this->class,
                 'folders' => $folders,
                 'selectedFolder' => $this->selectedFolder,
                 'profiles' => $this->profiles,
