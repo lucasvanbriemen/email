@@ -1,45 +1,44 @@
 export default {
 
-    forceLightTheme: false,
-    forceDarkTheme: false,
+    theme: 'auto', // 'light' or 'dark', 'auto' will use the system preference
 
     colors: {
-        "background-color": {
+        'background-color': {
             light: '#ffffff',
             dark: '#121212',
         },
 
-        "background-color-one": {
+        'background-color-one': {
             light: '#f5f5f5',
             dark: '#1E1E1E',
         },
 
-        "text-color": {
+        'text-color': {
             light: '#000000',
             dark: '#E0E0E0',
         },
 
-        "text-color-secondary": {
+        'text-color-secondary': {
             light: '#B0B0B0',
             dark: '#B0B0B0',
         },
 
-        "border-color": {
+        'border-color': {
             light: '#000000',
             dark: '#444444',
         },
 
-        "primary-color": {
+        'primary-color': {
             light: '#2e60b1',
             dark: '#2e60b1',
         },
 
-        "primary-color-dark": {
+        'primary-color-dark': {
             light: '#224887',
             dark: '#224887',
         },
 
-        "font-family": {
+        'font-family': {
             light: 'Roboto, sans-serif',
             dark: 'Roboto, sans-serif',
         },
@@ -50,12 +49,9 @@ export default {
     },
 
     setCssVariables() {
-        let currentTheme = this.getCurrentTheme();
-
-        if (this.forceLightTheme) {
-            currentTheme = 'light';
-        } else if (this.forceDarkTheme) {
-            currentTheme = 'dark';
+        let currentTheme = this.theme;
+        if (this.theme === 'auto') {
+            currentTheme = this.getCurrentTheme();
         }
 
         for (const [key, value] of Object.entries(this.colors)) {
