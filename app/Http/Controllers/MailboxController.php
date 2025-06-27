@@ -11,6 +11,7 @@ use App\Models\Attachment;
 use App\Models\User;
 use App\Models\ImapCredentials;
 use App\Models\Profile;
+use App\Models\Tag;
 
 class MailboxController extends Controller
 {
@@ -65,6 +66,12 @@ class MailboxController extends Controller
     {
         $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
+        if (!$profile) {
+            return redirect('/'); // Redirect to home if profile not found
+        }
+
+        $tags = Tag::where('profile_id', $profile->id)->get();
+
         $email = Email::where('uuid', $uuid)
             ->where('profile_id', $profile->id)
             ->first();
@@ -87,6 +94,7 @@ class MailboxController extends Controller
             'selectedFolder' => $selectedFolder,
             'attachments' => $attachments,
             'selectedProfile' => $profile,
+            'tags' => $tags,
         ]);
     }
 
@@ -156,6 +164,39 @@ class MailboxController extends Controller
         return [
             'status' => 'success',
             'message' => 'Email deleted successfully.'
+        ];
+    }
+
+    public function tag($linked_profile_id, $folder, $uuid)
+    {
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
+
+        $email = Email::where('uuid', $uuid)
+            ->where('profile_id', $profile->id)
+            ->first();
+
+        if (!$email) {
+            return [
+                'status' => 'error',
+                'message' => 'Email not found.'
+            ];
+        }
+
+        $tagId = request()->input('tag_id');
+
+        if ($tagId) {
+            $email->tag_id = $tagId;
+            $email->save();
+
+            return [
+                'status' => 'success',
+                'message' => 'Email tagged successfully.'
+            ];
+        }
+
+        return [
+            'status' => 'error',
+            'message' => 'Tag ID is required.'
         ];
     }
 

@@ -1,9 +1,14 @@
 const quickActions = document.querySelectorAll('.quick-action');
 const quickActionsWrapper = document.querySelector('.quick-action-wrapper');
 
-const ALLOWED_ACTIONS = ['go_back', 'add_class'];
+const ALLOWED_ACTIONS = ['go_back', 'add_class', 'custom'];
 
 quickActions.forEach(action => {
+
+    if (action.getAttribute('data-action') === 'custom') {
+        return;
+    }
+
     action.addEventListener('click', function(event) {
         event.preventDefault();
 
@@ -34,3 +39,25 @@ quickActions.forEach(action => {
         });
     });
 });
+
+const tagSelector = document.getElementById('select-tag');
+if (tagSelector) {
+    tagSelector.addEventListener('change', function() {
+        const selectedTag = this.value;
+        const url = this.getAttribute('data-url');
+        const token = quickActionsWrapper.querySelector('input[name="_token"]').value;
+
+        if (!url || !selectedTag) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('tag_id', selectedTag);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN': token},
+            body: formData
+        })
+    });
+}

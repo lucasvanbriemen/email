@@ -21,6 +21,7 @@ Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/star', [MailboxCont
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/unstar', [MailboxController::class, 'unstar'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.unstar');
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/archive', [MailboxController::class, 'archive'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.archive');
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.delete');
+Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/tag', [MailboxController::class, 'tag'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.delete');
 
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/read_thread', [MailboxController::class, 'readThread'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.read_thread');
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/archive_thread', [MailboxController::class, 'archiveThread'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.archive_thread');

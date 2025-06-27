@@ -28,3 +28,10 @@
     data-action-hint='{{ $parrent_folder_url }}' class='quick-action'>
     {!! svg('bin') !!}
 </a>
+
+<select class='quick-action' id='select-tag' data-action='custom' data-url='{{ $parrent_folder_url }}/mail/{{ $email->uuid }}/tag'>
+    <option value=''>Tag</option>
+    @foreach ($tags as $tag)
+        <option value="{{ $tag->id }}" {{ $tag->id === $email->tag_id ? 'selected' : '' }}>{{ $tag->name }}</option>
+    @endforeach
+</select>
