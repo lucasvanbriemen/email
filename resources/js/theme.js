@@ -1,93 +1,65 @@
-// const colors = {
-//     "background-color": {
-//         light: '#ffffff',
-//         dark: '#121212',
-//     },
+export default {
 
-//     "background-color-one": {
-//         light: '#f5f5f5',
-//         dark: '#1E1E1E',
-//     },
+    forceLightTheme: false,
+    forceDarkTheme: false,
 
-//     "text-color": {
-//         light: '#000000',
-//         dark: '#E0E0E0',
-//     },
+    colors: {
+        "background-color": {
+            light: '#ffffff',
+            dark: '#121212',
+        },
 
-//     "text-color-secondary": {
-//         light: '#B0B0B0',
-//         dark: '#B0B0B0',
-//     },
+        "background-color-one": {
+            light: '#f5f5f5',
+            dark: '#1E1E1E',
+        },
 
-//     "border-color": {
-//         light: '#000000',
-//         dark: '#444444',
-//     },
+        "text-color": {
+            light: '#000000',
+            dark: '#E0E0E0',
+        },
 
-//     "primary-color": {
-//         light: '#2e60b1',
-//         dark: '#2e60b1',
-//     },
+        "text-color-secondary": {
+            light: '#B0B0B0',
+            dark: '#B0B0B0',
+        },
 
-//     "primary-color-dark": {
-//         light: '#224887',
-//         dark: '#224887',
-//     },
+        "border-color": {
+            light: '#000000',
+            dark: '#444444',
+        },
 
-//     "font-family": {
-//         light: 'Roboto, sans-serif',
-//         dark: 'Roboto, sans-serif',
-//     },
+        "primary-color": {
+            light: '#2e60b1',
+            dark: '#2e60b1',
+        },
 
-//     "border-radius-small": {
-//         light: '0.25rem',
-//         dark: '0.25rem',
-//     },
+        "primary-color-dark": {
+            light: '#224887',
+            dark: '#224887',
+        },
 
-//     "border-radius-medium": {
-//         light: '0.5rem',
-//         dark: '0.5rem',
-//     },
+        "font-family": {
+            light: 'Roboto, sans-serif',
+            dark: 'Roboto, sans-serif',
+        },
+    },
 
-//     "border-radius-large": {
-//         light: '1rem',
-//         dark: '1rem',
-//     },
+    getCurrentTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    },
 
-//     "border-radius-huge": {
-//         light: '2rem',
-//         dark: '2rem',
-//     },
+    setCssVariables() {
+        let currentTheme = this.getCurrentTheme();
 
-//     "error-background-color": {
-//         light: '#923131',
-//         dark: '#923131',
-//     },
+        if (this.forceLightTheme) {
+            currentTheme = 'light';
+        } else if (this.forceDarkTheme) {
+            currentTheme = 'dark';
+        }
 
-//     "error-text-color": {
-//         light: '#ceb1ad',
-//         dark: '#ceb1ad',
-//     },
-
-//     "success-background-color": {
-//         light: '#2e7d32',
-//         dark: '#2e7d32',
-//     },
-
-//     "success-text-color": {
-//         light: '#a5d6a7',
-//         dark: '#a5d6a7',
-//     },
-// }
-
-// let currentSystem = 'light';
-// if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-//     currentSystem = 'dark';
-// }
-
-// currentSystem = "light";
-
-// // Loop over the colors object and set the CSS variables
-// for (const [key, value] of Object.entries(colors)) {
-//     document.documentElement.style.setProperty(`--${key}`, value[currentSystem]);
-// }
+        for (const [key, value] of Object.entries(this.colors)) {
+            document.documentElement.style.setProperty(`--${key}`, value[currentTheme]);
+        }
+    }
+};
