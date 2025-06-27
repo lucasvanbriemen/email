@@ -41,3 +41,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        emailSidebar.init();
+    });
+</script>
