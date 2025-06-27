@@ -1,5 +1,3 @@
-@vite(['resources/css/email/sidebar.scss', 'resources/js/email/sidebar.js'])
-
 <div class='sidebar-container'>
     <div class='menu-icon'>
         <span class='menu-icon-line'></span>
@@ -14,7 +12,7 @@
         </div>
 
         @foreach ($folders as $folder)
-            <div class='folder @if ($folder->path == $selectedFolder) selected @endif'>
+            <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif'>
                 <a href='/{{ $selectedProfile->id }}/folder/{{ $folder->path }}'>
                     {{ strtolower($folder->name) }}
                 </a>
