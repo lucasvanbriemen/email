@@ -1,5 +1,6 @@
 @import "input.scss";
 @import "dashboard.scss";
+@import "app.css";
 
 @import "email/compose_email.scss";
 @import "email/email_listing.scss";
@@ -13,8 +14,6 @@
 @import "account/layout.scss";
 @import "account/sidebar.scss";
 
-
-// include all the styles
 body {
     margin: 0;
     font-family: var(--font-family);

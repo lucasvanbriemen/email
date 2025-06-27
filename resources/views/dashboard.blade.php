@@ -1,7 +1,4 @@
 <x-app-layout class="dashboard">
-
-    @vite(['resources/css/dashboard.scss', 'resources/js/theme.js', 'resources/js/email/overview.js'])
-
     <div class='left-panel'>
         <div class='linked-accounts'>
             @foreach ($profiles as $profile)
