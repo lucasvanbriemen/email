@@ -81,7 +81,7 @@ class Email extends Model
 
         if ($folder->path == 'spam') {
             $query->where('is_deleted', false)
-                ->where("credential_id", "-1");
+                ->where("profile_id", "-1");
         }
 
         if ($folder->path == 'stared') {
