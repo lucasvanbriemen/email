@@ -24,11 +24,11 @@ class MailboxController extends Controller
         // If a users has not an profile setup, lead them to the account page
         $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
-        $folder = Folder::where('path', $selectedFolder)
+        $selectedFolder = Folder::where('path', $selectedFolder)
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::getEmails($folder, $profile);
+        $emails = Email::getEmails($selectedFolder, $profile);
 
         $emailThreads = [];
         $email_sorted_uuids = [];
@@ -54,11 +54,14 @@ class MailboxController extends Controller
             $emailThreads[] = $currentThread;
         }
 
+        $tags = Tag::where('profile_id', $profile->id)->get();
+
         return view('overview', [
             'emailThreads' => $emailThreads,
-            'folder' => $folder,
             'selectedFolder' => $selectedFolder,
             'selectedProfile' => $profile,
+            'tags' => $tags,
+            'attachments' => []
         ]);
     }
 

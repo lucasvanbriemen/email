@@ -52,7 +52,7 @@
                     ' ' .
                     ($email['is_starred'] == 1 ? ' starred' : 'unstarred'),
                 'dataUrl' =>
-                    '/' . $selectedProfile->linked_profile_count . '/folder/' . $selectedFolder . '/mail/' . $email['uuid'],
+                    '/' . $selectedProfile->linked_profile_count . '/folder/' . $selectedFolder->path . '/mail/' . $email['uuid'],
                 'current_iteration_date' => $current_iteration_date,
                 'selectedProfile' => $selectedProfile,
                 'thead' => false,
