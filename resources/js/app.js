@@ -1,7 +1,3 @@
-import './bootstrap';
+const modules = import.meta.glob('./**/*.js', { eager: true });
 
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+const theme = modules['./theme.js'].default;

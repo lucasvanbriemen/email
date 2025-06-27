@@ -1,42 +1,42 @@
-const composeEmailButton = document.querySelector('.compose-email');
-const composeEmailWrapper = document.querySelector('.compose-email-wrapper');
+// const composeEmailButton = document.querySelector('.compose-email');
+// const composeEmailWrapper = document.querySelector('.compose-email-wrapper');
 
-const editor = new FroalaEditor('#email-body-wysiwyg', {
-    heightMin: 15 * 16, // 15rem
-});
+// const editor = new FroalaEditor('#email-body-wysiwyg', {
+//     heightMin: 15 * 16, // 15rem
+// });
   
-composeEmailButton.addEventListener('click', function() {
-    composeEmailWrapper.classList.add('open');
-    composeEmailWrapper.querySelector('.email-to').focus();
-});
+// composeEmailButton.addEventListener('click', function() {
+//     composeEmailWrapper.classList.add('open');
+//     composeEmailWrapper.querySelector('.email-to').focus();
+// });
 
-const composeEmailBackground = document.querySelector('.compose-email-background');
-composeEmailBackground.addEventListener('click', function() {
-    composeEmailWrapper.classList.remove('open');
-});
+// const composeEmailBackground = document.querySelector('.compose-email-background');
+// composeEmailBackground.addEventListener('click', function() {
+//     composeEmailWrapper.classList.remove('open');
+// });
 
 
-const sendEmailButton = composeEmailWrapper.querySelector('.send-email');
-sendEmailButton.addEventListener('click', function() {
-    const emailBodyInput = composeEmailWrapper.querySelector('.email-body');
-    emailBodyInput.value = editor.html.get();
+// const sendEmailButton = composeEmailWrapper.querySelector('.send-email');
+// sendEmailButton.addEventListener('click', function() {
+//     const emailBodyInput = composeEmailWrapper.querySelector('.email-body');
+//     emailBodyInput.value = editor.html.get();
 
-    const formData = new FormData();
+//     const formData = new FormData();
 
-    formData.append('_token', document.querySelector('input[name="_token"]').value);
-    formData.append('to', composeEmailWrapper.querySelector('.email-to').value);
-    formData.append('cc', composeEmailWrapper.querySelector('.email-cc').value);
-    formData.append('subject', composeEmailWrapper.querySelector('.email-subject').value);
-    formData.append('body', composeEmailWrapper.querySelector('.email-body').value);
+//     formData.append('_token', document.querySelector('input[name="_token"]').value);
+//     formData.append('to', composeEmailWrapper.querySelector('.email-to').value);
+//     formData.append('cc', composeEmailWrapper.querySelector('.email-cc').value);
+//     formData.append('subject', composeEmailWrapper.querySelector('.email-subject').value);
+//     formData.append('body', composeEmailWrapper.querySelector('.email-body').value);
 
-    const url = "/" + composeEmailWrapper.querySelector(".email-credential-id").value + '/compose_email';
+//     const url = "/" + composeEmailWrapper.querySelector(".email-credential-id").value + '/compose_email';
 
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-    })
-});
+//     fetch(url, {
+//         method: 'POST',
+//         body: formData
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         alert(data.message);
+//     })
+// });

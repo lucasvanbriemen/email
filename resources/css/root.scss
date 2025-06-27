@@ -1,7 +1,20 @@
 @import "input.scss";
+@import "dashboard.scss";
+
+@import "email/compose_email.scss";
+@import "email/email_listing.scss";
+@import "email/email.scss";
+@import "email/layout.scss";
+@import "email/overview.scss";
+@import "email/quick_actions.scss";
+@import "email/sidebar.scss";
+
+@import "account/credentials.scss";
+@import "account/layout.scss";
+@import "account/sidebar.scss";
+
 
 // include all the styles
-
 body {
     margin: 0;
 }

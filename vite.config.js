@@ -3,7 +3,7 @@ import fg from 'fast-glob';
 import laravel from 'laravel-vite-plugin';
 
 const files = fg.sync([
-    'resources/js/**/*.js',
+    'resources/js/**/app.js',
     'resources/css/**/*.css',
     'resources/css/**/*.scss',
 ]);
