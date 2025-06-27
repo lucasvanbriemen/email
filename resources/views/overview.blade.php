@@ -68,4 +68,8 @@
 
     @include('context_menu')
     @include('compose_email')
+
+    @include('email_data',[ 
+        'email' => $emailThreads[0][0] ?? null,
+    ])
 </x-email-layout>
