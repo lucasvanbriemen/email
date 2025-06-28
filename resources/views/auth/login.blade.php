@@ -7,8 +7,9 @@
 
         <x-input type="email" name="email" class="email-input" :value="old('email')" />
         <x-input type="password" name="password" :value="old('password')" />
-
         <x-input type="checkbox" name="remember" id="remember_me" class="remember-me-checkbox" />
+
+        <x-input type="submit" class="call-to-action" value="{{ __('Log in') }}" name="Log in" />
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))

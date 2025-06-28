@@ -21,6 +21,12 @@
     $checkbox_type = [
         'checkbox' => 'checkbox'
     ];
+
+    $button_type = [
+        'submit' => 'submit',
+        'button' => 'button',
+        'reset' => 'reset',
+    ];
 @endphp
 
 @if (in_array($type, array_keys($text_type)))
@@ -41,4 +47,11 @@
     </div>
 @endif
 
+@if (in_array($type, array_keys($button_type)))
+    <div class="input-wrapper button-input">
+        <button {{ $attributes->merge(['type' => $type, 'name' => $name, 'id' => $id, 'class' => ($class ?? '')]) }}>
+            {{ $label ?? ucfirst($name) }}
+        </button>
+    </div>
+@endif
 

@@ -98,4 +98,27 @@
             }
         }
     }
+
+    &.button-input {
+        button {
+            width: 50%;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            border: none;
+
+            font-weight: bold;
+
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+
+            &.call-to-action {
+                background-color: var(--primary-color);
+                color: var(--text-color);
+
+                &:hover {
+                    background-color: var(--primary-color-dark);
+                }
+            }
+        }
+    }
 }
