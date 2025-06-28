@@ -19,19 +19,19 @@
     @endforeach
 
 
-    <div class='account-selector'>
-        {{-- @foreach ($profiles as $profile)
-            <a class='account' href='/{{ $profile->id }}/folder/{{ $selectedFolder }}'>
+    <div class='profile-selector'>
+        @foreach ($profiles as $profile)
+            <a class='profile' href='/{{ $profile->id }}/folder/{{ $selectedFolder }}'>
                 <img src='{{ gravar($profile->email, 64) }}' alt='{{ $profile->email }}' class='avatar'>
                 <span class='text'>{{ $profile->name }}</span>
             </a>
-        @endforeach --}}
+        @endforeach
 
-        {{-- <div class='settings'>
+        <div class='settings'>
             <a href='/account'>
                 <span class='text'>Settings</span>
             </a>
-        </div> --}}
+        </div>
     </div>
 
     <div class='current-profile'>
