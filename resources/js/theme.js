@@ -45,14 +45,15 @@ export default {
     },
 
     getCurrentTheme() {
+        if (this.theme === 'light' || this.theme === 'dark') {
+            return this.theme;
+        }
+
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     },
 
     setCssVariables() {
-        let currentTheme = this.theme;
-        if (this.theme === 'auto') {
-            currentTheme = this.getCurrentTheme();
-        }
+        const currentTheme = this.getCurrentTheme();
 
         for (const [key, value] of Object.entries(this.colors)) {
             document.documentElement.style.setProperty(`--${key}`, value[currentTheme]);
