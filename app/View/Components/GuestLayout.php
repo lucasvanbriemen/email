@@ -10,8 +10,19 @@ class GuestLayout extends Component
     /**
      * Get the view / contents that represents the component.
      */
+
+    protected $class = '';
+
+    public function __construct(string $class = '')
+    {
+        $this->class = $class;
+    }
+
     public function render(): View
     {
-        return view('layouts.guest');
+        return view(
+            'layouts.guest',
+            ['class' => $this->class]
+        );
     }
 }

@@ -1,12 +1,12 @@
-<x-guest-layout>
+<x-guest-layout class="login">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <x-input type="email" name="email" :value="old('email')" autocomplete="username" />
-        <x-input type="password" name="password" :value="old('password')" autocomplete="password" />
+        <x-input type="email" name="email" :value="old('email')" />
+        <x-input type="password" name="password" :value="old('password')" />
             
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
