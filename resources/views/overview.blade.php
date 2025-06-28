@@ -1,19 +1,16 @@
-<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile" class="overview"> 
-
-    @vite(['resources/css/email/overview.scss', 'resources/js/email/overview.js'])
-
+<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile" class="overview">
     @php
         $last_iterated_date = null;
     @endphp
 
-    @if (count($emailThreads) == 0)
+    {{-- @if (count($emailThreads) == 0) --}}
         <div class='no-emails'>
             <h2>No emails found here</h2>
             <p>Looks like your all cought up</p>
         </div>
-    @endif
+    {{-- @endif --}}
 
-    @foreach ($emailThreads as $emailThread)
+    {{-- @foreach ($emailThreads as $emailThread)
         @php
             $current_iteration_date = date('Y-m-d', strtotime($emailThread[0]['sent_at']));
         @endphp
@@ -67,9 +64,5 @@
     @endforeach
 
     @include('context_menu')
-    @include('compose_email')
-
-    @include('email_data',[ 
-        'email' => $emailThreads[0][0] ?? null,
-    ])
+    @include('compose_email') --}}
 </x-email-layout>

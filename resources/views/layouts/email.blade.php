@@ -12,7 +12,7 @@
         <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
         <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
 
-        @vite(['resources/js/app.js', 'resources/css/root.scss'])
+        @vite(['resources/js/root.js', 'resources/css/root.scss'])
     </head>
     <body class='{{ $class ?? '' }}'>
 
