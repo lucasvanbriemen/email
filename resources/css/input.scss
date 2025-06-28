@@ -26,7 +26,6 @@
             left: 1rem;
             transform: translateY(-50%);
             pointer-events: none;
-            transition: all 0.2s ease-in-out;
 
             background-color: transparent;
             color: var(--text-color);
@@ -83,7 +82,7 @@
                 border: solid white;
                 border-width: 0 2px 2px 0;
                 
-                transform:rotate(45deg);
+                transform: rotate(45deg);
                 
                 content: "";
                 display: none;
@@ -109,7 +108,6 @@
             font-weight: bold;
 
             cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
 
             &.call-to-action {
                 background-color: var(--primary-color);
