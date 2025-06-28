@@ -5,7 +5,7 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <x-input type="email" name="email" :value="old('email')" />
+        <x-input type="email" name="email" class="email-input" :value="old('email')" />
         <x-input type="password" name="password" :value="old('password')" />
             
         <div class="block mt-4">
@@ -27,4 +27,10 @@
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            login.init();
+        });
+    </script>
 </x-guest-layout>
