@@ -9,7 +9,11 @@
 
         position: relative;
 
-        .folder {
+        .compose-email {
+            margin: 1rem auto !important;
+        }
+
+        .folder, .compose-email {
             cursor: pointer;
 
             width: calc(100% - 1rem);
@@ -50,6 +54,14 @@
                     height: 2rem;
                 }
             }
+        }
+
+        hr {
+            width: calc(100% - 2rem);
+            margin: 0.5rem auto;
+
+            background-color: var(--text-color-secondary);
+            border-color: var(--text-color-secondary);
         }
 
         .current-profile {
@@ -95,7 +107,7 @@
     .sidebar.minimized {
         width: 5rem;
 
-        .folder {
+        .folder, .compose-email {
             justify-content: center;
             gap: 0;
             svg {

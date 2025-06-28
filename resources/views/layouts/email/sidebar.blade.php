@@ -1,8 +1,13 @@
-<div class='sidebar'>
+<div class='sidebar minimized'>
 
-    {{-- <div class='compose-email'>
-        <span class='compose-mail-text'>Compose</span>
-    </div> --}}
+    <div class='compose-email'>
+        <a href='#'>
+            {!! svg('plus') !!}
+            <span class='compose-mail-text text'>Compose</span>
+        </a>
+    </div>
+
+    <hr>
 
     @foreach ($folders as $folder)
         <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif'>
