@@ -1,6 +1,6 @@
 export default {
 
-    theme: 'light', // 'light' or 'dark', 'auto' will use the system preference
+    theme: 'dark', // 'light' or 'dark', 'auto' will use the system preference
 
     colors: {
         'background-color': {

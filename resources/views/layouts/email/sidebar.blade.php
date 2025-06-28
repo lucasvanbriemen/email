@@ -7,7 +7,8 @@
     @foreach ($folders as $folder)
         <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif'>
             <a href='/{{ $selectedProfile->id }}/folder/{{ $folder->path }}'>
-                {{ strtolower($folder->name) }}
+                {!! svg($folder->icon ?? 'email') !!}
+                <span class='text'>{{ $folder->name }}</span>
             </a>
         </div>
     @endforeach
@@ -21,11 +22,11 @@
             </a>
         @endforeach --}}
 
-        <div class='settings'>
+        {{-- <div class='settings'>
             <a href='/account'>
                 <span class='text'>Settings</span>
             </a>
-        </div>
+        </div> --}}
     </div>
 
     <div class='current-profile'>
