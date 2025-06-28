@@ -1,4 +1,4 @@
-<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile" class="overview-page">
+<x-email-layout class="overview-page">
     @php
         $last_iterated_date = null;
     @endphp

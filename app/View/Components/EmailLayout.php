@@ -5,9 +5,8 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 use App\Models\Folder;
-use App\Models\User;
 use App\Models\Profile;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class EmailLayout extends Component
 {
@@ -22,23 +21,23 @@ class EmailLayout extends Component
     protected $selectedProfile;
     protected $class = '';
 
-    public function __construct($selectedProfile = null, $selectedFolder = null, $class = '')
+    public function __construct($class = '')
     {
-        if ($selectedFolder) {
-            $this->selectedFolder = $selectedFolder;
-        } else {
-            $this->selectedFolder = $this->DEFAULT_FOLDER;
-        }
+        $selectedProfile = Route::current()->parameter('linked_profile_id');
+        $this->selectedProfile = Profile::where('user_id', auth()->id()) 
+            ->where('linked_profile_count', $selectedProfile)
+            ->first();
+
+
+        $selectedFolder = Route::current()->parameter('folder') ?? $this->DEFAULT_FOLDER;
+        $this->selectedFolder = Folder::where('profile_id', $this->selectedProfile->id)
+            ->where('path', $selectedFolder)
+            ->first();
 
         $this->class = $class;
 
         $this->profiles = Profile::where('user_id', auth()->id())->get();
 
-        if ($selectedProfile) {
-            $this->selectedProfile = $selectedProfile;
-        } else {
-            $this->selectedProfile = $this->profiles[0] ?? null;
-        }
     }
 
     public function render(): View

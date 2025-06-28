@@ -28,38 +28,10 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::getEmails($selectedFolder, $profile);
-
-        $emailThreads = [];
-        $email_sorted_uuids = [];
-
-        foreach ($emails as $email) {
-            // Skip already sorted emails
-            if (in_array($email->uuid, $email_sorted_uuids)) {
-                continue;
-            }
-
-            $currentThread = [];
-
-            foreach ($emails as $threadEmail) {
-                if (
-                    $email->sender === $threadEmail->sender &&
-                    $email->subject === $threadEmail->subject
-                ) {
-                    $currentThread[] = $threadEmail;
-                    $email_sorted_uuids[] = $threadEmail->uuid;
-                }
-            }
-
-            $emailThreads[] = $currentThread;
-        }
-
         $listingHTML = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
 
         return view('overview', [
             'listingHTML' => $listingHTML,
-            'selectedFolder' => $selectedFolder,
-            'selectedProfile' => $profile
         ]);
     }
 
