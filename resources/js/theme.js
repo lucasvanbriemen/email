@@ -13,6 +13,11 @@ export default {
             dark: '#1E1E1E',
         },
 
+        'background-color-two': {
+            light: '#ffffff',
+            dark: '#303030',
+        },
+
         'text-color': {
             light: '#000000',
             dark: '#E0E0E0',
@@ -29,12 +34,12 @@ export default {
         },
 
         'primary-color': {
-            light: '#2e60b1',
-            dark: '#2e60b1',
+            light: '#4285f4',
+            dark: '#1266f1',
         },
 
         'primary-color-dark': {
-            light: '#224887',
+            light: '#1266f1',
             dark: '#224887',
         },
 

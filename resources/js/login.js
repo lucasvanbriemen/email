@@ -1,4 +1,8 @@
 export default {
+
+    darkmode_image: '/images/login-image-dark.jpg',
+    lightmode_image: '/images/login-image-light.jpg',
+
     init: function() {
         const emailInput = document.querySelector('.email-input');
 
@@ -11,9 +15,9 @@ export default {
         const currentTheme = theme.getCurrentTheme();
 
         if (currentTheme === 'dark') {
-            document.querySelector('.login-illustration').src = '/images/login-image-dark.jpg';
+            document.querySelector('.login-illustration').src = this.darkmode_image;
         } else {
-            document.querySelector('.login-illustration').src = '/images/login-image-light.jpg';
+            document.querySelector('.login-illustration').src = this.lightmode_image;
         }
     }
 };

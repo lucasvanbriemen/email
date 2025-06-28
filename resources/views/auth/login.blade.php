@@ -19,7 +19,10 @@
 
 
     <div class='side-container'>
-        <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="logo">
+        <div class='logo'>
+            {!! svg('logo') !!}
+        </div>
+
         <img src="{{ asset('images/login-image-light.jpg') }}" alt="Login Illustration" class="login-illustration">
     </div>
 

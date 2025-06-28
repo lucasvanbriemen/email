@@ -10,13 +10,15 @@
 
         .login-form {
             margin: auto;
-            width: calc(70% + 2rem);
+            width: calc(60% + 2rem);
 
-            background-color: var(--background-color-one);
+            background-color: var(--background-color-two);
 
             border-radius: 1rem;
 
             padding: 1rem 2rem;
+
+            box-shadow: 0 0 4rem -1rem var(--primary-color);
 
             .login-title {
                 font-size: 1.5rem;
@@ -53,6 +55,11 @@
             background-color: var(--background-color-one);
             border-radius: 50%;
             padding: 0.5rem;
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
         }
 
         .login-illustration {
