@@ -7,13 +7,8 @@
 
         <x-input type="email" name="email" class="email-input" :value="old('email')" />
         <x-input type="password" name="password" :value="old('password')" />
-            
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="text-indigo-600 border-gray-300 rounded shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="text-sm text-gray-600 ms-2">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+
+        <x-input type="checkbox" name="remember" id="remember_me" class="remember-me-checkbox" />
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))

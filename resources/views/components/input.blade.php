@@ -8,11 +8,37 @@
     'label' => null,
 ])
 
+@php
+    $text_type = [
+        'text' => 'text',
+        'email' => 'email',
+        'password' => 'password',
+        'number' => 'number',
+        'tel' => 'tel',
+        'url' => 'url',
+    ];
 
-<div class="input-wrapper">
-    <input {{ $attributes->merge(['type' => $type, 'name' => $name, 'id' => $id, 'value' => $value, 'class' => ($class ?? '')]) }} placeholder=" ">
-    <label for="{{ $id }}" class="input-label">
-        {{ $label ?? ucfirst($name) }}
-    </label>
-</div>
+    $checkbox_type = [
+        'checkbox' => 'checkbox'
+    ];
+@endphp
+
+@if (in_array($type, array_keys($text_type)))
+    <div class="input-wrapper text-input">
+        <input {{ $attributes->merge(['type' => $type, 'name' => $name, 'id' => $id, 'value' => $value, 'class' => ($class ?? '')]) }} placeholder=" ">
+        <label for="{{ $id }}" class="input-label">
+            {{ $label ?? ucfirst($name) }}
+        </label>
+    </div>
+@endif
+
+@if (in_array($type, array_keys($checkbox_type)))
+    <div class="input-wrapper checkbox-input">
+        <label class="container">
+            <input type="checkbox" {{ $attributes->merge(['name' => $name, 'id' => $id, 'value' => $value, 'class' => ($class ?? '')]) }}>
+            <span class="checkmark"></span>{{ $label ?? ucfirst($name) }}
+        </label>
+    </div>
+@endif
+
 
