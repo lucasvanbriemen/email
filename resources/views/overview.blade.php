@@ -15,6 +15,11 @@
         </div>
     {{-- @endif --}}
 
+
+    <div class='email-listing'>
+        {!! $listingHTML !!}
+    </div>
+
     {{-- @foreach ($emailThreads as $emailThread)
         @php
             $current_iteration_date = date('Y-m-d', strtotime($emailThread[0]['sent_at']));
@@ -67,6 +72,7 @@
             </div>
         @endif
     @endforeach
+
 
     @include('context_menu')
     @include('compose_email') --}}

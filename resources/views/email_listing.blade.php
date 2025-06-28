@@ -10,9 +10,14 @@
         'size' => null,
         'thread' => false,
         'selectedCredential' => null,
-        'uuid' => uniqid('email-')
+        'uuid' => uniqid('email-'),
+        'is_fully_read' => false,
     ]
 )
+
+@if (!isset($email))
+    
+@endif
 
 @php $format = 'D, d M Y'; @endphp
 @if($current_iteration_date == date("Y-m-d", strtotime($email['sent_at'])))

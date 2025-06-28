@@ -54,15 +54,71 @@ class MailboxController extends Controller
             $emailThreads[] = $currentThread;
         }
 
-        $tags = Tag::where('profile_id', $profile->id)->get();
+        $listingHTML = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
 
         return view('overview', [
-            'emailThreads' => $emailThreads,
+            'listingHTML' => $listingHTML,
             'selectedFolder' => $selectedFolder,
-            'selectedProfile' => $profile,
-            'tags' => $tags,
-            'attachments' => []
+            'selectedProfile' => $profile
         ]);
+    }
+
+    public function getListingHTML($linked_profile_id = null, $folder = null)
+    {
+        $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
+
+        // If a users has not an profile setup, lead them to the account page
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
+
+        $selectedFolder = Folder::where('path', $selectedFolder)
+            ->where('profile_id', $profile->id)
+            ->first();
+
+        $emails = Email::getEmails($selectedFolder, $profile);
+
+        $emailThreads = [];
+        $email_sorted_uuids = [];
+
+        foreach ($emails as $email) {
+            // Skip already sorted emails
+            if (in_array($email->uuid, $email_sorted_uuids)) {
+                continue;
+            }
+
+            $currentThread = [];
+
+            foreach ($emails as $threadEmail) {
+                if (
+                    $email->sender === $threadEmail->sender &&
+                    $email->subject === $threadEmail->subject
+                ) {
+                    $currentThread[] = $threadEmail;
+                    $email_sorted_uuids[] = $threadEmail->uuid;
+                }
+            }
+
+            $emailThreads[] = $currentThread;
+        }
+
+        $html = '';
+
+        foreach ($emailThreads as $thread) {
+            foreach ($thread as $email) {
+                // Ensure the email has a UUID for the view
+                if (!$email->uuid) {
+                    $email->uuid = uniqid('email-');
+                }
+
+                $html .= view('email_listing', [
+                    'emailThreads' => $thread,
+                    'selectedFolder' => $selectedFolder,
+                    'selectedProfile' => $profile,
+                    'email' => $email ?? null
+                ])->render();
+            }
+        }
+
+        return $html;
     }
 
     public function show($linked_profile_id, $folder, $uuid)
