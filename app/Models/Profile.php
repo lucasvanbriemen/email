@@ -24,6 +24,7 @@ class Profile extends Model
                 Folder::create([
                     'imap_credential_id' => $credential->id,
                     'name' => $name,
+                    'icon' => Folder::$defaultFolderIcons[$key] ?? null,
                     'path' => $key,
                 ]);
             }

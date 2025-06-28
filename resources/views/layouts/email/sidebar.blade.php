@@ -1,8 +1,8 @@
-<div class='sidebar minimized'>
+<div class='sidebar'>
 
-    <div class='compose-email'>
+    {{-- <div class='compose-email'>
         <span class='compose-mail-text'>Compose</span>
-    </div>
+    </div> --}}
 
     @foreach ($folders as $folder)
         <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif'>
@@ -14,12 +14,12 @@
 
 
     <div class='account-selector'>
-        @foreach ($profiles as $profile)
+        {{-- @foreach ($profiles as $profile)
             <a class='account' href='/{{ $profile->id }}/folder/{{ $selectedFolder }}'>
                 <img src='{{ gravar($profile->email, 64) }}' alt='{{ $profile->email }}' class='avatar'>
                 <span class='text'>{{ $profile->name }}</span>
             </a>
-        @endforeach
+        @endforeach --}}
 
         <div class='settings'>
             <a href='/account'>

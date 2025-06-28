@@ -23,9 +23,20 @@ class Folder extends Model
         'all' => 'All Emails',
     ];
 
+    public static $defaultFolderIcons = [
+        'inbox' => 'email',
+        'stared' => 'star',
+        'sent' => 'send',
+        'drafts' => 'draft',
+        'trash' => 'trash',
+        'spam' => 'exclamation',
+        'all' => 'emails',
+    ];
+
     protected $fillable = [
         'profile_id',
         'name',
+        'icon',
         'path',
     ];
 }
