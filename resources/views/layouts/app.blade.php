@@ -13,7 +13,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/root.scss', 'resources/js/app.js'])
+        @vite(['resources/css/root.scss', 'resources/js/root.js'])
     </head>
     <body class='{{ $class ?? '' }}'>
         <main>
