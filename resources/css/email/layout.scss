@@ -96,12 +96,18 @@
         width: 5rem;
 
         .folder {
+            justify-content: center;
+            gap: 0;
             svg {
                 margin: auto;
             }
 
             .text {
                 width: 0;
+                margin: 0;
+                height: 0;
+                overflow: hidden;
+                display: none;
             }
         }
 
