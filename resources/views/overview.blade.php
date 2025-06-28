@@ -1,10 +1,15 @@
-<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile" class="overview">
+<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile" class="overview-page">
     @php
         $last_iterated_date = null;
     @endphp
 
     {{-- @if (count($emailThreads) == 0) --}}
         <div class='no-emails'>
+
+            <div onclick="emailSidebar.minMaxSidebar()">
+                open
+            </div>
+            
             <h2>No emails found here</h2>
             <p>Looks like your all cought up</p>
         </div>

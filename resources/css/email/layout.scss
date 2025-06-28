@@ -1,58 +1,67 @@
-body {
-
+.overview-page {
+    display: flex;
     background-color: var(--background-color);
 
-    display: flex;
-    height: 100vh;
-
-    .sidebar-container {
+    .sidebar {
+        height: 100vh;
         width: 15%;
+        background-color: var(--background-color-one);
 
         position: relative;
 
-        .sidebar {
+        .current-profile {
             position: absolute;
-            margin-top: 0rem;
+            bottom: 0.5rem;
+
+            cursor: pointer;
+
+            width: calc(100% - 1rem);
+            left: 0.5rem;
+
+            display: flex;
+            align-items: center;
+
+            background-color: var(--primary-color);
+            color: var(--text-color);
+
+            padding: 0.25rem;
+            border-radius: 1rem;
+
+            &:hover {
+                background-color: var(--primary-color-dark);
+            }
+
+            .avatar {
+                width: 2rem;
+                height: 2rem;
+                border-radius: 50%;
+                margin: 0.5rem;
+            }
+
+            .text {
+                font-weight: bold;
+                margin: 0 0.5rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                width: calc(100% - 2rem);
+            }
         }
     }
 
-    main {
-        width: 85%;
-        height: 100vh;
-        overflow-y: auto;
-    }
+    
+    .sidebar.minimized {
+        width: 5rem;
 
-    @media screen and (max-width: 768px) {
-        height: auto;
-
-        .sidebar-container {
-            width: 100%;
-            height: 100vh;
-
-            position: fixed;
-            top: 0;
-            left: 0;
-            
-            &:has(.sidebar.open) {
-                z-index: 1000;
+        .current-profile {
+            .avatar {
+                margin: 0.5rem auto;
             }
 
-            .sidebar {
-                transform: translateX(-100%);
-                transition: all 0.2s ease-in-out;
-                
-                &.open {
-                    transform: translateX(0);
-                }
+            .text {
+                width: 0;
+                margin: 0;
             }
-        }
-
-        main {
-            width: 100%;
-            height: calc(100vh - 7.5%);
-
-            position: fixed;
-            top: 7.5%;
         }
     }
 }

@@ -2,12 +2,12 @@
 // @import "dashboard.scss";
 @import "app.css";
 
-@import "email/compose_email.scss";
-@import "email/email_listing.scss";
-@import "email/email.scss";
+// @import "email/compose_email.scss";
+// @import "email/email_listing.scss";
+// @import "email/email.scss";
 @import "email/layout.scss";
-@import "email/overview.scss";
-@import "email/quick_actions.scss";
+// @import "email/overview.scss";
+// @import "email/quick_actions.scss";
 @import "email/sidebar.scss";
 
 // @import "account/credentials.scss";
@@ -21,4 +21,8 @@ body {
     font-family: var(--font-family);
 
     background-color: var(--background-color);
+
+    * {
+        transition: all 0.2s ease-in-out;
+    }
 }

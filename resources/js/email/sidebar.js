@@ -15,4 +15,10 @@ export default {
             accountSelector.classList.toggle('open');
         });
     },
+
+    minMaxSidebar: function() {
+        const sidebar = document.querySelector('.sidebar');
+
+        sidebar.classList.toggle('minimized');
+    }
 }
