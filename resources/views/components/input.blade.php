@@ -41,7 +41,7 @@
 @if (in_array($type, array_keys($checkbox_type)))
     <div class="input-wrapper checkbox-input">
         <label class="container">
-            <input type="checkbox" {{ $attributes->merge(['name' => $name, 'id' => $id, 'value' => $value, 'class' => ($class ?? '')]) }}>
+            <input type="checkbox" {{ $attributes->merge(['name' => $name, 'id' => $id, 'checked' => $value, 'class' => ($class ?? '')]) }}>
             <span class="checkmark"></span>{{ $label ?? ucfirst($name) }}
         </label>
     </div>

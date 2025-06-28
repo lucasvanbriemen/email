@@ -5,16 +5,35 @@
         align-items: center;
     }
 
-    form {
-        background-color: var(--background-color-one);
+    .form-wrapper {
         width: calc(50% - 1rem);
-        
+
+        .login-form {
+            margin: auto;
+            width: calc(70% + 2rem);
+
+            background-color: var(--background-color-one);
+
+            border-radius: 1rem;
+
+            padding: 1rem 2rem;
+
+            .login-title {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: var(--text-color);
+            }
+
+            .login-subtitle {
+                color: var(--text-color-secondary);
+            }
+        }
     }
 
     .side-container {
         position: relative;
 
-        width: calc(50% - 1rem);
+        width: calc(50% - 2rem);
         height: calc(100vh - 2rem);
 
         border-radius: 2rem 4rem 4rem 2rem;

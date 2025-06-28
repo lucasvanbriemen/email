@@ -19,7 +19,7 @@ export default {
         },
 
         'text-color-secondary': {
-            light: '#B0B0B0',
+            light: '#6e6e6e',
             dark: '#B0B0B0',
         },
 
