@@ -21,7 +21,7 @@
 
     <div class='profile-selector'>
         @foreach ($profiles as $profile)
-            <a class='profile' href='/{{ $profile->id }}/folder/{{ $selectedFolder }}'>
+            <a class='profile' href='/{{ $profile->id }}/folder/{{ $selectedFolder->path }}'>
                 <img src='{{ gravar($profile->email, 64) }}' alt='{{ $profile->email }}' class='avatar'>
                 <span class='text'>{{ $profile->name }}</span>
             </a>
