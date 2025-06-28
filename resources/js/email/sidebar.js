@@ -1,18 +1,10 @@
 export default {
     init: function() {
-        const menuicon = document.querySelector('.menu-icon');
-        const sidebar = document.querySelector('.sidebar');
+        const currentProfile = document.querySelector('.current-profile');
+        const profileSelector = document.querySelector('.profile-selector');
 
-        menuicon.addEventListener('click', function() {
-            sidebar.classList.toggle('open');
-            menuicon.classList.toggle('active');
-        });
-
-        const currentAccount = document.querySelector('.current-account');
-        const accountSelector = document.querySelector('.account-selector');
-
-        currentAccount.addEventListener('click', function() {
-            accountSelector.classList.toggle('open');
+        currentProfile.addEventListener('click', function() {
+            profileSelector.classList.toggle('active');
         });
     },
 
