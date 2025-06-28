@@ -27,11 +27,9 @@
             </a>
         @endforeach
 
-        <div class='settings'>
-            <a href='/account'>
-                <span class='text'>Settings</span>
-            </a>
-        </div>
+        <a href='/account' class='settings'>
+            <span class='text'>Settings</span>
+        </a>
     </div>
 
     <div class='current-profile'>
