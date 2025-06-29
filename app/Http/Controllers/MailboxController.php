@@ -81,8 +81,15 @@ class MailboxController extends Controller
                     $email->uuid = uniqid('email-');
                 }
 
+                $pathToEmail = route('mailbox.folder.mail', [
+                    'linked_profile_id' => $linked_profile_id,
+                    'folder' => $selectedFolder->path,
+                    'uuid' => $email->uuid,
+                ]);
+
                 $html .= view('email_listing', [
-                    'email' => $email
+                    'email' => $email,
+                    'pathToEmail' => $pathToEmail
                 ])->render();
             }
         }

@@ -1,4 +1,4 @@
-@php 
+@php
     $class = '';
 
     if (!$email['has_read']) {
@@ -6,7 +6,7 @@
     }
 @endphp
 
-<div class='email-item {{ $class }}'>
+<div class='email-item {{ $class }}' data-email-id='{{ $email['uuid'] }}' data-path='{{ $pathToEmail }}'>
     <div class='email-from'>
         <img src="{{ gravar($email['from'], 64) }}" alt="{{ $email['from'] }}" class='email-avatar'>
         {{-- {{ $email['from'] }} --}} Jonh doe

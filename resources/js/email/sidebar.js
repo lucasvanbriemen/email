@@ -22,7 +22,7 @@ export default {
     },
 
     changeFolder: function(folder) {
-        app.setUlr(folder.dataset.folder);
+        app.setUlr(folder.dataset.path);
         emailSidebar.updateFolderClass(folder);
 
         const folderUrl = folder.dataset.url;
@@ -31,6 +31,9 @@ export default {
             .then(html => {
                 const content = document.querySelector('.email-listing');
                 content.innerHTML = html;
+            })
+            .then(() => {
+                emailListing.init();
             })
     },
 
