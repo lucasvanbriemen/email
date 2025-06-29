@@ -135,6 +135,34 @@ class MailboxController extends Controller
             'attachments' => $attachments,
             'selectedProfile' => $profile,
             'tags' => $tags,
+        ])->render();
+    }
+
+    public function showHtml($linked_profile_id, $folder, $uuid)
+    {
+        $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
+
+        $tags = Tag::where('profile_id', $profile->id)->get();
+
+        $email = Email::where('uuid', $uuid)
+            ->where('profile_id', $profile->id)
+            ->first();
+
+        $selectedFolder = Folder::where('path', $folder)
+            ->where('profile_id', $profile->id)
+            ->first();
+
+        $attachments = Attachment::where('email_id', $email->id)->get();
+
+        $email->has_read = true;
+        $email->save();
+
+        return view('email_data', [
+            'email' => $email,
+            'selectedFolder' => $selectedFolder,
+            'attachments' => $attachments,
+            'selectedProfile' => $profile,
+            'tags' => $tags,
         ]);
     }
 

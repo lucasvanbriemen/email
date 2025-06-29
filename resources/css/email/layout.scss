@@ -27,8 +27,8 @@
         }
 
         .email-content.maximized {
-            background-color: red;
             width: 60vw;
+            border-left: 1px solid var(--border-color);
         }
     }
 }

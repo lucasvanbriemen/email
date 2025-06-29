@@ -11,7 +11,11 @@ Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'ver
 Route::get('{linked_profile_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder');
 Route::get('{linked_profile_id}/folder/{folder}/listing', [MailboxController::class, 'getListingHTML'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.listing');
 
+
 Route::get('{linked_profile_id}/folder/{folder}/mail/{uuid}', [MailboxController::class, 'show'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail');
+Route::get('{linked_profile_id}/folder/{folder}/mail/{uuid}/html', [MailboxController::class, 'showHtml'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.html');
+
+
 Route::post('{linked_profile_id}/compose_email', [OutboundMailController::class, 'sendEmail'])->middleware(['auth', 'verified'])->name('mailbox.folder');
 
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/read', [MailboxController::class, 'read'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.read');

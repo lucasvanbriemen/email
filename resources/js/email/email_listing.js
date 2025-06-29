@@ -25,5 +25,16 @@ export default {
         emailListingDiv.classList.add('minimized');
         emailContent.classList.add('maximized');
 
+        const url = pathToEmail + '/html';
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                emailContent.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error fetching email content:', error);
+                emailContent.innerHTML = '<p>Error loading email content.</p>';
+            });
     }
 }
