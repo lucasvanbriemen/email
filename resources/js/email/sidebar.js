@@ -24,6 +24,17 @@ export default {
     changeFolder: function(folder) {
         app.setUlr(folder.dataset.folder);
         emailSidebar.updateFolderClass(folder);
+
+        const folderUrl = folder.dataset.url;
+        fetch(folderUrl)
+            .then(response => response.text())
+            .then(html => {
+                const content = document.querySelector('.email-listing');
+                content.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error fetching folder content:', error);
+            });
     },
 
     updateFolderClass: function(folder) {
@@ -33,5 +44,5 @@ export default {
         });
 
         folder.classList.add('selected');
-    }
+    },
 }
