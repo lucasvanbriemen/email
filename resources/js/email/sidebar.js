@@ -23,12 +23,15 @@ export default {
 
     changeFolder: function(folder) {
         app.setUlr(folder.dataset.folder);
+        emailSidebar.updateFolderClass(folder);
+    },
 
+    updateFolderClass: function(folder) {
         const allFolders = document.querySelectorAll('.folder');
         allFolders.forEach(f => {
             f.classList.remove('selected');
         });
-        
+
         folder.classList.add('selected');
     }
 }
