@@ -182,7 +182,10 @@
 
     .email-item {
         width: calc(100% - 2rem);
+
         background-color: var(--background-color-one);
+        border: 2px solid var(--background-color-one);
+
         padding: 1rem;
         margin: 1rem auto;
         border-radius: 1rem;
@@ -190,6 +193,10 @@
         position: relative;
 
         color: var(--text-color);
+
+        &.unread {
+            border-left-color: var(--primary-color);
+        }
 
         .email-from {
             display: flex;

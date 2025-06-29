@@ -1,6 +1,13 @@
-<div class='email-item'>
-    <div class='email-from'>
+@php 
+    $class = '';
 
+    if (!$email['has_read']) {
+        $class = 'unread';
+    }
+@endphp
+
+<div class='email-item {{ $class }}'> 
+    <div class='email-from'>
         <img src="{{ gravar($email['from'], 64) }}" alt="{{ $email['from'] }}" class='email-avatar'>
         {{ $email['from'] }}
     </div>
