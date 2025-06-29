@@ -6,10 +6,10 @@
     }
 @endphp
 
-<div class='email-item {{ $class }}'> 
+<div class='email-item {{ $class }}'>
     <div class='email-from'>
         <img src="{{ gravar($email['from'], 64) }}" alt="{{ $email['from'] }}" class='email-avatar'>
-        {{ $email['from'] }}
+        {{-- {{ $email['from'] }} --}} Jonh doe
     </div>
     <p class='email-subject'>{{ $email['subject'] }}</p>
 
