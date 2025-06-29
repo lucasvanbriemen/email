@@ -10,7 +10,7 @@ export default {
         const folders = document.querySelectorAll('.folder');
         folders.forEach(folder => {
             folder.addEventListener('click', function() {
-                emailSidebar.updateEmailListing();
+                emailSidebar.changeFolder(folder);
             });
         });
     },
@@ -21,7 +21,14 @@ export default {
         sidebar.classList.toggle('minimized');
     },
 
-    updateEmailListing: function() {
-        alert('Update email listing functionality is not implemented yet.');
+    changeFolder: function(folder) {
+        app.setUlr(folder.dataset.folder);
+
+        const allFolders = document.querySelectorAll('.folder');
+        allFolders.forEach(f => {
+            f.classList.remove('selected');
+        });
+        
+        folder.classList.add('selected');
     }
 }

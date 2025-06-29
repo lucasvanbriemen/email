@@ -8,7 +8,7 @@
     <hr>
 
     @foreach ($folders as $folder)
-        <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif' data-url='/{{ $selectedProfile->id }}/folder/{{ $folder->path }}/listing'>
+        <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif' data-url='/{{ $selectedProfile->id }}/folder/{{ $folder->path }}/listing' data-folder='{{ $folder->path }}'>
             {!! svg($folder->icon ?? 'email') !!}
             <span class='text'>{{ $folder->name }}</span>
         </div>
