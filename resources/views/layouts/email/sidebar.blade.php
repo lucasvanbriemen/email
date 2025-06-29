@@ -1,20 +1,16 @@
 <div class='sidebar minimized'>
 
     <div class='compose-email'>
-        <a href='#'>
-            {!! svg('plus') !!}
-            <span class='compose-mail-text text'>Compose</span>
-        </a>
+        {!! svg('plus') !!}
+        <span class='compose-mail-text text'>Compose</span>
     </div>
 
     <hr>
 
     @foreach ($folders as $folder)
-        <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif'>
-            <a href='/{{ $selectedProfile->id }}/folder/{{ $folder->path }}'>
-                {!! svg($folder->icon ?? 'email') !!}
-                <span class='text'>{{ $folder->name }}</span>
-            </a>
+        <div class='folder @if ($folder->path == $selectedFolder->path) selected @endif' data-url='/{{ $selectedProfile->id }}/folder/{{ $folder->path }}/listing'>
+            {!! svg($folder->icon ?? 'email') !!}
+            <span class='text'>{{ $folder->name }}</span>
         </div>
     @endforeach
 
