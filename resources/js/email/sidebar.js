@@ -15,10 +15,16 @@ export default {
         });
     },
 
-    minMaxSidebar: function() {
+    minMaxSidebar: function(setState = 'minimized') {
         const sidebar = document.querySelector('.sidebar');
 
         sidebar.classList.toggle('minimized');
+
+        if (setState === 'minimized') {
+            sidebar.classList.add('minimized');
+        } else if (setState === 'maximized') {
+            sidebar.classList.remove('minimized');
+        }
     },
 
     changeFolder: function(folder) {
