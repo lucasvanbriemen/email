@@ -198,7 +198,7 @@
         cursor: pointer;
 
         &.unread {
-            border-color: var(--primary-color);
+            background: linear-gradient(10deg, var(--primary-color-dark) 5%, var(--background-color-one) 60%); 
         }
 
         .email-from {
