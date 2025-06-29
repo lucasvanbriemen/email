@@ -32,9 +32,6 @@ export default {
                 const content = document.querySelector('.email-listing');
                 content.innerHTML = html;
             })
-            .catch(error => {
-                console.error('Error fetching folder content:', error);
-            });
     },
 
     updateFolderClass: function(folder) {

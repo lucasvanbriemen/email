@@ -1,4 +1,4 @@
-<div class='sidebar minimized'>
+<div class='sidebar'>
 
     <div class='compose-email'>
         {!! svg('plus') !!}

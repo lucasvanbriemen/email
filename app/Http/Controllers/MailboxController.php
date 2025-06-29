@@ -90,6 +90,11 @@ class MailboxController extends Controller
             }
         }
 
+        // If no emails are found, show a message
+        if (empty($html)) {
+            $html = view('no_emails')->render();
+        }
+
         return $html;
     }
 
