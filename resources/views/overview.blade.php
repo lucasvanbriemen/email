@@ -3,15 +3,6 @@
         $last_iterated_date = null;
     @endphp
 
-     {{-- <div onclick="emailSidebar.minMaxSidebar()">
-        open
-    </div> --}}
-
-    {{-- @if (count($emailThreads) == 0) --}}
-        
-    {{-- @endif --}}
-
-
     <div class='email-listing'>
         {!! $listingHTML !!}
     </div>

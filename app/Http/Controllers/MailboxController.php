@@ -82,10 +82,7 @@ class MailboxController extends Controller
                 }
 
                 $html .= view('email_listing', [
-                    'emailThreads' => $thread,
-                    'selectedFolder' => $selectedFolder,
-                    'selectedProfile' => $profile,
-                    'email' => $email ?? null
+                    'email' => $email
                 ])->render();
             }
         }

@@ -1,79 +1,10 @@
-@vite(['resources/css/email/email_listing.scss'])
+<div class='email-item'>
+    <div class='email-from'>
 
-@props(
-    [
-        'email',
-        'class' => '',
-        'dataUrl' => '',
-        'context_menu' => true,
-        'current_iteration_date' => null,
-        'size' => null,
-        'thread' => false,
-        'selectedCredential' => null,
-        'uuid' => uniqid('email-'),
-        'is_fully_read' => false,
-    ]
-)
-
-@if (!isset($email))
-    
-@endif
-
-@php $format = 'D, d M Y'; @endphp
-@if($current_iteration_date == date("Y-m-d", strtotime($email['sent_at'])))
-    @php $format = 'H:i'; @endphp
-@endif
-
-@php
-    if ($thread) {
-        $data_uuid = $email['uuid'] . '-thread';
-    }else {
-        $data_uuid = $email['uuid'];
-    }
-@endphp
-
-@php
-    $context_menu_requirements = '';
-
-    if ($is_fully_read) {
-        $context_menu_requirements .= 'read ';
-    } else {
-        $context_menu_requirements .= 'unread ';
-    }
-
-    if ($email['is_starred'] == 1) {
-        $context_menu_requirements .= 'starred ';
-    } else {
-        $context_menu_requirements .= 'unstarred ';
-    }
-
-    if ($thread) {
-        $context_menu_requirements .= 'thread ';
-    } else {
-        $context_menu_requirements .= 'single-message ';
-    }
-
-    if ($email['is_archived'] == 1) {
-        $context_menu_requirements .= 'archived ';
-    } else {
-        $context_menu_requirements .= 'not-archived ';
-    }
-
-    if ($email['is_deleted'] == 1) {
-        $context_menu_requirements .= 'deleted ';
-    } else {
-        $context_menu_requirements .= 'not-deleted ';
-    }
-@endphp
-
-<div class='{{ $class }} {{ $uuid }}' data-url='{{ $dataUrl }}' data-uuid='{{ $data_uuid }}' data-thread='{{ $thread ? 'true' : 'false' }}' data-context-menu='{{ $context_menu_requirements }}'>
-    <p class='email-from'>
+        <img src="{{ gravar($email['from'], 64) }}" alt="{{ $email['from'] }}" class='email-avatar'>
         {{ $email['from'] }}
-        @if ($size != null)
-            <span class='email-size'>({{ $size }})</span>
-        @endif
-    </p>
+    </div>
     <p class='email-subject'>{{ $email['subject'] }}</p>
 
-    <p class='email-sent-at'>{{ date($format, strtotime($email['sent_at'])) }}</p>
+    <p class='email-sent-at'>{{ date('d/m/Y H:i:s', strtotime($email['sent_at'])) }}</p>
 </div>

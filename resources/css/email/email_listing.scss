@@ -153,14 +153,20 @@
 
 .overview-page {
     .email-listing {
+
+        overflow: auto;
+        height: 100vh;
+
         .no-emails {
             background-color: var(--background-color-one);
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             border-radius: 2rem;
             text-align: center;
             margin: 1rem auto;
             
             width: 50%;
+
+            box-shadow: 0 0 2rem -1rem var(--primary-color);
 
             h2 {
                 font-size: 2rem;
@@ -171,6 +177,42 @@
             p {
                 color: var(--text-color-secondary);
             }
+        }
+    }
+
+    .email-item {
+        width: calc(100% - 2rem);
+        background-color: var(--background-color-one);
+        padding: 1rem;
+        margin: 1rem auto;
+        border-radius: 1rem;
+
+        position: relative;
+
+        color: var(--text-color);
+
+        .email-from {
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 2rem;
+                height: 2rem;
+                border-radius: 50%;
+                margin-right: 0.5rem;
+            }
+        }
+
+        .email-subject {
+            font-weight: bold;
+            color: var(--text-color);
+            margin-top: 0.5rem;
+        }
+
+        .email-sent-at {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
         }
     }
 }
