@@ -9,7 +9,6 @@
 
     <div class='email-content'>
         {{-- This is where the email content will be loaded --}}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint blanditiis dolorum nihil rerum explicabo at porro a voluptas ullam voluptatem, voluptates perferendis commodi, libero, cupiditate nostrum magnam omnis quam consectetur!
     </div>
 
     <script>

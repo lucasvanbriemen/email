@@ -1,4 +1,4 @@
-<x-email-layout :selectedFolder="$selectedFolder" :selectedProfile="$selectedProfile">
+<x-email-layout class="email-page">
     @include('email_data', [
         'email' => $email,
         'attachments' => $attachments,
