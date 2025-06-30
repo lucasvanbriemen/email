@@ -74,24 +74,33 @@ class MailboxController extends Controller
 
         $html = '';
 
-        foreach ($emailThreads as $thread) {
-            foreach ($thread as $email) {
-                // Ensure the email has a UUID for the view
-                if (!$email->uuid) {
-                    $email->uuid = uniqid('email-');
-                }
+        foreach ($emailThreads as $emailThread) {
+            // Ensure the email has a UUID for the view
 
-                $pathToEmail = route('mailbox.folder.mail', [
-                    'linked_profile_id' => $linked_profile_id,
-                    'folder' => $selectedFolder->path,
-                    'uuid' => $email->uuid,
-                ]);
+            $email = $emailThread[0]; // Get the first email in the thread
 
-                $html .= view('email_listing', [
-                    'email' => $email,
-                    'pathToEmail' => $pathToEmail
-                ])->render();
+            if (!$email->subject) {
+                $email->subject = 'No Subject';
             }
+
+            if (count($emailThread) > 1) {
+                $email->subject = $email->subject . ' (' . count($emailThread) . ')';
+            }
+
+            if (!$email->uuid) {
+                $email->uuid = uniqid('email-');
+            }
+
+            $pathToEmail = route('mailbox.folder.mail', [
+                'linked_profile_id' => $linked_profile_id,
+                'folder' => $selectedFolder->path,
+                'uuid' => $email->uuid,
+            ]);
+
+            $html .= view('email_listing', [
+                'email' => $email,
+                'pathToEmail' => $pathToEmail
+            ])->render();
         }
 
         // If no emails are found, show a message
