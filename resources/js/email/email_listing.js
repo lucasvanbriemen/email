@@ -19,6 +19,13 @@ export default {
 
         sidebar.minMaxSidebar('minimized');
 
+        const emailListing = document.querySelector('.email-listing');
+        emailListing.querySelectorAll('.email-item').forEach(item => {
+            item.classList.remove('opened');
+        });
+        emailItem.classList.add('opened');
+        emailItem.classList.remove('unread');
+
         const emailListingDiv = document.querySelector('.email-listing');
         const emailContent = document.querySelector('.email-content');
 
