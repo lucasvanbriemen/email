@@ -17,12 +17,27 @@
 
     <div class='new-emails'>
         @foreach ($emails as $email)
+
+        @php
+
+            foreach ($profiles as $profile) {
+                if ($profile->linked_profile_id == $email->linked_profile_id) {
+                    $linked_profile_id = $profile->linked_profile_id;
+                    break;
+                }
+            }
+
+            $pathToEmail = route('mailbox.folder.mail', [
+                'linked_profile_id' => $linked_profile_id,
+                'folder' => 'inbox',
+                'uuid' => $email->uuid,
+            ]);
+        @endphp
+
+
             @include('email_listing', [
                 'email' => $email,
-                'class' => 'message',
-                'uuid' => uniqid('email-'),
-                'dataUrl' => '/' . $email->profile_id . '/folder/inbox/mail/' . $email->uuid,
-                'is_fully_read' => $email->has_read
+                'pathToEmail' => "/{$email['uuid']}/view",
             ])
         @endforeach
 
