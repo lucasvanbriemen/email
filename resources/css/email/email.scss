@@ -1,7 +1,12 @@
-main {
+.email-page {
+    overflow-y: hidden !important;
+
     color: var(--text-color);
 
-    overflow-y: hidden !important;
+    main {
+        width: 100%;
+        flex-direction: column;
+    }
 
     .quick-action-wrapper {
         height: 3rem;
