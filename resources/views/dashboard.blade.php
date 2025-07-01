@@ -22,7 +22,7 @@
 
             foreach ($profiles as $profile) {
                 if ($profile->linked_profile_id == $email->linked_profile_id) {
-                    $linked_profile_id = $profile->linked_profile_id;
+                    $linked_profile_id = $profile->linked_profile_count;
                     break;
                 }
             }
