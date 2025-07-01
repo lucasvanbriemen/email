@@ -13,13 +13,13 @@ class ReadableTimeHelper
         // Today
         if ($timeDifference < 86400) { // 24 hours in seconds
             // Today at 12:00
-            return 'Today at' . date('H:i', $timestamp);
+            return 'Today at ' . date('H:i', $timestamp);
         }
 
         // Yesterday
         if ($timeDifference < 172800) { // 48 hours in seconds
             // Yesterday at 12:00
-            return 'Yesterday at' . date('H:i', $timestamp);
+            return 'Yesterday at ' . date('H:i', $timestamp);
         }
 
         // This week
