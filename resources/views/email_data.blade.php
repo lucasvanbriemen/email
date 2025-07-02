@@ -36,29 +36,8 @@
     </div>
 
 
-    <script>
-        function resizeIframe(iframe) {
-            try {
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-                iframe.style.height = doc.documentElement.scrollHeight + 'px';
-            } catch (e) {
-                console.error('Iframe resize failed:', e);
-            }
-        }
-
-        // Call this functuin after 0.5 seconds to ensure the iframe content is loaded
-        setTimeout(() => {
-            const iframe = document.querySelector('.email-body');
-            if (iframe) {
-                resizeIframe(iframe);
-            }
-        }, 500);
-    </script>
-
     <iframe srcdoc="<style>body{font-family: sans-serif;}</style><base target='_top'>{{ $email->html_body }}"
-        class='email-body' onload="resizeIframe(this)"></iframe>
-
-    
+        class='email-body' onload="email.setIframeHeight(this)"></iframe>
 
     <div class='email-attachments'>
         @foreach ($attachments as $attachment)
