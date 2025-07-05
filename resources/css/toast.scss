@@ -1,0 +1,16 @@
+.toast {
+    position: fixed;
+    bottom: 0.5rem;
+    left: 0.5rem;
+
+    display: flex;
+
+    width: 30rem;
+    max-width: 100%;
+
+    background-color: var(--modal-background-color);
+    border-radius: 1rem;
+    padding: 2rem 1rem;
+
+    box-shadow: 0 0 2rem -0rem var(--primary-color);
+}
