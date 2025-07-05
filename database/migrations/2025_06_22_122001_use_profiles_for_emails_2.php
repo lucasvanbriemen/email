@@ -13,7 +13,6 @@ return new class extends Migration
     {
         //
         Schema::table('emails', function (Blueprint $table) {
-            $table->dropColumn('credential_id');
         });
     }
 
