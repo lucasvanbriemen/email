@@ -7,9 +7,6 @@
         <img src="{{ asset('images/login-image-light.jpg') }}" alt="Login Illustration" class="login-illustration">
     </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
     <div class='form-wrapper'>
         <form method="POST" action="{{ route('register') }}" class='login-form'>
             @csrf

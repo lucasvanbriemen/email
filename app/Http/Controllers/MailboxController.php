@@ -157,7 +157,7 @@ class MailboxController extends Controller
         ])->render();
     }
 
-    public function showHtml($linked_profile_id, $folder, $uuid)
+    public function showHtml($linked_profile_id, $folder, $uuid, $standalone = false)
     {
         $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
 
@@ -182,6 +182,7 @@ class MailboxController extends Controller
             'attachments' => $attachments,
             'selectedProfile' => $profile,
             'tags' => $tags,
+            'standalone' => $standalone,
         ]);
     }
 

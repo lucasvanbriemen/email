@@ -12,6 +12,7 @@ export default {
         const token = document.querySelector('.quick-action-wrapper input[name="_token"]').value;
 
         emailQuickActions.postQuickAction(url, token);
+        emailQuickActions.followUpAction(event);
     },
 
     postQuickAction: function(url, token) {
@@ -24,5 +25,10 @@ export default {
             .then(data => {
                 toast.show_toast(data.message, data.status);
             })
+    },
+
+    followUpAction: function(event) {
+        const followUpAction = event.target.dataset.followUpAction;
+        alert('Follow-up action: ' + followUpAction);
     }
 }

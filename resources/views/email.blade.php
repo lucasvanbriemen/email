@@ -5,5 +5,6 @@
         'selectedProfile' => $selectedProfile,
         'selectedFolder' => $selectedFolder,
         'action_hint' => '/' . $selectedProfile->id . '/folder/' . $selectedFolder->path . '/mail/' . $email->uuid,
+        'standalone' => true
     ])
 </x-email-layout>

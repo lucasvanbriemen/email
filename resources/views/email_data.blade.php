@@ -10,12 +10,14 @@
     ])
 </div>
 
+<input type='hidden' id='standalone_email' value='{{ $standalone ? 'true' : 'false' }}'>
+
 <div class='email-wrapper'>
     <div class='email-header @if ($email->is_starred) starred @endif'>
         <h1 class='email-subject'>{{ $email->subject }}</h1>
 
         <div class='email-info'>
-            <span class='email-from'>{{ $email->from }}</span> <br>
+            <span class='email-from'>{{ $email->from }} {{ "<" . $email->sender_email . ">" }}</span> <br>  
             <span class='email-to'>To: {{ $email->to }}</span>
         </div>
 

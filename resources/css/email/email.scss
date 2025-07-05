@@ -1,4 +1,4 @@
-.email-page,  .email-content{
+.email-page,  .email-content {
     overflow-y: hidden !important;
 
     color: var(--text-color);
@@ -52,7 +52,7 @@
         }
 
         &.starred {
-            border: 2px solid var(--primary-color);
+            border: 2px solid var(--starred-color);
         }
     }
 
@@ -100,6 +100,30 @@
                 border-radius: 1rem;
             }
             
+        }
+    }
+}
+
+.overview-page {
+    @media screen and (width < 768px) {
+        .sidebar {
+            .folder, .compose-email, .current-profile {
+
+                justify-content: center;
+
+                .text {
+                    display: none;
+                }   
+            }
+        }
+    }
+}
+
+.email-page {
+    @media screen and (width < 768px) {
+        .sidebar {
+            display: none;
+            width: 0 !important;
         }
     }
 }
