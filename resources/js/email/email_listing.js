@@ -14,7 +14,7 @@ export default {
         const pathToEmail = emailItem.dataset.path;
         app.setUlr(pathToEmail);
 
-        sidebar.minMaxSidebar('minimized');
+        emailSidebar.minMaxSidebar('minimized');
 
         const emailListing = document.querySelector('.email-listing');
         emailListing.querySelectorAll('.email-item').forEach(item => {

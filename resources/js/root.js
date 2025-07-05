@@ -15,4 +15,4 @@ for (const [key, path] of Object.entries(exportsMap)) {
     window[key] = modules[path].default;
 }
 
-window.theme.setCssVariables();
+theme.setCssVariables();
