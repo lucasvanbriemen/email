@@ -1,8 +1,8 @@
-<div class="toast">
+<div class="toast toast-success">
 
     <div class='toast-icon'>
-        {!! svg('error') !!}
-        {!! svg('success') !!}
+        <div class='toast-error-icon'>{!! svg('error') !!}</div>
+        <div class='toast-success-icon'>{!! svg('success') !!}</div>
     </div>
 
     <div class="toast-content">

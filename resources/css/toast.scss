@@ -4,6 +4,8 @@
     left: 0.5rem;
 
     display: flex;
+    align-items: center;
+    gap: 0.5rem;
 
     width: 30rem;
     max-width: 100%;
@@ -13,4 +15,32 @@
     padding: 2rem 1rem;
 
     box-shadow: 0 0 2rem -0rem var(--primary-color);
+
+    .toast-icon {
+        width: 2rem;
+
+        .toast-error-icon,
+        .toast-success-icon {
+            display: none;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &.toast-error {
+        background-color: var(--primary-color);
+        .toast-error-icon {
+            display: block;
+        }
+    }
+
+    &.toast-success {
+        background-color: var(--primary-color-dark);
+        .toast-success-icon {
+            display: block;
+        }
+    }
 }
