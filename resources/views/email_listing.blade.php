@@ -4,6 +4,11 @@
     if (!$email['has_read']) {
         $class = 'unread';
     }
+
+    if ($email['is_starred']) {
+        $class .= ' starred';
+    }
+
 @endphp
 
 <div class='email-item {{ $class }}' data-email-id='{{ $email['uuid'] }}' data-path='{{ $pathToEmail }}'>

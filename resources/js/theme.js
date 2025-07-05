@@ -1,6 +1,6 @@
 export default {
 
-    theme: 'dark', // 'light' or 'dark', 'auto' will use the system preference. If you want to force a theme, use 'light' or 'dark'
+    theme: 'light', // 'light' or 'dark', 'auto' will use the system preference. If you want to force a theme, use 'light' or 'dark'
 
     colors: {
         'background-color': {
@@ -31,6 +31,11 @@ export default {
         'error-color': {
             light: '#f59790',
             dark: '#d44439',
+        },
+
+        'starred-color': {
+            light: '#f4c430',
+            dark: '#f4c430',
         },
 
         'text-color': {

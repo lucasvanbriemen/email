@@ -58,6 +58,11 @@
             background: linear-gradient(10deg, var(--primary-color-dark) 5%, var(--background-color-one) 60%); 
         }
 
+        &.starred {
+            box-shadow: 0 0 2rem -1rem var(--primary-color);
+            border-color: var(--starred-color);
+        }
+
         .email-from {
             display: flex;
             align-items: center;
