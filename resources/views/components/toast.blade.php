@@ -6,7 +6,7 @@
     </div>
 
     <div class="toast-content">
-        <span class="text">This is a toast message.</span>
-        <button class="close-button">×</button>
+        <span class="text">Message deleted succesfully</span>
+        <button class="undo-button">Undo</button>
     </div>
 </div>

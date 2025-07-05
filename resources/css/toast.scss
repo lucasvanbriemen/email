@@ -5,7 +5,7 @@
 
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 
     width: 30rem;
     max-width: 100%;
@@ -23,6 +23,7 @@
 
     .toast-icon {
         width: 2rem;
+        min-width: 2rem;
 
         .toast-error-icon,
         .toast-success-icon {
@@ -32,6 +33,22 @@
         svg {
             width: 100%;
             height: 100%;
+        }
+    }
+
+    .toast-content {
+        display: flex;
+        gap: 1rem;
+
+        font-weight: 600;
+
+        .undo-button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 1rem;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
         }
     }
 
