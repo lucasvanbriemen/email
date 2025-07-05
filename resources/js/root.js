@@ -1,15 +1,18 @@
 const modules = import.meta.glob('./**/*.js', { eager: true });
 
-window.app = modules['./app.js'].default;
-window.theme = modules['./theme.js'].default;
-window.toast = modules['./toast.js'].default;
+const exportsMap = {
+    app: './app.js',
+    theme: './theme.js',
+    toast: './toast.js',
+    emailSidebar: './email/sidebar.js',
+    emailListing: './email/email_listing.js',
+    email: './email/email.js',
+    emailQuickActions: './email/quick_actions.js',
+    login: './login.js'
+};
 
-window.emailSidebar = modules['./email/sidebar.js'].default;
-window.emailListing = modules['./email/email_listing.js'].default;
-window.email = modules['./email/email.js'].default;
+for (const [key, path] of Object.entries(exportsMap)) {
+    window[key] = modules[path].default;
+}
 
-window.emailQuickActions = modules['./email/quick_actions.js'].default;
-
-window.login = modules['./login.js'].default;
-
-theme.setCssVariables();
+window.theme.setCssVariables();
