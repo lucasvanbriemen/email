@@ -138,7 +138,7 @@ class MailboxController extends Controller
         // If the contents of the email are empty and there is an attachment that has end with .html, we will show the HTML content of the email or .txt
         if (empty($email->html_body) && $attachments->isNotEmpty()) {
             foreach ($attachments as $attachment) {
-                if (str_ends_with($attachment->name, '.html') || str_ends_with($attachment->name, '.txt')) {
+                if (str_ends_with($attachment->path, '.html') || str_ends_with($attachment->path, '.txt')) {
                     $email->html_body = file_get_contents($attachment->path);
                     break;
                 }
