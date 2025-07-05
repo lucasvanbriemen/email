@@ -31,4 +31,18 @@
             border-left: 1px solid var(--border-color);
         }
     }
+
+    @media screen and (width < 768px) {
+
+        .sidebar.minimized {
+            display: none;
+        }
+
+        .email-content.maximized {
+            position: absolute;
+            background-color: var(--background-color);
+            width: 100vw !important;
+            height: 100vh;
+        }
+    }
 }
