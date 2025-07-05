@@ -1,6 +1,6 @@
 export default {
 
-    theme: 'auto', // 'light' or 'dark', 'auto' will use the system preference
+    theme: 'light', // 'light' or 'dark', 'auto' will use the system preference
 
     colors: {
         'background-color': {
@@ -21,6 +21,16 @@ export default {
         'modal-background-color': {
             light: '#d5e1ed',
             dark: '#303030',
+        },
+
+        'success-color': {
+            light: '#84e897',
+            dark: '#41ab55',
+        },
+
+        'error-color': {
+            light: '#f59790',
+            dark: '#d44439',
         },
 
         'text-color': {
