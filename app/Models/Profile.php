@@ -55,6 +55,15 @@ class Profile extends Model
             ->where('id', $linkedProfileId)
             ->first();
 
+        if (!$profile) {
+            $profile = new Profile();
+            $profile->user_id = $userid;
+
+            $profile->name = auth()->user()->name; // Default to the user's name
+            $profile->email = auth()->user()->email; // Default to the user's email
+            $profile->linked_profile_count = 0; // Initialize linked profile count
+        }
+
         return $profile;
     }
 }

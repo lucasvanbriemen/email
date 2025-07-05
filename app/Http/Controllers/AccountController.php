@@ -16,6 +16,10 @@ class AccountController extends Controller
         // get the current user's IMAP credentials
         $profiles = Profile::where('user_id', auth()->id())->get();
 
+        if ($profiles->isEmpty()) {
+            $profiles = collect([new Profile()]); // Create a new empty profile if none exist
+        }
+
 
         if ($linked_profile_id) {
             $seltectedProfile = Profile::linkedProfileIdToProfile($linked_profile_id);
