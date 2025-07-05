@@ -1,6 +1,6 @@
 export default {
 
-    theme: 'auto', // 'light' or 'dark', 'auto' will use the system preference. If you want to force a theme, use 'light' or 'dark'
+    theme: 'dark', // 'light' or 'dark', 'auto' will use the system preference. If you want to force a theme, use 'light' or 'dark'
 
     colors: {
         'background-color': {

@@ -2,8 +2,6 @@ export default {
     init: function() {
         const quickActions = document.querySelectorAll('.quick-action');
 
-        console.log(quickActions);
-
         quickActions.forEach(action => {
             action.addEventListener('click', emailQuickActions.handleAction);
         });
@@ -22,5 +20,9 @@ export default {
         }
 
         fetch(url, {method: 'POST', headers: {'X-CSRF-TOKEN': token}})
+            .then(response => response.json())
+            .then(data => {
+                toast.show_toast(data.message, data.status);
+            })
     }
 }
