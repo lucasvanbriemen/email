@@ -4,9 +4,8 @@ export default {
     lightmode_image: '/images/login-image-light.jpg',
 
     init: function() {
-        const emailInput = document.querySelector('.email-input');
-
-        emailInput.focus();
+        const firstInput = document.querySelector('.input-wrapper input');
+        firstInput.focus();
 
         this.setImageToTheme();
     },

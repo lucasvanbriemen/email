@@ -1,52 +1,34 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block w-full mt-1" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+<x-guest-layout class="register">
+    <div class='side-container'>
+        <div class='logo'>
+            {!! svg('logo') !!}
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <img src="{{ asset('images/login-image-light.jpg') }}" alt="Login Illustration" class="login-illustration">
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-            <x-text-input id="password" class="block w-full mt-1"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+    <div class='form-wrapper'>
+        <form method="POST" action="{{ route('register') }}" class='login-form'>
+            @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <h1 class='login-title'>{{ __('Welcome!') }}</h1>
+            <p class='login-subtitle'>{{ __('Create an account to get started.') }}</p>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input type="text" name="name" class="name-input" :value="old('name')" />
+            <x-input type="email" name="email" :value="old('email')" />
+            <x-input type="password" name="password" :value="old('password')" />
+            <x-input type="password" name="password_confirmation" label="Confirm Password" :value="old('password_confirmation')" />
 
-            <x-text-input id="password_confirmation" class="block w-full mt-1"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+            <x-input type="submit" class="call-to-action" value="{{ __('Log in') }}" name="Log in" />
+        </form>
+    </div>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            login.init();
+        });
+    </script>
 </x-guest-layout>

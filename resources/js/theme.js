@@ -1,6 +1,6 @@
 export default {
 
-    theme: 'auto', // 'light' or 'dark', 'auto' will use the system preference
+    theme: 'dark', // 'light' or 'dark', 'auto' will use the system preference
 
     colors: {
         'background-color': {
@@ -15,6 +15,11 @@ export default {
 
         'background-color-two': {
             light: '#aab5bf',
+            dark: '#303030',
+        },
+
+        'modal-background-color': {
+            light: '#d5e1ed',
             dark: '#303030',
         },
 

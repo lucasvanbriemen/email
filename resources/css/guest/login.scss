@@ -1,4 +1,4 @@
-.login {
+.login, .register {
     main {
         display: flex;
         justify-content: space-evenly;
@@ -27,7 +27,7 @@
             margin: auto;
             width: calc(60% + 2rem);
 
-            background-color: var(--background-color-two);
+            background-color: var(--modal-background-color);
 
             border-radius: 1rem;
 
