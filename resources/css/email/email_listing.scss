@@ -15,6 +15,14 @@
 
             box-shadow: 0 0 2rem -1rem var(--primary-color);
 
+            @media screen and (width <= 768px) {
+                width: 90%;
+
+                h2 {
+                    font-size: 1.5rem !important;
+                }
+            }
+
             h2 {
                 font-size: 2rem;
                 color: var(--text-color);
