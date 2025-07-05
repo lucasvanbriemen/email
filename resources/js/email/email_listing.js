@@ -39,6 +39,9 @@ export default {
             .then(html => {
                 emailContent.innerHTML = html;
             })
+            .then(() => {
+                emailQuickActions.init();
+            })
             .catch(error => {
                 console.error('Error fetching email content:', error);
                 emailContent.innerHTML = '<p>Error loading email content.</p>';
