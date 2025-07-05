@@ -61,3 +61,9 @@
 //         })
 //     });
 // }
+
+export default {
+    init: function() {
+        alert('Quick actions script loaded successfully.');
+    }
+}
