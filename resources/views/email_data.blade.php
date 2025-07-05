@@ -37,7 +37,7 @@
 
 
     <iframe srcdoc="<style>body{font-family: sans-serif;}</style><base target='_top'>{{ $email->html_body }}"
-        class='email-body' onload="email.setIframeHeight(this)"></iframe>
+        class='email-body' onload="email.init()"></iframe>
 
     <div class='email-attachments'>
         @foreach ($attachments as $attachment)
