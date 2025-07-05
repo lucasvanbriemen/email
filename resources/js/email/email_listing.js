@@ -1,6 +1,3 @@
-import app from "../app";
-import sidebar from "./sidebar";
-
 export default {
     init: function() {
         const emailListingDiv = document.querySelector('.email-listing');
