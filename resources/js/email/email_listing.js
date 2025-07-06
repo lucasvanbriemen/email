@@ -11,7 +11,7 @@ export default {
 
         // If we scroll to the bottom, load more emails
         emailListingDiv.addEventListener('scroll', function() {
-            this.scrollHandler(emailListingDiv);
+            emailListing.scrollHandler(emailListingDiv);
         });
     },
 
