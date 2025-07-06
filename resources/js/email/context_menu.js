@@ -7,6 +7,13 @@ export default {
                 this.openContextMenu(emailItem, e);
             });
         });
+
+        window.addEventListener('click', (e) => {
+            const contextMenu = document.querySelector('.context-menu');
+            if (contextMenu && !contextMenu.contains(e.target)) {
+                contextMenu.classList.remove('open');
+            }
+        });
     },
 
     openContextMenu: function(message, e) {
