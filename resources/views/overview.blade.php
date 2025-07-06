@@ -14,9 +14,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             emailListing.init();
+            emailContextMenu.init();
         });
     </script>
 
-    {{-- @include('context_menu')
-    @include('compose_email') --}}
+    @include('context_menu')
+    {{-- @include('compose_email') --}}
 </x-email-layout>

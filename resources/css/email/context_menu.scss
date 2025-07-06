@@ -1,0 +1,44 @@
+.context-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    transition: all 0.3s ease-in-out;
+
+    width: 0rem;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-color: var(--background-color-one);
+    border-radius: 1rem;
+    padding: 0;
+
+    overflow: hidden;
+    border: none;
+
+    box-shadow: 0 0 3rem var(--primary-color);
+
+    .context-menu-item {
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        color: var(--text-color);
+        transition: all 0.3s ease-in-out;
+
+        border-radius: 1rem;
+
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &:hover {
+            background-color: var(--primary-color);
+        }
+    }
+
+    &.open {
+        width: 15rem;
+        padding: 0.5rem;
+    }
+}
