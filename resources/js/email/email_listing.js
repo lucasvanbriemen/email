@@ -8,6 +8,11 @@ export default {
                 emailListing.openEmail(emailItem);
             });
         });
+
+        // If we scroll to the bottom, load more emails
+        emailListingDiv.addEventListener('scroll', function() {
+            this.scrollHandler(emailListingDiv);
+        });
     },
 
     openEmail: function(emailItem) {
@@ -43,5 +48,19 @@ export default {
                 console.error('Error fetching email content:', error);
                 emailContent.innerHTML = '<p>Error loading email content.</p>';
             });
+    },
+
+    scrollHandler: function(emailListingDiv) {
+        const scrollHeight = emailListingDiv.scrollHeight;
+        const scrollTop = emailListingDiv.scrollTop;
+        const clientHeight = emailListingDiv.clientHeight;
+
+        if (scrollTop + clientHeight >= scrollHeight - 100) {
+            emailListing.loadMoreEmails();
+        }
+    },
+
+    loadMoreEmails: function() {
+        alert('Loading more emails...');
     }
 }
