@@ -61,6 +61,6 @@ export default {
     },
 
     loadMoreEmails: function() {
-        alert('Loading more emails...');
+        
     }
 }
