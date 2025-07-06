@@ -40,6 +40,7 @@ export default {
             })
             .then(() => {
                 emailListing.init();
+                emailContextMenu.init();
             })
     },
 

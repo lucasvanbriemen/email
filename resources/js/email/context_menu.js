@@ -1,10 +1,20 @@
 export default {
     init: function() {
         const emailItems = document.querySelectorAll('.email-item');
+
+        const contextMenuItems = document.querySelectorAll('.context-menu-item');
+
         emailItems.forEach(emailItem => {
             emailItem.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
                 this.openContextMenu(emailItem, e);
+            });
+        });
+
+        contextMenuItems.forEach(contextMenuItem => {
+            contextMenuItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleContextMenuItemClick(contextMenuItem, e);
             });
         });
 
@@ -24,9 +34,6 @@ export default {
             contextMenuItem.classList.remove('hidden');
 
             const contextMenuRequirement = contextMenuItem.dataset.requirement.split(' ');
-
-            console.log(contextMenuRequirement);
-            console.log(message);
 
             const messageRequirement = message.dataset.contextMenu.split(' ');
 
@@ -60,5 +67,46 @@ export default {
 
         contextMenu.style.top = `${top}px`;
         contextMenu.style.left = `${left}px`;
+
+        const emailUuid = message.dataset.emailId;
+
+        contextMenu.dataset.emailId = emailUuid;
+    },
+
+    handleContextMenuItemClick: function(contextMenuItem, e) {
+        e.preventDefault();
+        const contextMenu = document.querySelector('.context-menu');
+        const emailUuid = contextMenu.dataset.emailId;
+
+        if (!emailUuid) {
+            toast.show_toast('No email selected for context menu action.', 'error');
+            return;
+        }
+
+
+        // Get the current URL and remove  everything after the the word following the word 'folder'
+        let currentUrl = window.location.href;
+        const folderIndex = currentUrl.indexOf('folder');
+        if (folderIndex !== -1) {
+            const afterFolder = currentUrl.substring(folderIndex + 'folder'.length + 1); // skip slash
+            const firstSegment = afterFolder.split('/')[0];
+            currentUrl = currentUrl.substring(0, folderIndex + 'folder'.length + 1 + firstSegment.length);
+        }
+
+        const postUrl = currentUrl + '/mail/' + emailUuid + '/' + contextMenuItem.dataset.action;
+        const token = document.querySelector('input[name="_token"]').value
+
+        fetch(postUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token 
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            toast.show_toast(data.message, data.status);
+        })
+
+        contextMenu.classList.remove('open');
     }
 }
