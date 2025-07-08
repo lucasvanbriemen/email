@@ -1,9 +1,17 @@
 .overview-page {
 
     .listing-header {
-        border-bottom: 1px solid var(--border-color);
-        height: 5rem;
+        height: 3rem;
+        width: calc(100% - 2rem);
 
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        margin: 1rem auto;
+        border-radius: 5rem;
+
+        background-color: var(--background-color-one);
         color: var(--text-color);
     }
 
