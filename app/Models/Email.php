@@ -58,7 +58,7 @@ class Email extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function getEmails($folder, $profile)
+    public static function getEmails($folder, $profile, $offset = 0)
     {
         if (!$folder) {
             return collect();
@@ -88,7 +88,7 @@ class Email extends Model
             $query->where('is_starred', true);
         }
 
-        return $query->orderBy('sent_at', 'desc')->limit(50)->get();
+        return $query->orderBy('sent_at', 'desc')->offset($offset)->limit(50)->get();
     }
 
     public static function deleteEmail($uuid, $profile_id)

@@ -3,8 +3,15 @@
         $last_iterated_date = null;
     @endphp
 
-    <div class='email-listing'>
-        {!! $listingHTML !!}
+    <div class='listing-wrapper'>
+        <div class='listing-header'>
+            <h1 class='listing-title'>{{ $selectedFolder->name }}</h1>
+            <h1 class='listing-title'>{{ $totalEmailCount }}</h1>
+        </div>
+
+        <div class='email-listing'>
+            {!! $listingHTML !!}
+        </div>
     </div>
 
     <div class='email-content'>

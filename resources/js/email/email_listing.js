@@ -8,11 +8,6 @@ export default {
                 emailListing.openEmail(emailItem);
             });
         });
-
-        // If we scroll to the bottom, load more emails
-        emailListingDiv.addEventListener('scroll', function() {
-            emailListing.scrollHandler(emailListingDiv);
-        });
     },
 
     openEmail: function(emailItem) {
@@ -49,18 +44,4 @@ export default {
                 emailContent.innerHTML = '<p>Error loading email content.</p>';
             });
     },
-
-    scrollHandler: function(emailListingDiv) {
-        const scrollHeight = emailListingDiv.scrollHeight;
-        const scrollTop = emailListingDiv.scrollTop;
-        const clientHeight = emailListingDiv.clientHeight;
-
-        if (scrollTop + clientHeight >= scrollHeight - 100) {
-            emailListing.loadMoreEmails();
-        }
-    },
-
-    loadMoreEmails: function() {
-        
-    }
 }

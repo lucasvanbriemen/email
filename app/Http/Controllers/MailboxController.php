@@ -30,8 +30,14 @@ class MailboxController extends Controller
 
         $listingHTML = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
 
+        $totalEmailCount = Email::where('folder_id', $selectedFolder->id)
+            ->where('profile_id', $profile->id)
+            ->count();
+
         return view('overview', [
             'listingHTML' => $listingHTML,
+            'selectedFolder' => $selectedFolder,
+            'totalEmailCount' => $totalEmailCount,
         ]);
     }
 
