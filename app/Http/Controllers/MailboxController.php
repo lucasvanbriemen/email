@@ -40,12 +40,10 @@ class MailboxController extends Controller
             'listingHTML' => $listingHTML,
             'selectedFolder' => $selectedFolder,
             'totalEmailCount' => $totalEmailCount,
-            'currentMin' => 0,
-            'currentMax' => 50,
-            'previousPage' => null,
-            'nextPage' => Email::where('folder_id', $selectedFolder->id)
-                ->where('profile_id', $profile->id)
-                ->count() > 50 ? 1 : null,
+            'currentMin' => $data['header']['current_min'] ?? 0,
+            'currentMax' => $data['header']['current_max'] ?? 0,
+            'previousPage' => $data['header']['previous_page'] ?? null,
+            'nextPage' => $data['header']['next_page'] ?? null
         ]);
     }
 
