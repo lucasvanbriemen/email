@@ -85,7 +85,7 @@ class Email extends Model
             $query->where('is_starred', true);
         }
 
-        return $query->orderBy('sent_at', 'desc')->get();
+        return $query->orderBy('sent_at', 'desc')->offset($offset)->limit(50)->get();
     }
 
     public static function deleteEmail($uuid, $profile_id)

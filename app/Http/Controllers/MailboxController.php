@@ -58,8 +58,6 @@ class MailboxController extends Controller
 
 
         foreach ($emails as $email) {
-            // Ensure the email has a UUID for the view
-
             if (!$email->subject) {
                 $email->subject = 'No Subject';
             }
