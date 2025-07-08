@@ -54,10 +54,21 @@ export default {
                 console.log(data);
                 emailListingDiv.innerHTML = data.html;
                 this.init(); // Reinitialize the email listing after updating
+                this.updateEmailListingHeader(data.header);
             })
             .catch(error => {
                 console.error('Error updating email listing:', error);
                 emailListingDiv.innerHTML = '<p>Error loading emails.</p>';
             });
+    },
+
+    updateEmailListingHeader: function(headerData) {
+        const listingHeader = document.querySelector('.listing-header');
+        listingHeader.querySelector('.current-folder-name').textContent = headerData.folder;
+        listingHeader.querySelector('.total-email-count').textContent = headerData.total_email_count;
+        listingHeader.querySelector('.current-min').textContent = headerData.current_min;
+        listingHeader.querySelector('.current-max').textContent = headerData.current_max;
+        listingHeader.querySelector('.previous-page').dataset.page = headerData.previous_page;
+        listingHeader.querySelector('.next-page').dataset.page = headerData.next_page;
     }
 }
