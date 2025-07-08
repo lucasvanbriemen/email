@@ -30,18 +30,7 @@ export default {
     changeFolder: function(folder) {
         app.setUlr(folder.dataset.path);
         emailSidebar.updateFolderClass(folder);
-
-        const folderUrl = folder.dataset.url;
-        fetch(folderUrl)
-            .then(response => response.text())
-            .then(html => {
-                const content = document.querySelector('.email-listing');
-                content.innerHTML = html;
-            })
-            .then(() => {
-                emailListing.init();
-                emailContextMenu.init();
-            })
+        emailListing.updateEmailListing(folder.dataset.url);
     },
 
     updateFolderClass: function(folder) {

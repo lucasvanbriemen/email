@@ -44,4 +44,19 @@ export default {
                 emailContent.innerHTML = '<p>Error loading email content.</p>';
             });
     },
+
+    updateEmailListing: function(url) {
+        const emailListingDiv = document.querySelector('.email-listing');
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                emailListingDiv.innerHTML = html;
+                this.init(); // Reinitialize the email listing after updating
+            })
+            .catch(error => {
+                console.error('Error updating email listing:', error);
+                emailListingDiv.innerHTML = '<p>Error loading emails.</p>';
+            });
+    }
 }
