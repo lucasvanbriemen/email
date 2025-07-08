@@ -1,3 +1,5 @@
+import context_menu from "./context_menu";
+
 export default {
     init: function() {
         const emailListingDiv = document.querySelector('.email-listing');
@@ -53,8 +55,10 @@ export default {
             .then(data => {
                 console.log(data);
                 emailListingDiv.innerHTML = data.html;
-                this.init(); // Reinitialize the email listing after updating
+
+                context_menu.init(); // Initialize context menu for new email items
                 this.updateEmailListingHeader(data.header);
+                this.init(); // Reinitialize the email listing after updating
             })
             .catch(error => {
                 console.error('Error updating email listing:', error);
