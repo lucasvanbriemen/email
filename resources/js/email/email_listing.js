@@ -49,9 +49,10 @@ export default {
         const emailListingDiv = document.querySelector('.email-listing');
 
         fetch(url)
-            .then(response => response.text())
-            .then(html => {
-                emailListingDiv.innerHTML = html;
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                emailListingDiv.innerHTML = data.html;
                 this.init(); // Reinitialize the email listing after updating
             })
             .catch(error => {

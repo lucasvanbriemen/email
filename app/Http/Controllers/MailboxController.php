@@ -28,7 +28,9 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $listingHTML = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
+        $response = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
+        $data = $response->getData(true);  // Convert to array
+        $listingHTML = $data['html'];
 
         $totalEmailCount = Email::where('folder_id', $selectedFolder->id)
             ->where('profile_id', $profile->id)
@@ -80,7 +82,19 @@ class MailboxController extends Controller
             $html = view('no_emails')->render();
         }
 
-        return $html;
+        return response()->json([
+            'html' => $html,
+            'header' => [
+                'foloder' => $selectedFolder->name,
+                'total' => Email::where('folder_id', $selectedFolder->id)
+                    ->where('profile_id', $profile->id)
+                    ->count(),
+                'previous_page' => $page > 0 ? $page - 1 : null,
+                'next_page' => Email::where('folder_id', $selectedFolder->id)
+                    ->where('profile_id', $profile->id)
+                    ->count() > ($page + 1) * 50 ? $page + 1 : null,
+            ]
+        ]);
     }
 
     public function show($linked_profile_id, $folder, $uuid)
