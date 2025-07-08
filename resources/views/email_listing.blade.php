@@ -17,9 +17,9 @@
     }
 
     if ($email['is_deleted']) {
-        $contextMenu .= ' not-deleted';
-    } else {
         $contextMenu .= ' deleted';
+    } else {
+        $contextMenu .= ' not-deleted';
     }
 
 @endphp
