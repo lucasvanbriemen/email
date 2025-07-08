@@ -8,7 +8,7 @@
             <h1 class='listing-title'>{{ $selectedFolder->name }}</h1>
             <h1 class='listing-title'>{{ $totalEmailCount }}</h1>
 
-            <button onclick='emailListing.updateEmailListing("/1/folder/sent/listing/2")'>2</button>
+            <button onclick='emailListing.updateEmailListing("/1/folder/all/listing/2")'>2</button>
         </div>
 
         <div class='email-listing'>
