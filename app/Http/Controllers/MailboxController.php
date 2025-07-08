@@ -41,9 +41,11 @@ class MailboxController extends Controller
         ]);
     }
 
-    public function getListingHTML($linked_profile_id = null, $folder = null)
+    public function getListingHTML($linked_profile_id = null, $folder = null, $page = 0)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
+
+        $offset = $page * 50;
 
         // If a users has not an profile setup, lead them to the account page
         $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
@@ -52,10 +54,9 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::getEmails($selectedFolder, $profile);
+        $emails = Email::getEmails($selectedFolder, $profile, $offset);
 
         $html = '';
-
 
         foreach ($emails as $email) {
             if (!$email->subject) {
