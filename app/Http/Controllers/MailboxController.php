@@ -54,47 +54,14 @@ class MailboxController extends Controller
 
         $emails = Email::getEmails($selectedFolder, $profile);
 
-        $emailThreads = [];
-        $email_sorted_uuids = [];
-
-        foreach ($emails as $email) {
-            // Skip already sorted emails
-            if (in_array($email->uuid, $email_sorted_uuids)) {
-                continue;
-            }
-
-            $currentThread = [];
-
-            foreach ($emails as $threadEmail) {
-                if (
-                    $email->sender === $threadEmail->sender &&
-                    $email->subject === $threadEmail->subject
-                ) {
-                    $currentThread[] = $threadEmail;
-                    $email_sorted_uuids[] = $threadEmail->uuid;
-                }
-            }
-
-            $emailThreads[] = $currentThread;
-        }
-
         $html = '';
 
-        foreach ($emailThreads as $emailThread) {
-            // Ensure the email has a UUID for the view
 
-            $email = $emailThread[0]; // Get the first email in the thread
+        foreach ($emails as $email) {
+            // Ensure the email has a UUID for the view
 
             if (!$email->subject) {
                 $email->subject = 'No Subject';
-            }
-
-            if (count($emailThread) > 1) {
-                $email->subject = $email->subject . ' (' . count($emailThread) . ')';
-            }
-
-            if (!$email->uuid) {
-                $email->uuid = uniqid('email-');
             }
 
             $pathToEmail = route('mailbox.folder.mail', [

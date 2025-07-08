@@ -70,9 +70,6 @@ class Email extends Model
         if (!in_array($folder->path, Email::$customViewFolders)) {
             $query->where('folder_id', $folder->id);
             $query->where('is_archived', false);
-
-
-            return $query->orderBy('sent_at', 'desc')->limit(50)->get();
         }
 
         if ($folder->path == 'trash') {
@@ -88,7 +85,7 @@ class Email extends Model
             $query->where('is_starred', true);
         }
 
-        return $query->orderBy('sent_at', 'desc')->offset($offset)->limit(50)->get();
+        return $query->orderBy('sent_at', 'desc')->get();
     }
 
     public static function deleteEmail($uuid, $profile_id)

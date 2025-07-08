@@ -16,6 +16,12 @@
         $contextMenu .= ' unstarred';
     }
 
+    if ($email['is_deleted']) {
+        $contextMenu .= ' not-deleted';
+    } else {
+        $contextMenu .= ' deleted';
+    }
+
 @endphp
 
 <div class='email-item {{ $class }}' data-email-id='{{ $email['uuid'] }}' data-path='{{ $pathToEmail }}' data-context-menu='{{ $contextMenu }}'>
