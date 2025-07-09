@@ -11,18 +11,18 @@ class NtfyHelper
             return true;
         }
 
-        // $result = file_get_contents('https://ntfy.sh/lukaas_test', false, stream_context_create([
-        //     'http' => [
-        //         'method'  => 'POST',
-        //         'header'  => [
-        //             'Content-Type: text/plain',
-        //             'Title: ' . $title,
-        //             'Click: ' . $url,
-        //             'Priority: 5',
-        //         ],
-        //         'content' => (string) $message
-        //     ]
-        // ]));
+        $result = file_get_contents('https://ntfy.sh/lukaas_test', false, stream_context_create([
+            'http' => [
+                'method'  => 'POST',
+                'header'  => [
+                    'Content-Type: text/plain',
+                    'Title: ' . $title,
+                    'Click: ' . $url,
+                    'Priority: 5',
+                ],
+                'content' => (string) $message
+            ]
+        ]));
 
         return $result;
     }
