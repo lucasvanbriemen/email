@@ -24,6 +24,8 @@ class NtfyHelper
             ]
         ]));
 
+        Log::info('Ntfy response', ['response' => $result]);
+
         return $result;
     }
 }

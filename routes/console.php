@@ -152,3 +152,8 @@ Schedule::command('get_emails')
     ->onFailure(function () {
                 Log::error('Failed to fetch emails at ' . now());
     });
+
+
+Artisan::command('ntfy', function () {
+    NtfyHelper::sendNofication('Test Notification', 'This is a test notification from the console command.', 'https://example.com');
+});
