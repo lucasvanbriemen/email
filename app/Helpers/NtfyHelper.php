@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Log;
+
 class NtfyHelper
 {
     public static function sendNofication($title, $message, $url)
