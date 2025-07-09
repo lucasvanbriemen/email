@@ -144,12 +144,7 @@ Schedule::command('get_emails')
     ->withoutOverlapping()
     ->sentryMonitor(
         monitorSlug: 'get_emails',
-        monitorType: 'cron',
-        monitorInterval: 15, // Interval in seconds
-        monitorTimeout: 60, // Timeout in seconds
-        monitorTags: ['email', 'imap'],
-        monitorAlert: true, // Alert on failure
-        monitorAlertMessage: 'Failed to fetch emails within the expected time frame.'
+        maxRuntime: 1,
     )
     ->onSuccess(function () {
                 Log::info('Emails fetched successfully at ' . now());
