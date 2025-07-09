@@ -143,7 +143,7 @@ Schedule::command('get_emails')
     ->everyFifteenSeconds()
     ->withoutOverlapping()
     ->sentryMonitor(
-        monitorName: 'get_emails',
+        monitorSlug: 'get_emails',
         monitorType: 'cron',
         monitorInterval: 15, // Interval in seconds
         monitorTimeout: 60, // Timeout in seconds
