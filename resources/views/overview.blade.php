@@ -5,9 +5,15 @@
 
     <div class='listing-wrapper'>
         <div class='listing-header'>
-            <div class='current-range'><span class='current-min'>{{ $currentMin }}</span> - <span class='current-max'>{{ $currentMax }}</span></div> of <span class='total-email-count'>{{ $totalEmailCount }}</span>
-            <h1 class='previous-page' data-page='{{ $previousPage ?? 0 }}'>Previous</h1>
-            <h1 class='next-page' data-page='{{ $nextPage ?? 1 }}'>Next</h1>
+            
+            <div class='current-range'>
+                <span class='current-min'>{{ $currentMin }}</span> - <span class='current-max'>{{ $currentMax }}</span>
+                of <span class='total-email-count'>{{ $totalEmailCount }}</span>
+            </div>
+
+            
+            <div class='previous-page' data-page='{{ $previousPage ?? 0 }}'>{!! svg('left-arrow') !!}</div>
+            <div class='next-page' data-page='{{ $nextPage ?? 1 }}'>{!! svg('right-arrow') !!}</div>
         </div>
 
         <div class='email-listing'>
