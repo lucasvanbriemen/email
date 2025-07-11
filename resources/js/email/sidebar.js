@@ -1,4 +1,6 @@
 export default {
+    currentFolder: null,
+
     init: function() {
         const currentProfile = document.querySelector('.current-profile');
         const profileSelector = document.querySelector('.profile-selector');
@@ -13,6 +15,11 @@ export default {
                 emailSidebar.changeFolder(folder);
             });
         });
+
+        const selectedFolder = document.querySelector('.folder.selected');
+        if (selectedFolder) {
+            this.currentFolder = selectedFolder.dataset.path;
+        }
     },
 
     minMaxSidebar: function(setState = 'minimized') {
@@ -30,6 +37,7 @@ export default {
     changeFolder: function(folder) {
         app.setUlr(folder.dataset.path);
         emailSidebar.updateFolderClass(folder);
+        emailSidebar.currentFolder = folder.dataset.path;
         emailListing.updateEmailListing(folder.dataset.url);
     },
 

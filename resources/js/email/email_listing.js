@@ -88,7 +88,7 @@ export default {
             return;
         }
 
-        this.updateEmailListing('/1/folder/trash/listing/' + page);
+        this.updateEmailListing(emailSidebar.currentFolder + '/listing/' + page);
     },
 
     updateEmailListingHeader: function(headerData) {
