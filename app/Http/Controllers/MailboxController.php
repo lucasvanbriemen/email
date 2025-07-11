@@ -38,6 +38,7 @@ class MailboxController extends Controller
 
         return view('overview', [
             'listingHTML' => $listingHTML,
+
             'selectedFolder' => $selectedFolder,
             'totalEmailCount' => $totalEmailCount,
             'currentMin' => $data['header']['current_min'] ?? 0,
@@ -86,6 +87,16 @@ class MailboxController extends Controller
             $html = view('no_emails')->render();
         }
 
+        $current_max = $offset + 50;
+        if (
+            $current_max > Email::where('folder_id', $selectedFolder->id)
+            ->where('profile_id', $profile->id)->count()
+        ) 
+        {
+            $current_max = Email::where('folder_id', $selectedFolder->id)
+                ->where('profile_id', $profile->id)->count();
+        }
+
         return response()->json([
             'html' => $html,
             'header' => [
@@ -98,7 +109,7 @@ class MailboxController extends Controller
                     ->where('profile_id', $profile->id)
                     ->count() > ($page + 1) * 50 ? $page + 1 : null,
                 'current_min' => $offset,
-                'current_max' => $offset + 50 ,
+                'current_max' => $current_max,
             ]
         ]);
     }

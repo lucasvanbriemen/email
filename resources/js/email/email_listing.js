@@ -81,6 +81,12 @@ export default {
     },
 
     changePage: function(page) {
+
+        // if the value is null, it means there is no next page
+        if (page === 'null') {
+            return;
+        }
+
         this.updateEmailListing('/1/folder/trash/listing/' + page);
     },
 
