@@ -2,7 +2,6 @@ import context_menu from "./context_menu";
 
 export default {
     init: function() {
-        const emailListingDiv = document.querySelector('.email-listing');
 
         const previousPage = document.querySelector('.previous-page');
         const nextPage = document.querySelector('.next-page');
@@ -15,15 +14,10 @@ export default {
             emailListing.changePage(nextPage.dataset.page)
         });
 
-        const emailItems = emailListingDiv.querySelectorAll('.email-item');
-        emailItems.forEach(emailItem => {
-            emailItem.addEventListener('click', function() {
-                emailListing.openEmail(emailItem);
-            });
-        });
+        this.addEvents();
     },
 
-    readd_events: function() {
+    addEvents: function() {
         const emailListingDiv = document.querySelector('.email-listing');
 
         const emailItems = emailListingDiv.querySelectorAll('.email-item');
@@ -80,7 +74,7 @@ export default {
                 emailListingDiv.innerHTML = data.html;
                 context_menu.init(); // Initialize context menu for new email items
                 this.updateEmailListingHeader(data.header);
-                this.readd_events(); // Reinitialize the email listing after updating
+                this.addEvents(); // Reinitialize the email listing after updating
             })
             .catch(error => {
                 console.error('Error updating email listing:', error);
