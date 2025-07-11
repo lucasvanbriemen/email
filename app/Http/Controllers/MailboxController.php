@@ -91,7 +91,7 @@ class MailboxController extends Controller
         if (
             $current_max > Email::where('folder_id', $selectedFolder->id)
             ->where('profile_id', $profile->id)->count()
-        ) 
+        )
         {
             $current_max = Email::where('folder_id', $selectedFolder->id)
                 ->where('profile_id', $profile->id)->count();

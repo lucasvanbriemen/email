@@ -15,7 +15,16 @@ export default {
             emailListing.changePage(nextPage.dataset.page)
         });
 
-        console.log('Email listing initialized.');
+        const emailItems = emailListingDiv.querySelectorAll('.email-item');
+        emailItems.forEach(emailItem => {
+            emailItem.addEventListener('click', function() {
+                emailListing.openEmail(emailItem);
+            });
+        });
+    },
+
+    readd_events: function() {
+        const emailListingDiv = document.querySelector('.email-listing');
 
         const emailItems = emailListingDiv.querySelectorAll('.email-item');
         emailItems.forEach(emailItem => {
@@ -23,6 +32,8 @@ export default {
                 emailListing.openEmail(emailItem);
             });
         });
+
+        context_menu.init();
     },
 
     openEmail: function(emailItem) {
@@ -63,16 +74,13 @@ export default {
     updateEmailListing: function(url) {
         const emailListingDiv = document.querySelector('.email-listing');
 
-        console.log('Updating email listing with URL:', url);
-
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 emailListingDiv.innerHTML = data.html;
                 context_menu.init(); // Initialize context menu for new email items
                 this.updateEmailListingHeader(data.header);
-                this.init(); // Reinitialize the email listing after updating
+                this.readd_events(); // Reinitialize the email listing after updating
             })
             .catch(error => {
                 console.error('Error updating email listing:', error);
@@ -81,7 +89,6 @@ export default {
     },
 
     changePage: function(page) {
-
         // if the value is null, it means there is no next page
         if (page === 'null') {
             return;
