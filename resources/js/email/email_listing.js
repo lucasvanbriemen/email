@@ -4,6 +4,19 @@ export default {
     init: function() {
         const emailListingDiv = document.querySelector('.email-listing');
 
+        const previousPage = document.querySelector('.previous-page');
+        const nextPage = document.querySelector('.next-page');
+
+        previousPage.addEventListener('click', function() {
+            emailListing.changePage(previousPage.dataset.page);
+        });
+
+        nextPage.addEventListener('click', function() {
+            emailListing.changePage(nextPage.dataset.page)
+        });
+
+        console.log('Email listing initialized.');
+
         const emailItems = emailListingDiv.querySelectorAll('.email-item');
         emailItems.forEach(emailItem => {
             emailItem.addEventListener('click', function() {
@@ -50,12 +63,13 @@ export default {
     updateEmailListing: function(url) {
         const emailListingDiv = document.querySelector('.email-listing');
 
+        console.log('Updating email listing with URL:', url);
+
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 emailListingDiv.innerHTML = data.html;
-
                 context_menu.init(); // Initialize context menu for new email items
                 this.updateEmailListingHeader(data.header);
                 this.init(); // Reinitialize the email listing after updating
@@ -66,13 +80,16 @@ export default {
             });
     },
 
+    changePage: function(page) {
+        this.updateEmailListing('/1/folder/trash/listing/' + page);
+    },
+
     updateEmailListingHeader: function(headerData) {
         const listingHeader = document.querySelector('.listing-header');
-        listingHeader.querySelector('.current-folder-name').textContent = headerData.folder;
         listingHeader.querySelector('.total-email-count').textContent = headerData.total_email_count;
         listingHeader.querySelector('.current-min').textContent = headerData.current_min;
         listingHeader.querySelector('.current-max').textContent = headerData.current_max;
         listingHeader.querySelector('.previous-page').dataset.page = headerData.previous_page;
         listingHeader.querySelector('.next-page').dataset.page = headerData.next_page;
-    }
+    },
 }
