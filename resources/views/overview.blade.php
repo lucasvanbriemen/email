@@ -28,7 +28,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             emailListing.init();
-            emailContextMenu.init();
         });
     </script>
 

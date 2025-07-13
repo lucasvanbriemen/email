@@ -1,4 +1,6 @@
 export default {
+    has_listeners: false,
+
     init: function() {
         const emailItems = document.querySelectorAll('.email-item');
 
@@ -11,6 +13,12 @@ export default {
             });
         });
 
+        if (this.has_listeners) {
+            return;
+        }
+
+        this.has_listeners = true;
+        
         contextMenuItems.forEach(contextMenuItem => {
             contextMenuItem.addEventListener('click', (e) => {
                 e.preventDefault();

@@ -1,8 +1,5 @@
-import context_menu from "./context_menu";
-
 export default {
     init: function() {
-
         const previousPage = document.querySelector('.previous-page');
         const nextPage = document.querySelector('.next-page');
 
@@ -27,7 +24,7 @@ export default {
             });
         });
 
-        context_menu.init();
+        emailContextMenu.init();
     },
 
     openEmail: function(emailItem) {
@@ -72,7 +69,6 @@ export default {
             .then(response => response.json())
             .then(data => {
                 emailListingDiv.innerHTML = data.html;
-                context_menu.init(); // Initialize context menu for new email items
                 this.updateEmailListingHeader(data.header);
                 this.addEvents(); // Reinitialize the email listing after updating
             })
