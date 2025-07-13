@@ -28,6 +28,14 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
+        if (!$selectedFolder) {
+            // Redirect to the default folder if the selected folder does not exist
+            return redirect()->route('mailbox.overview', [
+                'linked_profile_id' => $linked_profile_id,
+                'folder' => $this->DEFAULT_FOLDER
+            ]);
+        }
+
         $response = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
         $data = $response->getData(true);  // Convert to array
         $listingHTML = $data['html'];

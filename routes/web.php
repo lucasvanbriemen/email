@@ -8,7 +8,7 @@ use App\Http\Controllers\OutboundMailController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('{linked_profile_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder');
+Route::get('{linked_profile_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.overview');
 Route::get('{linked_profile_id}/folder/{folder}/listing/{page?}', [MailboxController::class, 'getListingHTML'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.listing');
 
 Route::get('{linked_profile_id}/folder/{folder}/mail/{uuid}', [MailboxController::class, 'show'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail');
