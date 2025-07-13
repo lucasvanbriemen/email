@@ -8,7 +8,8 @@ class ReadableTimeHelper
     public static function convertDateTimeToReadableTime(string $dateTime): string
     {
         $timestamp = strtotime($dateTime);
-        $timeDifference = time() - $timestamp;
+        $startOfDay = strtotime('today');
+        $timeDifference = $startOfDay - $timestamp;
 
         // Today
         if ($timeDifference < 86400) { // 24 hours in seconds
