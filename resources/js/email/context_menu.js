@@ -130,6 +130,7 @@ export default {
 
         if (postAction == 'remove_email') {
             emailItem.remove();
+            emailListing.updateEmailListing(emailSidebar.currentFolder + '/listing');
         }
 
         if (postAction == 'add_class') {

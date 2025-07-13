@@ -21,7 +21,7 @@
         <span>Archive</span>
     </div>
 
-    <div class="context-menu-item" data-action="delete" data-post-action="remove_email" data-requirement="deleted single-message">
+    <div class="context-menu-item" data-action="delete" data-post-action="remove_email" data-requirement="not-deleted single-message">
         <span>Delete</span>
     </div>
 </div>
