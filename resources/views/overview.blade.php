@@ -12,8 +12,8 @@
             </div>
 
             
-            <div class='previous-page' data-page='{{ $previousPage ?? 0 }}'>{!! svg('left-arrow') !!}</div>
-            <div class='next-page' data-page='{{ $nextPage ?? 1 }}'>{!! svg('right-arrow') !!}</div>
+            <div class='previous-page' data-page='{{ $previousPage }}'>{!! svg('left-arrow') !!}</div>
+            <div class='next-page' data-page='{{ $nextPage }}'>{!! svg('right-arrow') !!}</div>
         </div>
 
         <div class='email-listing'>

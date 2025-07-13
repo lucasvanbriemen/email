@@ -123,6 +123,13 @@ export default {
     postContextMenuAction: function(contextMenuItem, emailUuid) {
         const postAction = contextMenuItem.dataset.postAction;
         const emailItem = document.querySelector(`.email-item[data-email-id="${emailUuid}"]`);
+        let currentPage = document.querySelector('.next-page').dataset.page;
+
+        if (currentPage === 'null') {
+            currentPage = 1; // Default to page 1 if no next page
+        }
+
+        currentPage--;
 
         if (!postAction) {
             return;
