@@ -1,5 +1,6 @@
 export default {
     has_listeners: false,
+    defualtPostActions: ['remove_class', 'add_class', 'remove_email'],
 
     init: function() {
         const emailItems = document.querySelectorAll('.email-item');
@@ -104,6 +105,7 @@ export default {
         const postUrl = currentUrl + '/mail/' + emailUuid + '/' + contextMenuItem.dataset.action;
         const token = document.querySelector('input[name="_token"]').value
 
+        this.postContextMenuAction(contextMenuItem, emailUuid);
         fetch(postUrl, {
             method: 'POST',
             headers: {
@@ -116,5 +118,26 @@ export default {
         })
 
         contextMenu.classList.remove('open');
-    }
+    },
+
+    postContextMenuAction: function(contextMenuItem, emailUuid) {
+        const postAction = contextMenuItem.dataset.postAction;
+        const emailItem = document.querySelector(`.email-item[data-email-id="${emailUuid}"]`);
+
+        if (!postAction) {
+            return;
+        }
+
+        if (postAction == 'remove_email') {
+            emailItem.remove();
+        }
+
+        if (postAction == 'add_class') {
+            emailItem.classList.add(contextMenuItem.dataset.hint);
+        }
+
+        if (postAction == 'remove_class') {
+            emailItem.classList.remove(contextMenuItem.dataset.hint);
+        }
+    },
 }
