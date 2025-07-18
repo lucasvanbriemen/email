@@ -18,6 +18,11 @@ class DashboardController extends Controller
     {
         $profiles = Profile::where('user_id', auth()->id())->get();
 
+        // If there is only one, we dont need to show the profile selection
+        if ($profiles->count() === 1) {
+            // return redirect()->route('mailbox.overview', ['linked_profile_id' => $profiles->first()->id, 'folder' => 'inbox']);
+        }
+
         $last_activity = auth()->user()->last_activity;
 
         $emails = Email::whereIn('profile_id', $profiles->pluck('id'))
@@ -30,19 +35,12 @@ class DashboardController extends Controller
             $email->profile_id = Profile::where('id', $email->profile_id)->first()->linked_profile_count;
         }
 
-        $ai_summery = [
-            'status' => 'error',
-            'response' => 'We encountered an issue while processing your emails. Please try again later.',
-            'data' => []
-        ];
-
         return view(
             'dashboard',
             [
             'profiles' => $profiles,
             'emails' => $emails,
             'last_activity' => $last_activity,
-            'ollama_response' => $ai_summery,
             ]
         );
     }

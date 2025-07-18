@@ -9,10 +9,6 @@
                 </a>
             @endforeach
         </div>
-
-        <div class='ai-overview'>
-            {{ $ollama_response['response'] }}
-        </div>
     </div>
 
     <div class='new-emails'>
