@@ -7,7 +7,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OutboundMailController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/ai_summary', [DashboardController::class, 'summarize'])->middleware(['auth', 'verified'])->name('dashboard.summary');
 
 Route::get('{linked_profile_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.overview');
 Route::get('{linked_profile_id}/folder/{folder}/listing/{page?}', [MailboxController::class, 'getListingHTML'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.listing');
