@@ -7,8 +7,7 @@ export default {
         fetch('/ai_summary')
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                alert(data.response);
+                document.querySelector('.ai-summary').innerHTML = data.summary;
             });
     },
 }

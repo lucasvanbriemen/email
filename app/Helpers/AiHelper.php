@@ -14,11 +14,15 @@ class AiHelper
         ])->post('https://openrouter.ai/api/v1/chat/completions', [
         'model' => 'deepseek/deepseek-chat-v3-0324:free',
         'messages' => [
-        [
-            'role' => 'user',
-            'content' => $text
-        ],
-        ],
+            [
+                'role' => 'system',
+                'content' => 'You will be given a list of emails. Summarize the emails in a concise manner. only mention the most important information. Do not mention the sender or the subject of the email. format it as raw HTML.',
+            ],
+            [
+                'role' => 'user',
+                'content' => $text
+            ],
+            ],
         ]);
 
         $result = $response->json();

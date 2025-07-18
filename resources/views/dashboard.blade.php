@@ -41,7 +41,9 @@
             ])
         @endforeach
 
+        <div class='ai-summary'>
 
+        </div>
         @if (count($emails) == 0)
             <div class='no-emails'>
                 <h2>No new emails</h2>
