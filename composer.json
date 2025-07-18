@@ -15,6 +15,7 @@
         "laravel/framework": "^12.18",
         "laravel/sanctum": "^4.1",
         "laravel/tinker": "^2.10.1",
+        "moe-mizrak/laravel-openrouter": "^2.2",
         "plesk/ext-laravel-integration": "*",
         "sentry/sentry-laravel": "^4.15",
         "swiftmailer/swiftmailer": "^5.4",

@@ -2,8 +2,8 @@
 
 use App\Helpers\GravatarHelper;
 use App\Helpers\SvgHelper;
-use App\Helpers\OllamaHelper;
 use App\Helpers\ReadableTimeHelper;
+use App\Helpers\AiHelper;
 
 function gravar(string $email, int $size = 80): string
 {
@@ -15,9 +15,9 @@ function svg(string $name): string
     return SvgHelper::svg($name);
 }
 
-function ollama(string $system_prompt, string $prompt): array
+function aiSummery(string $text)
 {
-    return OllamaHelper::ollama($system_prompt, $prompt);
+    return AiHelper::summarize($text);
 }
 
 function readableTime(string $date): string
