@@ -18,6 +18,37 @@
 
     .left-panel {
         border-radius: 2rem 1rem 1rem 2rem;
+
+        .linked-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 1rem;
+
+            color: var(--text-color);
+            background-color: var(--background-color-one);
+
+            &:hover {
+                background-color: var(--primary-color);
+            }
+            
+            img {
+                width: 2rem;
+                height: 2rem;
+                border-radius: 50%;
+            }
+
+            .profile-text {
+                display: flex;
+                flex-direction: column;
+
+                .profile-email {
+                    font-size: 0.8rem;
+                    color: var(--text-color-secondary);
+                }
+            }
+        }
     }
 
     .right-panel {

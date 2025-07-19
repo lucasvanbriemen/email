@@ -1,13 +1,14 @@
 <x-app-layout class="dashboard">
     <div class='left-panel'>
-        <div class='linked-accounts'>
-            @foreach ($profiles as $profile)
-                <a class='linked-account' href='/{{ $profile->linked_profile_count }}/folder/inbox'>
-                    <img src='{{ gravar($profile->email, 64) }}'>
-                    {{ $profile->name }}
-                </a>
-            @endforeach
-        </div>
+        @foreach ($profiles as $profile)
+            <a class='linked-profile' href='/{{ $profile->linked_profile_count }}/folder/inbox'>
+                <img src='{{ gravar($profile->email, 64) }}'>
+                <div class='profile-text'>
+                    <span class='profile-name'>{{ $profile->name }}</span>
+                    <span class='profile-email'>{{ $profile->email }}</span>
+                </div>
+            </a>
+        @endforeach
     </div>
 
     <div class='right-panel new-emails'>
