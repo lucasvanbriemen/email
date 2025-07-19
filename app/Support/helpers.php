@@ -3,7 +3,6 @@
 use App\Helpers\GravatarHelper;
 use App\Helpers\SvgHelper;
 use App\Helpers\ReadableTimeHelper;
-use App\Helpers\AiHelper;
 
 function gravar(string $email, int $size = 80): string
 {
@@ -15,9 +14,9 @@ function svg(string $name): string
     return SvgHelper::svg($name);
 }
 
-function aiSummery(string $text)
+function currentUser(): ?\App\Models\User
 {
-    return AiHelper::summarize($text);
+    return auth()->user();
 }
 
 function readableTime(string $date): string
