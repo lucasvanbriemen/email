@@ -281,7 +281,7 @@ class MailboxController extends Controller
             ];
         }
 
-        $tagId = request()->input('tag_id');
+        $tagId = request()->json('tag_id');
 
         if ($tagId) {
             $email->tag_id = $tagId;
