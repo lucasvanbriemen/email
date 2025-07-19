@@ -8,8 +8,6 @@ class ReadableTimeHelper
     public static function convertDateTimeToReadableTime(string $dateTime): string
     {
         $timestamp = strtotime($dateTime);
-        $startOfDay = strtotime('today');
-        $timeDifference = $startOfDay - $timestamp;
 
         // Today
         if (date('Y-m-d', $timestamp) === date('Y-m-d')) {
