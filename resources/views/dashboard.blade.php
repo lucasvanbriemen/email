@@ -5,7 +5,6 @@
                 <a class='linked-account' href='/{{ $profile->linked_profile_count }}/folder/inbox'>
                     <img src='{{ gravar($profile->email, 64) }}'>
                     {{ $profile->name }}
-                    <hr>
                 </a>
             @endforeach
         </div>
