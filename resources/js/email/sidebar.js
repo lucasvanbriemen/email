@@ -36,6 +36,13 @@ export default {
 
     changeFolder: function(folder) {
         app.setUlr(folder.dataset.path);
+
+        // if the .listing-wrapper does not exist, just go to the URL
+        if (!document.querySelector('.listing-wrapper')) {
+            window.location.href = folder.dataset.path;
+            return;
+        }
+
         emailSidebar.updateFolderClass(folder);
         emailSidebar.currentFolder = folder.dataset.path;
         emailListing.updateEmailListing(folder.dataset.url);
