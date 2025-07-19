@@ -53,5 +53,70 @@
 
     .right-panel {
         border-radius: 1rem 2rem 2rem 1rem;
+        overflow: auto;
+
+
+        .email-item {
+            width: calc(100% - 2rem);
+    
+            background-color: var(--background-color-one);
+            border: 2px solid var(--background-color-one);
+    
+            color: var(--text-color);
+    
+            padding: 1rem;
+            margin: 1rem auto;
+            border-radius: 1rem;
+    
+            position: relative;
+    
+            cursor: pointer;
+    
+            .email-from {
+                display: flex;
+                align-items: center;
+    
+                img {
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: 50%;
+                    margin-right: 0.5rem;
+                }
+            }
+    
+            .email-subject {
+                font-weight: bold;
+                color: var(--text-color);
+                margin-top: 0.5rem;
+            }
+    
+            .email-sent-at {
+                position: absolute;
+                right: 1rem;
+                top: 1rem;
+                color: var(--text-color-secondary);
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .left-panel, .right-panel {
+            width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .left-panel {
+            border-radius: 1rem;
+        }
+
+        .right-panel {
+            border-radius: 1rem;
+        }
+        
     }
 }
