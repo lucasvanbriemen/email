@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class='new-emails'>
+    <div class='right-panel new-emails'>
         @foreach ($emails as $email)
             @php
                 foreach ($profiles as $profile) {
