@@ -12,13 +12,13 @@ class ReadableTimeHelper
         $timeDifference = $startOfDay - $timestamp;
 
         // Today
-        if ($timeDifference < 86400) { // 24 hours in seconds
+        if (date('Y-m-d', $timestamp) === date('Y-m-d')) {
             // Today at 12:00
             return 'Today at ' . date('H:i', $timestamp);
         }
 
         // Yesterday
-        if ($timeDifference < 172800) { // 48 hours in seconds
+        if (date('Y-m-d', $timestamp) === date('Y-m-d', strtotime('yesterday'))) {
             // Yesterday at 12:00
             return 'Yesterday at ' . date('H:i', $timestamp);
         }
