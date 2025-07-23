@@ -22,6 +22,8 @@ class IsLoggedIn
             $request->cookies->all()
         ));
 
+        dump('Checking if user is logged in', $cookieJar);
+
         $ch = curl_init('https://login.lucasvanbriemen.nl/api/user');
         curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -32,6 +34,7 @@ class IsLoggedIn
             "Cookie: $cookieJar"
         ]
         ]);
+
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
