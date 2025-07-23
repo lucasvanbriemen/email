@@ -41,18 +41,6 @@
     credentials: 'include'
   });
 
-  await fetch('https://login.lucasvanbriemen.nl/login', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email: 'your-email@example.com',
-      password: 'your-password'
-    })
-  });
-
   const response = await fetch('https://login.lucasvanbriemen.nl/api/user', {
     method: 'GET',
     credentials: 'include',
