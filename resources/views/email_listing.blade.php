@@ -35,16 +35,30 @@
 </div>
 
 <script>
-   fetch('https://login.lucasvanbriemen.nl/api/user', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    }
-    , credentials: 'include'
-})
-.then(response => response.json())
-.then(data => console.log('Success:', data))
-.catch(error => console.error('Error:', error));
+  // Step 1: Get CSRF cookie and start session
+await fetch('https://login.lucasvanbriemen.nl/sanctum/csrf-cookie', {
+  credentials: 'include'
+});
+
+// Step 2: Login (adjust body as needed)
+await fetch('https://login.lucasvanbriemen.nl/login', {
+  method: 'GET',
+  credentials: 'include',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+});
+
+// Step 3: Access authenticated API
+const response = await fetch('https://login.lucasvanbriemen.nl/api/user', {
+  method: 'GET',
+  credentials: 'include',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+const data = await response.json();
+console.log(data);
 
 </script>
