@@ -15,7 +15,7 @@ class IsLoggedIn
      */
     public function handle(Request $request, Closure $next): Response
     {
-    // Rebuild cookie header from original request
+        // Rebuild cookie header from original request
         $cookieJar = implode('; ', array_map(
             fn($k, $v) => "$k=$v",
             array_keys($request->cookies->all()),
@@ -24,6 +24,10 @@ class IsLoggedIn
 
         dump('Checking if user is logged in', $cookieJar);
 
+        $laravelSession = $request->cookies->get('laravel_session');
+        dump('Laravel session cookie', $laravelSession);
+
+
         $ch = curl_init('https://login.lucasvanbriemen.nl/api/user');
         curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -31,7 +35,7 @@ class IsLoggedIn
         CURLOPT_HTTPHEADER => [
             'Accept: application/json',
             'Content-Type: application/json',
-            "Cookie: $cookieJar"
+            "Cookie: $laravelSession"
         ]
         ]);
 
