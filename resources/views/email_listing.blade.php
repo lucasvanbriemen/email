@@ -36,29 +36,33 @@
 
 <script>
   // Step 1: Get CSRF cookie and start session
-await fetch('https://login.lucasvanbriemen.nl/sanctum/csrf-cookie', {
-  credentials: 'include'
-});
+(async () => {
+  await fetch('https://login.lucasvanbriemen.nl/sanctum/csrf-cookie', {
+    credentials: 'include'
+  });
 
-// Step 2: Login (adjust body as needed)
-await fetch('https://login.lucasvanbriemen.nl/login', {
-  method: 'GET',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-});
+  await fetch('https://login.lucasvanbriemen.nl/login', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: 'your-email@example.com',
+      password: 'your-password'
+    })
+  });
 
-// Step 3: Access authenticated API
-const response = await fetch('https://login.lucasvanbriemen.nl/api/user', {
-  method: 'GET',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+  const response = await fetch('https://login.lucasvanbriemen.nl/api/user', {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 
-const data = await response.json();
-console.log(data);
+  const data = await response.json();
+  console.log(data);
+})();
 
 </script>
