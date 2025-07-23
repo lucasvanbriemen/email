@@ -41,6 +41,7 @@
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': '{{ csrf_token() }}'
     }
+    , credentials: 'include'
 })
 .then(response => response.json())
 .then(data => console.log('Success:', data))
