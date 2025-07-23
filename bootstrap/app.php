@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'update_last_activity' => UpdateLastActivity::class,
+            'is_logged_in' => App\Http\Middleware\IsLoggedIn::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
