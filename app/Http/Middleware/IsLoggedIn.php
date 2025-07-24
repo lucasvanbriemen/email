@@ -22,13 +22,11 @@ class IsLoggedIn
             $request->cookies->all()
         ));
 
-        dump($_COOKIE, $_SERVER['HTTP_COOKIE']);
 
         dump('Checking if user is logged in', $cookieJar);
 
-        $laravelSession = $request->cookies->get('laravel_session');
+        $laravelSession = $_COOKIE['laravel_session'] ?? null;
         dump('Laravel session cookie', $laravelSession);
-
 
         $ch = curl_init('https://login.lucasvanbriemen.nl/api/user');
         curl_setopt_array($ch, [
