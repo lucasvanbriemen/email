@@ -22,6 +22,8 @@ class IsLoggedIn
             $request->cookies->all()
         ));
 
+        dump($_COOKIE, $_SERVER['HTTP_COOKIE']);
+
         dump('Checking if user is logged in', $cookieJar);
 
         $laravelSession = $request->cookies->get('laravel_session');
