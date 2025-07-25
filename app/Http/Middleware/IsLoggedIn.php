@@ -26,7 +26,8 @@ class IsLoggedIn
             dd($response);
             return $next($request);
         } else {
-            dd('You are not logged in. Please log in to continue.', $response, $httpCode);
+            // Redirect to login.lucasvanbriemen.nl, with the current URL as a query parameter
+            return redirect('https://login.lucasvanbriemen.nl?redirect=' . urlencode($request->fullUrl()));
         }
     }
 }
