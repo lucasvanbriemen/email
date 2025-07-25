@@ -23,10 +23,10 @@ class IsLoggedIn
         ));
 
 
-        dump('Checking if user is logged in', $cookieJar);
+        var_dump('Checking if user is logged in', $cookieJar);
 
         $laravelSession = $_COOKIE['auth_token'] ?? null;
-        dump('Laravel session cookie', $laravelSession);
+        var_dump('Laravel session cookie', $laravelSession);
 
         $ch = curl_init('https://login.lucasvanbriemen.nl/api/user/token/' . $laravelSession);
         curl_setopt_array($ch, [
@@ -44,12 +44,10 @@ class IsLoggedIn
         curl_close($ch);
 
         if ($httpCode === 200) {
+            dd('User is logged in', $response, $httpCode);
             return $next($request);
         }
 
-        dd('You are not logged in. Please log in to continue.', $response, $httpCode);
+        var_dump('You are not logged in. Please log in to continue.', $response, $httpCode);
     }
-
-
-
 }
