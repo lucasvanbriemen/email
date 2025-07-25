@@ -25,11 +25,10 @@ class IsLoggedIn
 
         dump('Checking if user is logged in', $cookieJar);
 
-        // $laravelSession = $_COOKIE['laravel_session'] ?? null;
-        $laravelSession = "eyJpdiI6IityVml3L0xKSUMzaHdXclp1bXN6ZXc9PSIsInZhbHVlIjoibFd4ejZ3SUFUTnVrc1l6OXFkRkhvT1JUaG90QSt1bW9BYTFuWkhENGFFemxlelJHZ3NUR2RuQ2lJQWFid3ZaeGRWbjBPT0JpZ2NBZ3dlejhjMEM3L3JybFhTeVBIYTd3dWhMQWx0RjhOZ2krZHdFM3ZRc3lWSXpWallhMDZsbUoiLCJtYWMiOiI1ZDA2ZTk3YzQ4OTI2OGYwZjE1ZTQzMTBjYjEzOTQ3Njg1ODFhYzRkODUwODk1NzYwMDZlMDMwMWI5MTYwZWYzIiwidGFnIjoiIn0%3D";
+        $laravelSession = $_COOKIE['auth_token'] ?? null;
         dump('Laravel session cookie', $laravelSession);
 
-        $ch = curl_init('https://login.lucasvanbriemen.nl/api/user');
+        $ch = curl_init('https://login.lucasvanbriemen.nl/api/user/token/' . $laravelSession);
         curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HEADER => true,
