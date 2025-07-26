@@ -14,9 +14,18 @@ function svg(string $name): string
     return SvgHelper::svg($name);
 }
 
-function currentUser(): ?\App\Models\User
+function currentUser()
 {
-    return auth()->user();
+    $current_user = app('current_user');
+
+    // Convert to object if it's an array or an json string
+    if (is_array($current_user)) {
+        $current_user = (object) $current_user;
+    } elseif (is_string($current_user)) {
+        $current_user = json_decode($current_user);
+    }
+
+    return $current_user;
 }
 
 function readableTime(string $date): string

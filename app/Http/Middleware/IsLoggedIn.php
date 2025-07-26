@@ -15,18 +15,26 @@ class IsLoggedIn
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $laravelSession = $_COOKIE['auth_token'] ?? null;
+     // Prod only
+        if (app()->environment('local')) {
+              $authToken = config('app.user_token');
+        } else {
+             $authToken = $_COOKIE['auth_token'] ?? null;
+        }
 
-        $ch = curl_init('https://login.lucasvanbriemen.nl/api/user/token/' . $laravelSession);
-        $response = curl_exec($ch);
+        $ch = curl_init('https://login.lucasvanbriemen.nl/api/user/token/' . $authToken);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Prevent direct output
+        $responseBody = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         if ($httpCode === 200) {
-            dd($response);
+            $current_user = json_decode($responseBody); // Convert JSON to object
+            $current_user = $current_user->user;
+            app()->instance('current_user', $current_user);
+
             return $next($request);
         } else {
-            // Redirect to login.lucasvanbriemen.nl, with the current URL as a query parameter
             return redirect('https://login.lucasvanbriemen.nl?redirect=' . urlencode($request->fullUrl()));
         }
     }
