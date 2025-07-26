@@ -31,7 +31,6 @@ Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/delete_thread', [Ma
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/star_thread', [MailboxController::class, 'starThread'])->middleware(['auth', 'verified', 'update_last_activity'])->name('mailbox.folder.mail.star_thread');
 
 Route::get('/is_loggedin', function() { 
-    // Dump $current_user or return a simple JSON response
     return response()->json(currentUser()->name);
 })->middleware(['is_logged_in'])->name('mailbox.search');
 
