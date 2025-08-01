@@ -50,7 +50,7 @@ class Profile extends Model
 
     public static function linkedProfileIdToProfile($linkedProfileId)
     {
-        $userid = auth()->user()->id;
+        $userid = currentUser()->id;
         $profile = Profile::where('user_id', $userid)
             ->where('id', $linkedProfileId)
             ->first();
@@ -59,8 +59,8 @@ class Profile extends Model
             $profile = new Profile();
             $profile->user_id = $userid;
 
-            $profile->name = auth()->user()->name; // Default to the user's name
-            $profile->email = auth()->user()->email; // Default to the user's email
+            $profile->name = currentUser()->name; // Default to the user's name
+            $profile->email = currentUser()->email; // Default to the user's email
             $profile->linked_profile_count = 0; // Initialize linked profile count
         }
 

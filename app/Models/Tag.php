@@ -19,7 +19,7 @@ class Tag extends Model
         parent::boot();
 
         static::creating(function ($tag) {
-            $tag->profile_id = auth()->user()->profile_id;
+            $tag->profile_id = currentUser()->profile_id;
         });
     }
 
