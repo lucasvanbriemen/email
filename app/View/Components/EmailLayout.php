@@ -24,7 +24,7 @@ class EmailLayout extends Component
     public function __construct($class = '')
     {
         $selectedProfile = Route::current()->parameter('linked_profile_id');
-        $this->selectedProfile = Profile::where('user_id', auth()->id()) 
+        $this->selectedProfile = Profile::where('user_id', currentUser()->id)
             ->where('linked_profile_count', $selectedProfile)
             ->first();
 
@@ -36,7 +36,7 @@ class EmailLayout extends Component
 
         $this->class = $class;
 
-        $this->profiles = Profile::where('user_id', auth()->id())->get();
+        $this->profiles = Profile::where('user_id', currentUser()->id)->get();
 
     }
 

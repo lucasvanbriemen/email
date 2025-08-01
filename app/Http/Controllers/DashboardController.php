@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $profiles = Profile::where('user_id', auth()->id())->get();
+        $profiles = Profile::where('user_id', currentUser()->id)->get();
 
         // If there is only one, we dont need to show the profile selection
         if ($profiles->count() === 1) {
