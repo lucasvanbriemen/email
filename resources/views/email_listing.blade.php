@@ -33,24 +33,3 @@
 
     <p class='email-sent-at'>{{ readableTime($email['sent_at']) }}</p>
 </div>
-
-<script>
-  // Step 1: Get CSRF cookie and start session
-(async () => {
-  await fetch('https://login.lucasvanbriemen.nl/sanctum/csrf-cookie', {
-    credentials: 'include'
-  });
-
-  const response = await fetch('https://login.lucasvanbriemen.nl/api/user', {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-
-  const data = await response.json();
-  console.log(data);
-})();
-
-</script>
