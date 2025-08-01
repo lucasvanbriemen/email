@@ -8,7 +8,6 @@ const exportsMap = {
     emailListing: './email/email_listing.js',
     email: './email/email.js',
     emailQuickActions: './email/quick_actions.js',
-    login: './login.js',
     emailContextMenu: './email/context_menu.js',
     dashboard: './dashboard.js',
 };

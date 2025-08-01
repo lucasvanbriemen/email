@@ -129,5 +129,5 @@ return [
         'enabled' => env('NTFY_ENABLED', true),
     ],
 
-    'user_token' => env('USER_TOKEN', 'DEV_TOKEN'),
+    'user_token' => env('USER_TOKEN'),
 ];
