@@ -136,7 +136,7 @@ export default {
         if (postAction == 'remove_email') {
             emailItem.remove();
             setTimeout(() => {
-                emailListing.updateEmailListing(emailSidebar.currentFolder + '/listing/' + currentPage);
+                emailListing.updateEmailListing(emailSidebar.currentFolder + '/listing/' + (currentPage - 1));
             }, 250);
         }
 
