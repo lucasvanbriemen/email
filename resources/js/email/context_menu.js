@@ -129,8 +129,6 @@ export default {
             currentPage = 1; // Default to page 1 if no next page
         }
 
-        currentPage--;
-
         if (!postAction) {
             return;
         }
