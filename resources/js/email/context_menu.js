@@ -123,10 +123,14 @@ export default {
     postContextMenuAction: function(contextMenuItem, emailUuid) {
         const postAction = contextMenuItem.dataset.postAction;
         const emailItem = document.querySelector(`.email-item[data-email-id="${emailUuid}"]`);
-        let currentPage = document.querySelector('.next-page').dataset.page;
-
-        if (currentPage === 'null') {
-            currentPage = 1; // Default to page 1 if no next page
+        // Get current page by using previous page + 1, or default to 0 if no previous page
+        const previousPage = document.querySelector('.previous-page').dataset.page;
+        let currentPage;
+        
+        if (previousPage === 'null') {
+            currentPage = 0; // First page (0-indexed)
+        } else {
+            currentPage = parseInt(previousPage) + 1;
         }
 
         if (!postAction) {
@@ -136,7 +140,7 @@ export default {
         if (postAction == 'remove_email') {
             emailItem.remove();
             setTimeout(() => {
-                emailListing.updateEmailListing(emailSidebar.currentFolder + '/listing/' + (currentPage - 1));
+                emailListing.updateEmailListing(emailSidebar.currentFolder + '/listing/' + currentPage);
             }, 250);
         }
 
