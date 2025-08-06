@@ -24,6 +24,7 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem;
+            margin-bottom: 1rem;
             border-radius: 1rem;
 
             color: var(--text-color);
@@ -31,6 +32,10 @@
 
             &:hover {
                 background-color: var(--primary-color);
+            }
+
+            &:last-child {
+                margin-bottom: 0;
             }
             
             img {

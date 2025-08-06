@@ -31,7 +31,7 @@
 
             @include('email_listing', [
                 'email' => $email,
-                'pathToEmail' => "/{$email['uuid']}/view",
+                'pathToEmail' => $pathToEmail,
             ])
         @endforeach
 
