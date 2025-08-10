@@ -3,6 +3,7 @@
 use App\Helpers\GravatarHelper;
 use App\Helpers\SvgHelper;
 use App\Helpers\ReadableTimeHelper;
+use App\Helpers\IcsHelper;
 
 function gravar(string $email, int $size = 80): string
 {
@@ -31,4 +32,9 @@ function currentUser()
 function readableTime(string $date): string
 {
     return ReadableTimeHelper::convertDateTimeToReadableTime($date);
+}
+
+function parseIcsContent(string $icsContent): array
+{
+    return IcsHelper::parseIcsContent($icsContent);
 }
