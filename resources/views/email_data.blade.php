@@ -37,9 +37,19 @@
         </div>
     </div>
 
+    @foreach ($attachments as $attachment)
+        {{-- Every ICS attachment --}}
+        @php
+            $isIcs = strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION)) === 'ics';
+            if (!$isIcs) continue;
+        @endphp
 
-    <iframe srcdoc="<style>body{font-family: sans-serif;}</style><base target='_top'>{{ $email->html_body }}"
-        class='email-body' onload="email.init()"></iframe>
+        {{-- Dump the content --}}
+        <pre>{{ $attachment->getContent() }}</pre>
+
+    @endforeach
+
+    <iframe srcdoc="<style>body{font-family: sans-serif;}</style><base target='_top'>{{ $email->html_body }}" class='email-body' onload="email.init()"></iframe>
 
     <div class='email-attachments'>
         @foreach ($attachments as $attachment)

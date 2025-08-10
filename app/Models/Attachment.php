@@ -19,4 +19,9 @@ class Attachment extends Model
     {
         return $this->belongsTo(Email::class);
     }
+
+    public function getContent()
+    {
+        return file_get_contents($this->path);
+    }
 }
