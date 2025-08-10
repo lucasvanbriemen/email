@@ -1,4 +1,5 @@
 @vite(['resources/css/email/email.scss', 'resources/js/theme.js'])
+<script type="text/javascript" src="https://cdn.addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 
 <div class='quick-action-wrapper'>
     @include('quick_actions', [
@@ -14,14 +15,14 @@
 
 <div class='email-wrapper'>
     <div class='email-header @if ($email->is_starred) starred @endif'>
-        <h1 class='email-subject'>{{ $email->subject }}</h1>
+        <h1 class='subject'>{{ $email->subject }}</h1>
 
-        <div class='email-info'>
-            <span class='email-from'>{{ $email->from }} {{ "<" . $email->sender_email . ">" }}</span> <br>  
-            <span class='email-to'>To: {{ $email->to }}</span>
+        <div class='info'>
+            <span class='from'>{{ $email->from }} {{ "<" . $email->sender_email . ">" }}</span> <br>  
+            <span class='to'>To: {{ $email->to }}</span>
         </div>
 
-        <div class='email-date'>
+        <div class='date'>
 
             @php
                 $format = 'D d M, H:i';
@@ -45,32 +46,29 @@
 
             $icsContent = $attachment->getContent();
             $parsedIcs = parseIcsContent($icsContent)[0];
+            $parsedIcs["DTSTART"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTSTART"])->setTimezone('Europe/Amsterdam')->toDateTimeString();
+            $parsedIcs["DTEND"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTEND"])->setTimezone('Europe/Amsterdam')->toDateTimeString();
         @endphp
 
-        {{-- Dump the content --}}
-        <pre>{{ $attachment->getContent()}}</pre>
+        <div class='ics-header'>
+            <h1 class='subject'>{{ $parsedIcs["SUMMARY"] }}</h1>
 
-        <div class='email-header @if ($email->is_starred) starred @endif'>
-            <h1 class='email-subject'>{{ $parsedIcs["SUMMARY"] }}</h1>
+            <div class='info'>
+                {{ readableTime($parsedIcs["DTSTART"]) }} until {{ readableTime($parsedIcs["DTEND"]) }} <br>
 
-            <div class='email-info'>
-                <span class='email-from'>{{ $email->from }} {{ "<" . $email->sender_email . ">" }}</span> <br>  
-                <span class='email-to'>To: {{ $email->to }}</span>
+                @foreach ($parsedIcs["ATTENDEE"] as $attendee)
+                    <span class='attendee'>{{ str_ireplace('mailto:', '', $attendee) }}</span><br>
+                @endforeach
             </div>
 
-            <div class='email-date'>
-
-                @php
-                    $format = 'D d M, H:i';
-                    $send_at = $email->send_at;
-
-                    // If the date is today, show only the time
-                    if (date('Y-m-d') === $email->created_at->format('Y-m-d')) {
-                        $format = 'H:i';
-                    }
-                @endphp
-
-             {{ $email->created_at->format($format) }}
+            <div title="Add to Calendar" class="addeventatc">
+                Add to Calendar
+                <span class="start">{{ $parsedIcs["DTSTART"] }}</span>
+                <span class="end">{{ $parsedIcs["DTEND"] }}</span>
+                <span class="timezone">Europe/Amsterdam</span>
+                <span class="title">{{ $parsedIcs["SUMMARY"] }}</span>
+                <span class="description">{{ $parsedIcs["DESCRIPTION"] }}</span>
+                <span class="location">{{ $parsedIcs["LOCATION"] ?? '' }}</span>
             </div>
         </div>
     @endforeach

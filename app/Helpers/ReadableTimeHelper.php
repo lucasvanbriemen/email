@@ -25,7 +25,7 @@ class ReadableTimeHelper
         $weekStart = strtotime('last Sunday');
         if ($timestamp >= $weekStart) {
             // Monday of the week at 12:00
-            return date('l \a\t H:i', $timestamp);
+            return "Last " . date('l \a\t H:i', $timestamp);
         }
 
         // This month

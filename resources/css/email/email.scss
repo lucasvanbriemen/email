@@ -27,24 +27,23 @@
         height: calc(100vh - 6rem);
     }
 
-    .email-header {
+    .email-header, .ics-header {
         position: relative;
         
         background-color: var(--background-color-one);
         width: calc(100% - 2rem);
-
 
         margin: 0 auto;
         padding: 1rem;
         border-radius: 1rem;
 
 
-        .email-subject {
+        .subject {
             font-size: 1.5rem;
             font-weight: 600;
         }
 
-        .email-date {
+        .date {
             position: absolute;
             right: 1rem;
             top: 50%;
@@ -53,6 +52,17 @@
 
         &.starred {
             border: 2px solid var(--starred-color);
+        }
+    }
+
+    .ics-header {
+        margin-top: 1rem;
+        background-color: var(--background-color);
+        border: 2px solid var(--background-color-two);
+
+        .subject {
+            font-size: 1.25rem;
+            font-weight: 600;
         }
     }
 

@@ -22,11 +22,20 @@ class IcsHelper
             } elseif ($currentEvent !== null) {
                 $parts = explode(':', $line, 2);
                 if (count($parts) === 2) {
-                    $currentEvent[trim($parts[0])] = trim($parts[1]);
+                    $key = trim($parts[0]);
+                    $value = trim($parts[1]);
+
+                    // Store multiple ATTENDEE entries
+                    if (strpos($key, 'ATTENDEE') === 0) {
+                        $currentEvent['ATTENDEE'][] = $value;
+                    } else {
+                        $currentEvent[$key] = $value;
+                    }
                 }
             }
         }
 
         return $events;
     }
+
 }
