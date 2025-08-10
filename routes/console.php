@@ -92,7 +92,7 @@ Artisan::command("get_emails", function () {
                 $attachments = $message->getAttachments();
                 foreach ($attachments as $attachment) {
                     // Save attachment to storage
-                    $filePath = 'attachments/' . $credential->user_id . '/';
+                    $filePath = 'attachments/' . $credential->profile_id . '/';
                     if (!file_exists(public_path($filePath))) {
                         mkdir(public_path($filePath), 0777, true);
                     }

@@ -46,6 +46,12 @@
             @php
                 $IMG_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'png', 'svg'];
                 $isImage = in_array(strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION)), $IMG_EXTENSIONS);
+
+                // Exclude any .ics files since we render it at the top
+                $isIcs = strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION)) === 'ics';
+                if ($isIcs) {
+                    continue;
+                }
             @endphp
             <a class='email-attachment' href='/{{ $attachment->path }}' target='_blank' rel='noopener noreferrer'>
                 @if ($isImage)
