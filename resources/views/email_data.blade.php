@@ -46,8 +46,8 @@
 
             $icsContent = $attachment->getContent();
             $parsedIcs = parseIcsContent($icsContent)[0];
-            $parsedIcs["DTSTART"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTSTART"])->setTimezone('Europe/Amsterdam')->toDateTimeString();
-            $parsedIcs["DTEND"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTEND"])->setTimezone('Europe/Amsterdam')->toDateTimeString();
+            $parsedIcs["DTSTART"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTSTART"] ?? '')->setTimezone('Europe/Amsterdam')->toDateTimeString();
+            $parsedIcs["DTEND"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTEND"] ?? '')->setTimezone('Europe/Amsterdam')->toDateTimeString();
         @endphp
 
         <div class='ics-header'>
@@ -63,11 +63,11 @@
 
             <div title="Add to Calendar" class="addeventatc">
                 Add to Calendar
-                <span class="start">{{ $parsedIcs["DTSTART"] }}</span>
-                <span class="end">{{ $parsedIcs["DTEND"] }}</span>
+                <span class="start">{{ $parsedIcs["DTSTART"] ?? '' }}</span>
+                <span class="end">{{ $parsedIcs["DTEND"] ?? '' }}</span>
                 <span class="timezone">Europe/Amsterdam</span>
-                <span class="title">{{ $parsedIcs["SUMMARY"] }}</span>
-                <span class="description">{{ $parsedIcs["DESCRIPTION"] }}</span>
+                <span class="title">{{ $parsedIcs["SUMMARY"] ?? '' }}</span>
+                <span class="description">{{ $parsedIcs["DESCRIPTION"] ?? '' }}</span>
                 <span class="location">{{ $parsedIcs["LOCATION"] ?? '' }}</span>
             </div>
         </div>
