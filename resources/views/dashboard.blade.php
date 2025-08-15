@@ -43,7 +43,7 @@
         @endif
 
         <div class="last-update">
-            <p>Last email fetched at: {{ $last_update }}</p>
+            <p>Last email fetched at: {{ readableTime($last_update) }}</p>
         </div>
     </div>
 
