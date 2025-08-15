@@ -137,6 +137,12 @@ Artisan::command("get_emails", function () {
             });
         }
     }
+
+    // Update the last_email_fetched_at timestamp
+    DB::table('system_info')->updateOrInsert(
+        ['id' => 1],
+        ['last_email_fetched_at' => now()]
+    );
 });
 
 Schedule::command('get_emails')
