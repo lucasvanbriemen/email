@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Email;
+use Illuminate\Support\Facades\DB;
 use App\Models\Profile;
 
 class DashboardController extends Controller
@@ -29,12 +30,15 @@ class DashboardController extends Controller
             $email->profile_id = Profile::where('id', $email->profile_id)->first()->linked_profile_count;
         }
 
+        $last_update = DB::table('system_info')->value('last_email_fetched_at');
+
         return view(
             'dashboard',
             [
                 'profiles' => $profiles,
                 'emails' => $emails,
                 'last_activity' => $last_activity,
+                'last_update' => $last_update
             ]
         );
     }

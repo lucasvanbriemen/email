@@ -59,7 +59,7 @@
     .right-panel {
         border-radius: 1rem 2rem 2rem 1rem;
         overflow: auto;
-
+        position: relative;
 
         .email-item {
             width: calc(100% - 2rem);
@@ -101,6 +101,16 @@
                 top: 1rem;
                 color: var(--text-color-secondary);
             }
+        }
+
+        .last-update {
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            color: var(--text-color-secondary);
+            background-color: var(--background-color-one);
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
         }
     }
 

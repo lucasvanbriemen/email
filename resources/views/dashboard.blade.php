@@ -41,6 +41,10 @@
                 <p>Check back later for updates.</p>
             </div>
         @endif
+
+        <div class="last-update">
+            <p>Last email fetched at: {{ $last_update }}</p>
+        </div>
     </div>
 
     <script>
