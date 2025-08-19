@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Webklex\IMAP\Facades\Client;
 use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\User;
-use App\Models\ImapCredentials;
 use App\Models\Profile;
 use App\Models\Tag;
 
@@ -40,9 +37,8 @@ class MailboxController extends Controller
         $data = $response->getData(true);  // Convert to array
         $listingHTML = $data['html'];
 
-        $totalEmailCount = Email::where('folder_id', $selectedFolder->id)
-            ->where('profile_id', $profile->id)
-            ->count();
+        // Use the threaded total count from the listing header
+        $totalEmailCount = $data['header']['total_email_count'] ?? 0;
 
         return view('overview', [
             'listingHTML' => $listingHTML,
@@ -60,7 +56,7 @@ class MailboxController extends Controller
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
 
-        $offset = $page * 50;
+        $offset = $page * 50; // parent threads offset
 
         // If a users has not an profile setup, lead them to the account page
         $profile = Profile::linkedProfileIdToProfile($linked_profile_id);
@@ -69,24 +65,91 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::getEmails($selectedFolder, $profile, $offset);
+        // Build a base query similar to Email::getEmails but without limit so we can group into threads
+        $query = Email::where('profile_id', $profile->id);
 
-        $html = '';
+        if (!in_array($selectedFolder->path, Email::$customViewFolders)) {
+            $query->where('folder_id', $selectedFolder->id);
+            $query->where('is_archived', false);
+        }
 
-        foreach ($emails as $email) {
-            if (!$email->subject) {
-                $email->subject = 'No Subject';
+        if ($selectedFolder->path == 'trash') {
+            $query->where('is_deleted', true);
+        }
+
+        if ($selectedFolder->path == 'spam') {
+            $query->where('is_deleted', false)
+                ->where('profile_id', '-1');
+        }
+
+        if ($selectedFolder->path == 'stared') {
+            $query->where('is_starred', true);
+        }
+
+        $allEmails = $query->orderBy('sent_at', 'desc')->get();
+
+        // Group emails into threads efficiently (same sender + >=90% similarity by token Jaccard)
+        $threads = [];
+        $threadsBySender = []; // sender_email => array of thread indices
+
+        foreach ($allEmails as $email) {
+            $sender = $email->sender_email;
+            if (!isset($threadsBySender[$sender])) {
+                $threadsBySender[$sender] = [];
             }
 
-            $pathToEmail = route('mailbox.folder.mail', [
-                'linked_profile_id' => $linked_profile_id,
-                'folder' => $selectedFolder->path,
-                'uuid' => $email->uuid,
-            ]);
+            $tokens = $this->tokenizeBody($this->normalizeBody($email->html_body ?? ''));
+            if (empty($tokens)) {
+                // If no tokens, start a new thread to avoid expensive comparisons
+                $threads[] = [
+                    'parent' => $email,
+                    'children' => [],
+                    'parent_tokens' => $tokens,
+                ];
+                $threadsBySender[$sender][] = count($threads) - 1;
+                continue;
+            }
 
-            $html .= view('email_listing', [
-                'email' => $email,
-                'pathToEmail' => $pathToEmail
+            $attached = false;
+            foreach ($threadsBySender[$sender] as $threadIndex) {
+                $parentTokens = $threads[$threadIndex]['parent_tokens'];
+                // Quick length filter: if token counts differ a lot, skip
+                $countA = max(1, count($tokens));
+                $countB = max(1, count($parentTokens));
+                $lenRatio = min($countA, $countB) / max($countA, $countB);
+                if ($lenRatio < 0.8) { // if very different, can't be 90% similar
+                    continue;
+                }
+
+                $sim = $this->jaccardSimilarity($tokens, $parentTokens);
+                if ($sim >= 0.90) {
+                    $threads[$threadIndex]['children'][] = $email;
+                    $attached = true;
+                    break;
+                }
+            }
+
+            if (!$attached) {
+                // Create a new thread with this email as parent
+                $threads[] = [
+                    'parent' => $email,
+                    'children' => [],
+                    'parent_tokens' => $tokens,
+                ];
+                $threadsBySender[$sender][] = count($threads) - 1;
+            }
+        }
+
+        $totalThreads = count($threads);
+        $pageThreads = array_slice($threads, $offset, 50);
+
+        $html = '';
+        foreach ($pageThreads as $thread) {
+            $html .= view('email_thread', [
+                'parent' => $thread['parent'],
+                'children' => $thread['children'],
+                'linked_profile_id' => $linked_profile_id,
+                'folderPath' => $selectedFolder->path,
             ])->render();
         }
 
@@ -95,31 +158,75 @@ class MailboxController extends Controller
             $html = view('no_emails')->render();
         }
 
-        $current_max = $offset + 50;
-        if (
-            $current_max > Email::where('folder_id', $selectedFolder->id)
-            ->where('profile_id', $profile->id)->count()
-        )
-        {
-            $current_max = Email::where('folder_id', $selectedFolder->id)
-                ->where('profile_id', $profile->id)->count();
-        }
+        $current_max = min($offset + 50, $totalThreads);
 
         return response()->json([
             'html' => $html,
             'header' => [
                 'folder' => $selectedFolder->name,
-                'total_email_count' => Email::where('folder_id', $selectedFolder->id)
-                    ->where('profile_id', $profile->id)
-                    ->count(),
+                // Show total amount of parent threads
+                'total_email_count' => $totalThreads,
                 'previous_page' => $page > 0 ? $page - 1 : null,
-                'next_page' => Email::where('folder_id', $selectedFolder->id)
-                    ->where('profile_id', $profile->id)
-                    ->count() > ($page + 1) * 50 ? $page + 1 : null,
-                'current_min' => $offset,
+                'next_page' => ($page + 1) * 50 < $totalThreads ? $page + 1 : null,
+                'current_min' => $totalThreads === 0 ? 0 : $offset + 1,
                 'current_max' => $current_max,
             ]
         ]);
+    }
+
+    private function normalizeBody(string $html): string
+    {
+        // Strip HTML, collapse whitespace, and limit to a reasonable size for comparison
+        $text = strip_tags($html);
+        $text = preg_replace('/\s+/u', ' ', $text ?? '') ?? '';
+        $text = trim($text);
+        // Limit to first 5000 chars to keep similar_text performant
+        return mb_substr($text, 0, 5000);
+    }
+
+    private function tokenizeBody(string $text): array
+    {
+        // Lowercase, keep letters and numbers as tokens, remove very short tokens
+        $text = mb_strtolower($text);
+        // Split on non-alphanumeric
+        $parts = preg_split('/[^\p{L}\p{N}]+/u', $text, -1, PREG_SPLIT_NO_EMPTY);
+        if (!$parts) {
+            return [];
+        }
+        $tokens = [];
+        foreach ($parts as $p) {
+            if (mb_strlen($p) >= 3) {
+                $tokens[$p] = true; // use associative array as a set
+            }
+        }
+        // Limit token set size to avoid heavy comparisons
+        if (count($tokens) > 400) {
+            $tokens = array_slice($tokens, 0, 400, true);
+        }
+        return $tokens;
+    }
+
+    private function jaccardSimilarity(array $setA, array $setB): float
+    {
+        if (empty($setA) && empty($setB)) {
+            return 1.0;
+        }
+        if (empty($setA) || empty($setB)) {
+            return 0.0;
+        }
+        $intersection = 0;
+        $union = count($setA);
+        foreach ($setB as $token => $_) {
+            if (isset($setA[$token])) {
+                $intersection++;
+            } else {
+                $union++;
+            }
+        }
+        if ($union === 0) {
+            return 0.0;
+        }
+        return $intersection / $union;
     }
 
     public function show($linked_profile_id, $folder, $uuid)

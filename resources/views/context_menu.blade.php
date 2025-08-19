@@ -24,4 +24,21 @@
     <div class="context-menu-item" data-action="delete" data-post-action="remove_email" data-requirement="not-deleted single-message">
         <span>Delete</span>
     </div>
+
+    {{-- Thread actions --}}
+    <div class="context-menu-item" data-action="read_thread" data-post-action="remove_class" data-hint="unread" data-requirement="thread unread">
+        <span>Mark thread as read</span>
+    </div>
+
+    <div class="context-menu-item" data-action="star_thread" data-post-action="add_class" data-hint="starred" data-requirement="thread unstarred">
+        <span>Star thread</span>
+    </div>
+
+    <div class="context-menu-item" data-action="archive_thread" data-post-action="remove_thread" data-requirement="thread not-archived">
+        <span>Archive thread</span>
+    </div>
+
+    <div class="context-menu-item" data-action="delete_thread" data-post-action="remove_thread" data-requirement="thread not-deleted">
+        <span>Delete thread</span>
+    </div>
 </div>

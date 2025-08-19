@@ -144,6 +144,19 @@ export default {
             }, 250);
         }
 
+        if (postAction == 'remove_thread') {
+            const threadContainer = emailItem.closest('.email-thread');
+            if (threadContainer) {
+                threadContainer.remove();
+            } else {
+                // Fallback to removing the single email if not within a thread
+                emailItem.remove();
+            }
+            setTimeout(() => {
+                emailListing.updateEmailListing(emailSidebar.currentFolder + '/listing/' + currentPage);
+            }, 250);
+        }
+
         if (postAction == 'add_class') {
             emailItem.classList.add(contextMenuItem.dataset.hint);
         }

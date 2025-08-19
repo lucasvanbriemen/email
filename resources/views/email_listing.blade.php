@@ -1,6 +1,8 @@
 @php
     $class = '';
-    $contextMenu = 'single-message';
+    $is_child = $is_child ?? false;
+    $contextType = $contextType ?? 'single-message';
+    $contextMenu = $contextType; // e.g., 'single-message' or 'single-message thread'
 
     if (!$email['has_read']) {
         $class = 'unread';
@@ -22,6 +24,15 @@
         $contextMenu .= ' not-deleted';
     }
 
+    if ($email['is_archived'] ?? false) {
+        $contextMenu .= ' archived';
+    } else {
+        $contextMenu .= ' not-archived';
+    }
+
+    if ($is_child) {
+        $class .= ' child';
+    }
 @endphp
 
 <div class='email-item {{ $class }}' data-email-id='{{ $email['uuid'] }}' data-path='{{ $pathToEmail }}' data-context-menu='{{ $contextMenu }}'>
