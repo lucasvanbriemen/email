@@ -44,11 +44,9 @@
             <ul class='list'>
                 @foreach ($threadChildren as $child)
                     @php
-                        $childPath = route('mailbox.folder.mail', [
-                            'linked_profile_id' => $selectedProfile->linked_profile_count ?? $selectedProfile->id,
-                            'folder' => $selectedFolder->path,
-                            'uuid' => $child->uuid,
-                        ]);
+                        $linked_profile_id = request()->segment(1);
+                        $current_folder = request()->segment(3);
+                        $childPath = "/{$linked_profile_id}/folder/{$current_folder}/mail/{$child->uuid}";
                     @endphp
                     <li>
                         <a href='{{ $childPath }}' onclick="event.preventDefault(); emailListing.openEmail(document.querySelector(`.email-item[data-email-id='{{ $child->uuid }}']`) ?? { dataset: { path: '{{ $childPath }}' }, classList: { add(){}, remove(){} } });">

@@ -106,6 +106,7 @@ export default {
         const token = document.querySelector('input[name="_token"]').value
 
         this.postContextMenuAction(contextMenuItem, emailUuid);
+        loader.show();
         fetch(postUrl, {
             method: 'POST',
             headers: {
@@ -116,6 +117,8 @@ export default {
         .then(data => {
             toast.show_toast(data.message, data.status);
         })
+        .catch(() => {})
+        .finally(() => loader.hide());
 
         contextMenu.classList.remove('open');
     },

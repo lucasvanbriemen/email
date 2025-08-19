@@ -23,5 +23,11 @@
         </main>
 
         <x-toast></x-toast>
+
+        <!-- Global Loader Overlay -->
+        <div class="app-loader hidden" aria-live="polite" aria-busy="false" role="status">
+            <div class="spinner" aria-hidden="true"></div>
+            <div class="label">Loading…</div>
+        </div>
     </body>
 </html>

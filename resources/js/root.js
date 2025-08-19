@@ -10,6 +10,7 @@ const exportsMap = {
     emailQuickActions: './email/quick_actions.js',
     emailContextMenu: './email/context_menu.js',
     dashboard: './dashboard.js',
+    loader: './loader.js',
 };
 
 for (const [key, path] of Object.entries(exportsMap)) {

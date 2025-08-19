@@ -68,6 +68,7 @@ export default {
 
         const url = pathToEmail + '/html';
 
+        loader.show();
         fetch(url)
             .then(response => response.text())
             .then(html => {
@@ -79,12 +80,14 @@ export default {
             .catch(error => {
                 console.error('Error fetching email content:', error);
                 emailContent.innerHTML = '<p>Error loading email content.</p>';
-            });
+            })
+            .finally(() => loader.hide());
     },
 
     updateEmailListing: function(url) {
         const emailListingDiv = document.querySelector('.email-listing');
 
+        loader.show();
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -95,7 +98,8 @@ export default {
             .catch(error => {
                 console.error('Error updating email listing:', error);
                 emailListingDiv.innerHTML = '<p>Error loading emails.</p>';
-            });
+            })
+            .finally(() => loader.hide());
     },
 
     changePage: function(page) {

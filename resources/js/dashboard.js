@@ -9,6 +9,7 @@ export default {
             emailItem.addEventListener('click', () => {
                 const path = emailItem.dataset.path;
                 if (path) {
+                    if (window.loader) loader.show();
                     window.location.href = path;
                 }
             });
