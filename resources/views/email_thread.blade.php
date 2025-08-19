@@ -21,7 +21,8 @@
         // no 'thread' context when there are no children
     ])
 @else
-    <div class="email-thread">
+    <div class="email-thread" data-has-children="true">
+        
         {{-- Parent (latest) email at the top, marked as thread for context menu --}}
         @include('email_listing', [
             'email' => $parent,
@@ -29,6 +30,12 @@
             'contextType' => 'single-message thread',
             'is_child' => false,
         ])
+
+        <div class="thread-children-toggle">
+            <button class="toggle-thread-children" type="button" aria-expanded="false">
+                Show relevant messages ({{ count($children) }})
+            </button>
+        </div>
 
         {{-- Children, smaller entries --}}
         @foreach ($children as $child)

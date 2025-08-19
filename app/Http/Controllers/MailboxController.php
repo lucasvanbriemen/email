@@ -294,6 +294,35 @@ class MailboxController extends Controller
         $email->has_read = true;
         $email->save();
 
+        // Build relevant messages (children) list based on same similarity rule
+        $threadChildren = [];
+        if ($email && $selectedFolder) {
+            $baseQuery = Email::where('profile_id', $profile->id)
+                ->where('folder_id', $selectedFolder->id)
+                ->where('is_archived', false)
+                ->where('sender_email', $email->sender_email)
+                ->orderBy('sent_at', 'desc');
+
+            $allCandidates = $baseQuery->get();
+            $parentTokens = $this->tokenizeBody($this->normalizeBody($email->html_body ?? ''));
+
+            foreach ($allCandidates as $candidate) {
+                if ($candidate->id === $email->id) { continue; }
+                $candTokens = $this->tokenizeBody($this->normalizeBody($candidate->html_body ?? ''));
+                if (empty($candTokens) || empty($parentTokens)) { continue; }
+
+                $countA = max(1, count($candTokens));
+                $countB = max(1, count($parentTokens));
+                $lenRatio = min($countA, $countB) / max($countA, $countB);
+                if ($lenRatio < 0.8) { continue; }
+
+                $sim = $this->jaccardSimilarity($candTokens, $parentTokens);
+                if ($sim >= 0.90) {
+                    $threadChildren[] = $candidate;
+                }
+            }
+        }
+
         return view('email_data', [
             'email' => $email,
             'selectedFolder' => $selectedFolder,
@@ -301,6 +330,7 @@ class MailboxController extends Controller
             'selectedProfile' => $profile,
             'tags' => $tags,
             'standalone' => $standalone,
+            'threadChildren' => $threadChildren,
         ]);
     }
 
@@ -453,13 +483,9 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::where('sender_email', $email->sender_email)
-            ->where('subject', $email->subject)
-            ->where('folder_id', $email->folder_id)
-            ->where('profile_id', $profile->id)
-            ->get();
+        $thread = $this->findSimilarThreadEmails($email, $profile);
 
-        foreach ($emails as $threadEmail) {
+        foreach ($thread as $threadEmail) {
             $threadEmail->has_read = true;
             $threadEmail->save();
         }
@@ -478,13 +504,9 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::where('sender_email', $email->sender_email)
-            ->where('subject', $email->subject)
-            ->where('folder_id', $email->folder_id)
-            ->where('profile_id', $profile->id)
-            ->get();
+        $thread = $this->findSimilarThreadEmails($email, $profile);
 
-        foreach ($emails as $threadEmail) {
+        foreach ($thread as $threadEmail) {
             $threadEmail->is_archived = true;
             $threadEmail->save();
         }
@@ -503,13 +525,9 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::where('sender_email', $email->sender_email)
-            ->where('subject', $email->subject)
-            ->where('folder_id', $email->folder_id)
-            ->where('profile_id', $profile->id)
-            ->get();
+        $thread = $this->findSimilarThreadEmails($email, $profile);
 
-        foreach ($emails as $threadEmail) {
+        foreach ($thread as $threadEmail) {
             Email::deleteEmail($threadEmail->uuid, $threadEmail->profile_id);
         }
 
@@ -527,13 +545,9 @@ class MailboxController extends Controller
             ->where('profile_id', $profile->id)
             ->first();
 
-        $emails = Email::where('sender_email', $email->sender_email)
-            ->where('subject', $email->subject)
-            ->where('folder_id', $email->folder_id)
-            ->where('profile_id', $profile->id)
-            ->get();
+        $thread = $this->findSimilarThreadEmails($email, $profile);
 
-        foreach ($emails as $threadEmail) {
+        foreach ($thread as $threadEmail) {
             $threadEmail->is_starred = true;
             $threadEmail->save();
         }
@@ -542,5 +556,45 @@ class MailboxController extends Controller
             'status' => 'success',
             'message' => 'Thread starred successfully.'
         ];
+    }
+
+    private function findSimilarThreadEmails($seedEmail, $profile)
+    {
+        if (!$seedEmail) {
+            return collect();
+        }
+
+        $baseQuery = Email::where('profile_id', $profile->id)
+            ->where('folder_id', $seedEmail->folder_id)
+            ->where('is_archived', false)
+            ->where('sender_email', $seedEmail->sender_email)
+            ->orderBy('sent_at', 'desc');
+
+        $candidates = $baseQuery->get();
+        $seedTokens = $this->tokenizeBody($this->normalizeBody($seedEmail->html_body ?? ''));
+
+        // If no body/tokens, return just the seed email
+        if (empty($seedTokens)) {
+            return collect([$seedEmail]);
+        }
+
+        $thread = collect([$seedEmail]);
+        foreach ($candidates as $candidate) {
+            if ($candidate->id === $seedEmail->id) { continue; }
+            $candTokens = $this->tokenizeBody($this->normalizeBody($candidate->html_body ?? ''));
+            if (empty($candTokens)) { continue; }
+
+            $countA = max(1, count($candTokens));
+            $countB = max(1, count($seedTokens));
+            $lenRatio = min($countA, $countB) / max($countA, $countB);
+            if ($lenRatio < 0.8) { continue; }
+
+            $sim = $this->jaccardSimilarity($candTokens, $seedTokens);
+            if ($sim >= 0.90) {
+                $thread->push($candidate);
+            }
+        }
+
+        return $thread;
     }
 }

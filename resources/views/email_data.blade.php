@@ -38,6 +38,30 @@
         </div>
     </div>
 
+    @if (!empty($threadChildren) && count($threadChildren) > 0)
+        <div class='relevant-messages'>
+            <div class='header'>Relevant messages ({{ count($threadChildren) }})</div>
+            <ul class='list'>
+                @foreach ($threadChildren as $child)
+                    @php
+                        $childPath = route('mailbox.folder.mail', [
+                            'linked_profile_id' => $selectedProfile->linked_profile_count ?? $selectedProfile->id,
+                            'folder' => $selectedFolder->path,
+                            'uuid' => $child->uuid,
+                        ]);
+                    @endphp
+                    <li>
+                        <a href='{{ $childPath }}' onclick="event.preventDefault(); emailListing.openEmail(document.querySelector(`.email-item[data-email-id='{{ $child->uuid }}']`) ?? { dataset: { path: '{{ $childPath }}' }, classList: { add(){}, remove(){} } });">
+                            <span class='subject'>{{ $child->subject ?: 'No Subject' }}</span>
+                            <span class='from'>{{ $child->from }}</span>
+                            <span class='time'>{{ readableTime($child->sent_at) }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     @foreach ($attachments as $attachment)
         {{-- Every ICS attachment --}}
         @php

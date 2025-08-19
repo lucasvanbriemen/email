@@ -159,5 +159,30 @@
         .email-item {
             margin: 0.5rem 0.75rem;
         }
+
+        .thread-children-toggle {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.25rem 0.5rem;
+            
+            .toggle-thread-children {
+                cursor: pointer;
+                font-size: 0.9rem;
+                background: transparent;
+                color: var(--text-color);
+                border: 1px solid var(--background-color-two);
+                border-radius: 0.5rem;
+                padding: 0.25rem 0.5rem;
+
+                &:hover {
+                    background-color: var(--primary-color);
+                    color: var(--text-contrast-color);
+                }
+            }
+        }
+
+        // Hide children by default
+        .email-item.child { display: none; }
+        &.expanded .email-item.child { display: block; }
     }
 }

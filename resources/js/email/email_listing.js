@@ -24,6 +24,26 @@ export default {
             });
         });
 
+        // Thread toggle buttons
+        const toggles = emailListingDiv.querySelectorAll('.toggle-thread-children');
+        toggles.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const thread = btn.closest('.email-thread');
+                if (!thread) return;
+                const expanded = thread.classList.toggle('expanded');
+                btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+                // Update button text
+                const totalChildren = thread.querySelectorAll('.email-item.child').length;
+                if (expanded) {
+                    btn.textContent = `Hide relevant messages (${totalChildren})`;
+                } else {
+                    btn.textContent = `Show relevant messages (${totalChildren})`;
+                }
+            });
+        });
+
         emailContextMenu.init();
     },
 
