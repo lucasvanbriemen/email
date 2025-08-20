@@ -147,7 +147,9 @@ Artisan::command("get_emails", function () {
 
 Schedule::command('get_emails')
     ->everyFifteenSeconds()
-    ->withoutOverlapping()
+    // Use a short-lived lock so stale locks auto-expire instead of requiring manual clears.
+    // Expiration is in minutes; 2 keeps overlap protection while avoiding day-long stuck locks.
+    ->withoutOverlapping(2)
     ->sentryMonitor(
         monitorSlug: 'get_emails',
         maxRuntime: 1,
