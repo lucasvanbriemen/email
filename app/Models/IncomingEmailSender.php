@@ -31,9 +31,8 @@ class IncomingEmailSender extends Model
     }
 
 
-    public function email_to_domain()
+    public static function email_to_domain($email)
     {
-        $email = $this->email;
         $full_domain = substr(strrchr($email, "@"), 1);
 
         if (!$full_domain) {
@@ -67,7 +66,7 @@ class IncomingEmailSender extends Model
 
     public function store_domain_as_logo()
     {
-        $domain = $this->top_level_domain ?? $this->email_to_domain();
+        $domain = $this->top_level_domain ?? self::email_to_domain($this->email);
 
         $logo_url = "https://img.logo.dev/{$domain}?token=pk_YHpEPFuOTnGDZ6nmBhgIog&retina=true";
 

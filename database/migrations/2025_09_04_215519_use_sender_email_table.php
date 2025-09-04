@@ -13,12 +13,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Remove the sender_email column from emails table
-        Schema::table('emails', function (Blueprint $table) {
-            $table->unsignedBigInteger('sender_id')->nullable()->after('profile_id');
-            $table->foreign('sender_id')->references('id')->on('sender_email')->onDelete('set null');
-        });
-
         // Loop over all emails and for each unique sender_email, create or find an IncomingEmailSender and store the related image
         $emails = Email::all();
 
