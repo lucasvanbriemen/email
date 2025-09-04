@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class IncomingEmailSender extends Model
 {
@@ -43,7 +44,11 @@ class IncomingEmailSender extends Model
         $image_content = file_get_contents($logo_url);
         if ($image_content) {
             $image_name = uniqid('logo_') . '.png';
-            $full_path = public_path($this->filePath . $image_name);
+            $directory = public_path($this->filePath);
+            if (!File::exists($directory)) {
+                File::makeDirectory($directory, 0755, true);
+            }
+            $full_path = $directory . DIRECTORY_SEPARATOR . $image_name;
             file_put_contents($full_path, $image_content);
             $this->image_path = $this->filePath . $image_name;
             $this->save();
