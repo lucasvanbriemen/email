@@ -88,7 +88,7 @@ class MailboxController extends Controller
 
         // Only fetch fields needed for listing to avoid loading large html bodies
         $allEmails = $query
-            ->select(['id','uuid','subject','from','sender_email','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
+            ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
             ->orderBy('sent_at', 'desc')
             ->get();
 
@@ -100,7 +100,7 @@ class MailboxController extends Controller
         $baseKeyIndex = [];  // key: base_subject_lower => thread index (for replies only)
 
         foreach ($allEmails as $email) {
-            $sender = (string)($email->sender_email ?? '');
+            $sender = (string)($email->sender->email ?? '');
             $subject = (string)($email->subject ?? '');
             $subjectNorm = $this->normalizeSubjectText($subject);
             $subjectLower = mb_strtolower($subjectNorm);
@@ -268,7 +268,7 @@ class MailboxController extends Controller
             $baseQuery = Email::where('profile_id', $profile->id)
                 ->where('folder_id', $selectedFolder->id)
                 ->where('is_archived', false)
-                ->select(['id','uuid','subject','from','sender_email','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
+                ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
                 ->orderBy('sent_at', 'desc');
 
             $allCandidates = $baseQuery->get();
@@ -544,7 +544,7 @@ class MailboxController extends Controller
         $baseQuery = Email::where('profile_id', $profile->id)
             ->where('folder_id', $seedEmail->folder_id)
             ->where('is_archived', false)
-            ->select(['id','uuid','subject','from','sender_email','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
+            ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
             ->orderBy('sent_at', 'desc');
 
         $candidates = $baseQuery->get();
