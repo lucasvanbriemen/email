@@ -56,10 +56,13 @@ Artisan::command("get_emails", function () {
             $dateUtc = $date->setTimezone(new DateTimeZone('Europe/Amsterdam'));
             if (
                 Email::where('uid', $message->getUid())
-                ->where('profile_id', $credential->profile_id)
-                ->where('sender_email', $message->getFrom()[0]->mail ?? null)
-                ->where('sent_at', $dateUtc->format('Y-m-d H:i:s'))
-                ->exists()
+                    ->where('profile_id', $credential->profile_id)
+                    ->where('sent_at', $dateUtc->format('Y-m-d H:i:s'))
+                    ->whereHas('sender', function ($query) use ($message) {
+                        $query->where('email', $message->getFrom()[0]->mail ?? null);
+                    })
+                    ->exists()
+
             ) {
                 // If email already exists, delete it from the server to avoid long run time
                 $message->delete();
