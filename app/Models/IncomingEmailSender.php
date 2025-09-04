@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class IncomingEmailSender extends Model
 {
@@ -50,8 +51,13 @@ class IncomingEmailSender extends Model
         }
     }
 
-    public function logo_url()
+    /**
+     * Accessor for the computed logo URL.
+     */
+    protected function logoUrl(): Attribute
     {
-        return $this->image_path ?: null;
+        return Attribute::make(
+            get: fn () => $this->image_path ?: null,
+        );
     }
 }
