@@ -44,3 +44,8 @@ jobs:
         run: |
           php artisan migrate --force
           php artisan test
+
+      - name: Notify Plesk if tests passed
+        if: success()
+        run: |
+          curl -sS "https://server.lucasvanbriemen.nl:8443/modules/git/public/web-hook.php?uuid=4bb5e29f-8d57-9838-5234-282f89cd158d"
