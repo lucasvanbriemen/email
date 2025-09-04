@@ -60,7 +60,7 @@ class Email extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function incomingEmailSender()
+    public function sender()
     {
         return $this->belongsTo(IncomingEmailSender::class, 'sender_email', 'email');
     }
