@@ -60,6 +60,11 @@ class Email extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function incomingEmailSender()
+    {
+        return $this->belongsTo(IncomingEmailSender::class, 'sender_email', 'email');
+    }
+
     public static function getEmails($folder, $profile, $offset = 0)
     {
         if (!$folder) {
