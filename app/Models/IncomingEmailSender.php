@@ -73,7 +73,7 @@ class IncomingEmailSender extends Model
         // Store this image in $this->filePath with a unique name
         $image_content = @file_get_contents($logo_url);
         if ($image_content) {
-            $image_name = uniqid('logo_') . '.png';
+            $image_name = $this->top_level_domain . '.png';
             $full_path = public_path($this->filePath . $image_name);
 
             $dir = dirname($full_path);
