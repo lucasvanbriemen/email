@@ -17,6 +17,7 @@ return new class extends Migration
         foreach ($senders as $sender) {
             $sender->image_path = null;
             $sender->save();
+
             $sender->store_domain_as_logo();
         }
     }
