@@ -13,6 +13,7 @@ use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\Profile;
+use App\Models\IncomingEmailSender;
 
 Artisan::command("get_emails", function () {
     $imapCredentials = ImapCredentials::all();
@@ -69,17 +70,28 @@ Artisan::command("get_emails", function () {
                 ->where('profile_id', $credential->profile_id)
                 ->value('id');
 
+            $sender = $message->getFrom()[0]->mail ?? null;
+            if ($sender) {
+                $incomingEmailSender = IncomingEmailSender::firstOrCreate(
+                    ['email' => $sender],
+                    [
+                        'name' => $message->getFrom()[0]->personal ?? $sender,
+                        'top_level_domain' => IncomingEmailSender::email_to_domain($sender),
+                    ]
+                );
+            }
+
+
             // Prepare email data
             $emailData = [
                 'profile_id' => $credential->profile_id,
                 'subject' => $message->getSubject(),
-                'from' => $message->getFrom()[0]->personal ?? $message->getFrom()[0]->mail ?? null,
                 'sent_at' => $dateUtc->format('Y-m-d H:i:s'),
                 'has_read' => $message->getFlags()->has('seen'),
                 'uid' => $message->getUid(),
                 'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
                 'folder_id' => $folderId,
-                'sender_email' => $message->getFrom()[0]->mail ?? null,
+                'sender_id' => $incomingEmailSender->id,
                 'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
                     return $to->mail ?? null;
                 })->filter()->all()) ?: null,

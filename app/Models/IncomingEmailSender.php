@@ -23,6 +23,14 @@ class IncomingEmailSender extends Model
         return $this->belongsToMany(Email::class, 'sender_email');
     }
 
+    protected static function booted() {
+        static::created(function ($sender) {
+            // Automatically fetch and store the logo when a new sender is created
+            $sender->store_domain_as_logo();
+        });
+    }
+
+
     public function email_to_domain()
     {
         $email = $this->email;

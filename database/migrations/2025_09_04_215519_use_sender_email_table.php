@@ -13,20 +13,31 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Remove the sender_email column from emails table
+        Schema::table('emails', function (Blueprint $table) {
+            $table->unsignedBigInteger('sender_id')->nullable()->after('profile_id');
+            $table->foreign('sender_id')->references('id')->on('sender_email')->onDelete('set null');
+        });
+
         // Loop over all emails and for each unique sender_email, create or find an IncomingEmailSender and store the related image
         $emails = Email::all();
-        $processedEmails = [];
-        foreach ($emails as $email) {
-            if (!in_array($email->sender_email, $processedEmails)) {
-                $processedEmails[] = $email->sender_email;
-                $sender = IncomingEmailSender::firstOrCreate(['email' => $email->sender_email]);
-                $email->sender()->associate($sender);
-                $email->save();
 
-                $sender->store_domain_as_logo();
+        foreach ($emails as $email) {
+            $senderEmail = $email->sender_email;
+            if ($senderEmail) {
+                $incomingEmailSender = IncomingEmailSender::firstOrCreate(
+                    ['email' => $senderEmail],
+                    [
+                        'name' => $email->from ?? $senderEmail,
+                        'top_level_domain' => IncomingEmailSender::email_to_domain($senderEmail),
+                    ]
+                );
+
+                // Update the email to reference the sender_id
+                $email->sender_id = $incomingEmailSender->id;
+                $email->save();
             }
         }
-        
     }
 
     /**
