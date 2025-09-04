@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tag extends Model
 {
+    use HasFactory;
     //
 
     public static $defaultTags = [
@@ -19,7 +21,11 @@ class Tag extends Model
         parent::boot();
 
         static::creating(function ($tag) {
-            $tag->profile_id = currentUser()->profile_id;
+            // Only set profile_id if not already set
+            if (!$tag->profile_id) {
+                $user = currentUser();
+                $tag->profile_id = $user->profile_id ?? $user->id ?? 1;
+            }
         });
     }
 

@@ -9,6 +9,7 @@ use  App\Models\Folder;
 
 class ImapCredentials extends Authenticatable
 {
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *

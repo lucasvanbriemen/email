@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Profile extends Model
 {
+    use HasFactory;
     //
     protected $fillable = [
         'user_id',
@@ -33,6 +35,7 @@ class Profile extends Model
                 Tag::create([
                     'name' => $tag['name'],
                     'color' => $tag['color'],
+                    'profile_id' => $credential->id,
                 ]);
             }
         });

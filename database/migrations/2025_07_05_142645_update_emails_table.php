@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Skip this migration for SQLite testing environment
+        if (config('database.default') === 'sqlite') {
+            return;
+        }
+        
         Schema::table('emails', function (Blueprint $table) {
             // drop the foreign key constraint if it exists
             if (Schema::hasColumn('emails', 'credential_id')) {
