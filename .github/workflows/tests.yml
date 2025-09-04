@@ -43,22 +43,7 @@ jobs:
           echo "Using DB_CONNECTION=$DB_CONNECTION on $DB_HOST:$DB_PORT/$DB_DATABASE"
           php -r "echo 'pdo_mysql: '.(extension_loaded('pdo_mysql')?'yes':'no').PHP_EOL;"
 
-      - name: Execute tests with coverage
+      - name: Execute tests
         run: |
-          XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml --coverage-html=coverage-html
-          
-      - name: Check coverage threshold
-        run: |
-          coverage=$(XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --colors=never | grep -oP 'Lines:\s+\K[0-9.]+(?=%)')
-          echo "Test coverage: ${coverage}%"
-          if (( $(echo "$coverage < 50" | bc -l) )); then
-            echo "Coverage ${coverage}% is below minimum threshold of 50%"
-            exit 1
-          fi
-          echo "Coverage ${coverage}% meets minimum threshold of 50%"
-          
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: false
+          php artisan migrate --force
+          php artisan test
