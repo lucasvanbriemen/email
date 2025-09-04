@@ -93,7 +93,7 @@ class IncomingEmailSender extends Model
     protected function logoUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->image_path ?: null,
+            get: fn () => $this->image_path ?: 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))),
         );
     }
 }
