@@ -10,9 +10,6 @@ permissions:
 jobs:
   tests:
     runs-on: self-hosted
-    container:
-      image: php:8.3
-      options: --memory=50m --memory-swap=50m
 
     env:
       APP_ENV: testing
