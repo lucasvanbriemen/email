@@ -88,7 +88,7 @@ class MailboxController extends Controller
 
         // Only fetch fields needed for listing to avoid loading large html bodies
         $allEmails = $query
-            ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
+            ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id','sender_id'])
             ->orderBy('sent_at', 'desc')
             ->get();
 
@@ -268,7 +268,7 @@ class MailboxController extends Controller
             $baseQuery = Email::where('profile_id', $profile->id)
                 ->where('folder_id', $selectedFolder->id)
                 ->where('is_archived', false)
-                ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
+                ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id','sender_id'])
                 ->orderBy('sent_at', 'desc');
 
             $allCandidates = $baseQuery->get();
@@ -286,7 +286,7 @@ class MailboxController extends Controller
                 $candIsReply = $this->hasReplyPrefix($candSubjectNorm);
 
                 // Case 1: same sender + exact subject
-                if ((string)$candidate->sender->email === (string)$email->sender->email && $candSubjectLower === $seedSubjectLower) {
+                if ((string)($candidate->sender?->email ?? '') === (string)($email->sender?->email ?? '') && $candSubjectLower === $seedSubjectLower) {
                     $threadChildren[] = $candidate;
                     continue;
                 }
@@ -544,7 +544,7 @@ class MailboxController extends Controller
         $baseQuery = Email::where('profile_id', $profile->id)
             ->where('folder_id', $seedEmail->folder_id)
             ->where('is_archived', false)
-            ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
+            ->select(['id','uuid','subject','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id','sender_id'])
             ->orderBy('sent_at', 'desc');
 
         $candidates = $baseQuery->get();
@@ -563,7 +563,7 @@ class MailboxController extends Controller
             $candIsReply = $this->hasReplyPrefix($candSubjectNorm);
 
             // Case 1: same sender + exact subject
-            if ((string)$candidate->sender_email === (string)$seedEmail->sender_email && $candSubjectLower === $seedSubjectLower) {
+            if ((string)($candidate->sender?->email ?? '') === (string)($seedEmail->sender?->email ?? '') && $candSubjectLower === $seedSubjectLower) {
                 $thread->push($candidate);
                 continue;
             }

@@ -18,6 +18,7 @@ class Email extends Model
 
     protected $fillable = [
         'profile_id',
+        'sender_id',
         'subject',
         'to',
         'sent_at',

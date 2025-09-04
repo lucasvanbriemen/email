@@ -18,7 +18,12 @@
         <h1 class='subject'>{{ $email->subject }}</h1>
 
         <div class='info'>
-            <span class='from'>{{ $email->from }} {{ "<" . $email->sender_email . ">" }}</span> <br>  
+            @php
+                $sender = $email->sender;
+                $senderName = $sender->name ?? $sender->email ?? '';
+                $senderEmail = $sender->email ?? '';
+            @endphp
+            <span class='from'>{{ $senderName }} {{ $senderEmail ? ("<" . $senderEmail . ">") : '' }}</span> <br>
             <span class='to'>To: {{ $email->to }}</span>
         </div>
 
@@ -51,7 +56,8 @@
                     <li>
                         <a href='{{ $childPath }}' onclick="event.preventDefault(); emailListing.openEmail(document.querySelector(`.email-item[data-email-id='{{ $child->uuid }}']`) ?? { dataset: { path: '{{ $childPath }}' }, classList: { add(){}, remove(){} } });">
                             <span class='subject'>{{ $child->subject ?: 'No Subject' }}</span>
-                            <span class='from'>{{ $child->from }}</span>
+                            @php $childSender = $child->sender; @endphp
+                            <span class='from'>{{ $childSender->name ?? $childSender->email ?? '' }}</span>
                             <span class='time'>{{ readableTime($child->sent_at) }}</span>
                         </a>
                     </li>

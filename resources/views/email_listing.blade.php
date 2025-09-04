@@ -37,13 +37,15 @@
 
 <div class='email-item {{ $class }}' data-email-id='{{ $email['uuid'] }}' data-path='{{ $pathToEmail }}' data-context-menu='{{ $contextMenu }}'>
     <div class='email-from'>
-
-        @if ($email->sender == null)
-            {{ dump($email) }} - {{ dump($email->sender_id) }}
-        @else
-            <img src="/{{ $email->sender->logo_url }}" alt="{{ $email['from'] }}" class='email-avatar'>
+        @php
+            $sender = $email->sender;
+            $senderName = $sender->name ?? $sender->email ?? '';
+            $senderLogo = $sender->logo_url ?? '';
+        @endphp
+        @if (!empty($senderLogo))
+            <img src="/{{ $senderLogo }}" alt="{{ $senderName }}" class='email-avatar'>
         @endif
-        {{ $email['from'] }}
+        {{ $senderName }}
     </div>
     <p class='email-subject'>{{ $email['subject'] }}</p>
 
