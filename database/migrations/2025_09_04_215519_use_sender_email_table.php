@@ -13,6 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        Schema::table('emails', function (Blueprint $table) {
+            $table->foreignId('sender_id')->nullable()->constrained('sender_email')->nullOnDelete();
+        });
+
         // Loop over all emails and for each unique sender_email, create or find an IncomingEmailSender and store the related image
         $emails = Email::all();
 
@@ -39,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
+
     }
 };
