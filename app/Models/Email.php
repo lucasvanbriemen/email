@@ -62,7 +62,7 @@ class Email extends Model
 
     public function sender()
     {
-        return $this->belongsTo(IncomingEmailSender::class, 'sender_email', 'email');
+        return $this->belongsTo(IncomingEmailSender::class, 'sender_id', 'id');
     }
 
     public static function getEmails($folder, $profile, $offset = 0)
