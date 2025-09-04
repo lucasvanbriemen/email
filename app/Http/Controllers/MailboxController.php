@@ -286,7 +286,7 @@ class MailboxController extends Controller
                 $candIsReply = $this->hasReplyPrefix($candSubjectNorm);
 
                 // Case 1: same sender + exact subject
-                if ((string)$candidate->sender_email === (string)$email->sender_email && $candSubjectLower === $seedSubjectLower) {
+                if ((string)$candidate->sender->email === (string)$email->sender->email && $candSubjectLower === $seedSubjectLower) {
                     $threadChildren[] = $candidate;
                     continue;
                 }

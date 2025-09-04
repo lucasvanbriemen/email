@@ -20,7 +20,7 @@ class IncomingEmailSender extends Model
 
     public function emails()
     {
-        return $this->hasMany(Email::class, 'sender_email');
+        return $this->hasMany(Email::class, 'sender_id');
     }
 
     protected static function booted() {

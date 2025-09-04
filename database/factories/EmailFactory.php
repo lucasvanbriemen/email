@@ -20,7 +20,6 @@ class EmailFactory extends Factory
             'folder_id' => 1,  // Use a default value
             'subject' => $this->faker->sentence(),
             'from' => $this->faker->name(),
-            'sender_email' => $this->faker->email(),
             'to' => $this->faker->email(),
             'sent_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'has_read' => $this->faker->boolean(),
