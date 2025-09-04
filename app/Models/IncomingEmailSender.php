@@ -27,11 +27,34 @@ class IncomingEmailSender extends Model
     {
         $email = $this->email;
         $full_domain = substr(strrchr($email, "@"), 1);
-        
+
+        if (!$full_domain) {
+            return '';
+        }
+
         $domain_parts = explode('.', $full_domain);
         $num_parts = count($domain_parts);
 
-        return $domain_parts[$num_parts - 2] . '.' . $domain_parts[$num_parts - 1];
+        if ($num_parts < 2) {
+            return $full_domain;
+        }
+
+        $suffixTwoParts = $domain_parts[$num_parts - 2] . '.' . $domain_parts[$num_parts - 1];
+
+        // Handle common multi-label public suffixes (e.g., co.in), defaulting to eTLD+1
+        $multiLabelSuffixes = [
+            'co.in', 'net.in', 'org.in', 'edu.in', 'gov.in',
+            'co.uk', 'org.uk', 'ac.uk', 'gov.uk',
+            'com.au', 'net.au', 'org.au',
+            'co.jp',
+            'com.br', 'com.mx',
+        ];
+
+        if (in_array($suffixTwoParts, $multiLabelSuffixes, true) && $num_parts >= 3) {
+            return $domain_parts[$num_parts - 3] . '.' . $suffixTwoParts;
+        }
+
+        return $suffixTwoParts;
     }
 
     public function store_domain_as_logo()
@@ -41,10 +64,16 @@ class IncomingEmailSender extends Model
         $logo_url = "https://img.logo.dev/{$domain}?token=pk_YHpEPFuOTnGDZ6nmBhgIog&retina=true";
 
         // Store this image in $this->filePath with a unique name
-        $image_content = file_get_contents($logo_url);
+        $image_content = @file_get_contents($logo_url);
         if ($image_content) {
             $image_name = uniqid('logo_') . '.png';
             $full_path = public_path($this->filePath . $image_name);
+
+            $dir = dirname($full_path);
+            if (!is_dir($dir)) {
+                @mkdir($dir, 0755, true);
+            }
+
             file_put_contents($full_path, $image_content);
             $this->image_path = $this->filePath . $image_name;
             $this->save();
