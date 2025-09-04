@@ -67,9 +67,11 @@
             if (!$isIcs) continue;
 
             $icsContent = $attachment->getContent();
-            $parsedIcs = parseIcsContent($icsContent)[0];
-            $parsedIcs["DTSTART"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTSTART"] ?? '')->setTimezone('Europe/Amsterdam')->toDateTimeString();
-            $parsedIcs["DTEND"] =  \Carbon\Carbon::createFromFormat('Ymd\THis\Z', $parsedIcs["DTEND"] ?? '')->setTimezone('Europe/Amsterdam')->toDateTimeString();
+            $events = parseIcsContent($icsContent);
+            $parsedIcs = $events[0] ?? [];
+            $parsedIcs["DTSTART"] =  \App\Helpers\IcsHelper::getDateTime($parsedIcs, 'DTSTART', 'Europe/Amsterdam');
+            $parsedIcs["DTEND"]   =  \App\Helpers\IcsHelper::getDateTime($parsedIcs, 'DTEND', 'Europe/Amsterdam');
+            $parsedIcs["ATTENDEE"] = $parsedIcs["ATTENDEE"] ?? [];
         @endphp
 
         <div class='ics-header'>
