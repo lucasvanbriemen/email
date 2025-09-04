@@ -86,57 +86,55 @@ class MailboxController extends Controller
             $query->where('is_starred', true);
         }
 
-        $allEmails = $query->orderBy('sent_at', 'desc')->get();
+        // Only fetch fields needed for listing to avoid loading large html bodies
+        $allEmails = $query
+            ->select(['id','uuid','subject','from','sender_email','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
+            ->orderBy('sent_at', 'desc')
+            ->get();
 
-        // Group emails into threads efficiently (same sender + >=90% similarity by token Jaccard)
+        // Group emails into threads efficiently:
+        // - Attach when (same sender AND exact same subject), OR
+        // - Attach when subject is a reply to the thread's base subject (like Gmail's conversation view)
         $threads = [];
-        $threadsBySender = []; // sender_email => array of thread indices
+        $exactKeyIndex = []; // key: sender_email||subject_lower => thread index
+        $baseKeyIndex = [];  // key: base_subject_lower => thread index (for replies only)
 
         foreach ($allEmails as $email) {
-            $sender = $email->sender_email;
-            if (!isset($threadsBySender[$sender])) {
-                $threadsBySender[$sender] = [];
-            }
+            $sender = (string)($email->sender_email ?? '');
+            $subject = (string)($email->subject ?? '');
+            $subjectNorm = $this->normalizeSubjectText($subject);
+            $subjectLower = mb_strtolower($subjectNorm);
+            $baseLower = mb_strtolower($this->baseSubject($subjectNorm));
 
-            $tokens = $this->tokenizeBody($this->normalizeBody($email->html_body ?? ''));
-            if (empty($tokens)) {
-                // If no tokens, start a new thread to avoid expensive comparisons
-                $threads[] = [
-                    'parent' => $email,
-                    'children' => [],
-                    'parent_tokens' => $tokens,
-                ];
-                $threadsBySender[$sender][] = count($threads) - 1;
-                continue;
-            }
+            $exactKey = $sender . '||' . $subjectLower;
+            $isReply = $this->hasReplyPrefix($subjectNorm);
 
             $attached = false;
-            foreach ($threadsBySender[$sender] as $threadIndex) {
-                $parentTokens = $threads[$threadIndex]['parent_tokens'];
-                // Quick length filter: if token counts differ a lot, skip
-                $countA = max(1, count($tokens));
-                $countB = max(1, count($parentTokens));
-                $lenRatio = min($countA, $countB) / max($countA, $countB);
-                if ($lenRatio < 0.8) { // if very different, can't be 90% similar
-                    continue;
-                }
 
-                $sim = $this->jaccardSimilarity($tokens, $parentTokens);
-                if ($sim >= 0.90) {
-                    $threads[$threadIndex]['children'][] = $email;
-                    $attached = true;
-                    break;
-                }
+            // Case 1: same sender + exact subject
+            if (isset($exactKeyIndex[$exactKey])) {
+                $threads[$exactKeyIndex[$exactKey]]['children'][] = $email;
+                $attached = true;
+            }
+
+            // Case 2: reply to existing base subject (ignore sender)
+            if (!$attached && $isReply && isset($baseKeyIndex[$baseLower])) {
+                $threads[$baseKeyIndex[$baseLower]]['children'][] = $email;
+                $attached = true;
             }
 
             if (!$attached) {
-                // Create a new thread with this email as parent
+                // Start a new thread with this email as parent
                 $threads[] = [
                     'parent' => $email,
                     'children' => [],
-                    'parent_tokens' => $tokens,
                 ];
-                $threadsBySender[$sender][] = count($threads) - 1;
+                $idx = count($threads) - 1;
+                $exactKeyIndex[$exactKey] = $idx;
+                // Map base subject for replies to attach later
+                if (!isset($baseKeyIndex[$baseLower])) {
+                    $baseKeyIndex[$baseLower] = $idx;
+                }
             }
         }
 
@@ -174,59 +172,29 @@ class MailboxController extends Controller
         ]);
     }
 
-    private function normalizeBody(string $html): string
+    // --- Lightweight subject helpers for fast threading ---
+    private function normalizeSubjectText(string $subject): string
     {
-        // Strip HTML, collapse whitespace, and limit to a reasonable size for comparison
-        $text = strip_tags($html);
-        $text = preg_replace('/\s+/u', ' ', $text ?? '') ?? '';
-        $text = trim($text);
-        // Limit to first 5000 chars to keep similar_text performant
-        return mb_substr($text, 0, 5000);
+        $subject = trim($subject);
+        // Collapse multiple spaces/tabs
+        $subject = preg_replace('/\s+/u', ' ', $subject ?? '') ?? '';
+        return $subject;
     }
 
-    private function tokenizeBody(string $text): array
+    private function baseSubject(string $subject): string
     {
-        // Lowercase, keep letters and numbers as tokens, remove very short tokens
-        $text = mb_strtolower($text);
-        // Split on non-alphanumeric
-        $parts = preg_split('/[^\p{L}\p{N}]+/u', $text, -1, PREG_SPLIT_NO_EMPTY);
-        if (!$parts) {
-            return [];
+        // Remove common reply/forward prefixes like: Re:, RE:, Fwd:, FW:, Re[2]:, etc. (possibly repeated)
+        $s = $subject;
+        // Keep stripping while it matches
+        while (preg_match('/^\s*((re|fw|fwd)(\[\d+\])?\s*:)\s*/i', $s)) {
+            $s = preg_replace('/^\s*((re|fw|fwd)(\[\d+\])?\s*:)\s*/i', '', $s);
         }
-        $tokens = [];
-        foreach ($parts as $p) {
-            if (mb_strlen($p) >= 3) {
-                $tokens[$p] = true; // use associative array as a set
-            }
-        }
-        // Limit token set size to avoid heavy comparisons
-        if (count($tokens) > 400) {
-            $tokens = array_slice($tokens, 0, 400, true);
-        }
-        return $tokens;
+        return trim($s);
     }
 
-    private function jaccardSimilarity(array $setA, array $setB): float
+    private function hasReplyPrefix(string $subject): bool
     {
-        if (empty($setA) && empty($setB)) {
-            return 1.0;
-        }
-        if (empty($setA) || empty($setB)) {
-            return 0.0;
-        }
-        $intersection = 0;
-        $union = count($setA);
-        foreach ($setB as $token => $_) {
-            if (isset($setA[$token])) {
-                $intersection++;
-            } else {
-                $union++;
-            }
-        }
-        if ($union === 0) {
-            return 0.0;
-        }
-        return $intersection / $union;
+        return (bool)preg_match('/^\s*(re|fw|fwd)(\[\d+\])?\s*:/i', $subject);
     }
 
     public function show($linked_profile_id, $folder, $uuid)
@@ -294,31 +262,39 @@ class MailboxController extends Controller
         $email->has_read = true;
         $email->save();
 
-        // Build relevant messages (children) list based on same similarity rule
+        // Build relevant messages (children) list based on new subject+sender/reply rule
         $threadChildren = [];
         if ($email && $selectedFolder) {
             $baseQuery = Email::where('profile_id', $profile->id)
                 ->where('folder_id', $selectedFolder->id)
                 ->where('is_archived', false)
-                ->where('sender_email', $email->sender_email)
+                ->select(['id','uuid','subject','from','sender_email','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
                 ->orderBy('sent_at', 'desc');
 
             $allCandidates = $baseQuery->get();
-            $parentTokens = $this->tokenizeBody($this->normalizeBody($email->html_body ?? ''));
+
+            $seedSubjectNorm = $this->normalizeSubjectText((string)($email->subject ?? ''));
+            $seedSubjectLower = mb_strtolower($seedSubjectNorm);
+            $seedBaseLower = mb_strtolower($this->baseSubject($seedSubjectNorm));
 
             foreach ($allCandidates as $candidate) {
                 if ($candidate->id === $email->id) { continue; }
-                $candTokens = $this->tokenizeBody($this->normalizeBody($candidate->html_body ?? ''));
-                if (empty($candTokens) || empty($parentTokens)) { continue; }
 
-                $countA = max(1, count($candTokens));
-                $countB = max(1, count($parentTokens));
-                $lenRatio = min($countA, $countB) / max($countA, $countB);
-                if ($lenRatio < 0.8) { continue; }
+                $candSubjectNorm = $this->normalizeSubjectText((string)($candidate->subject ?? ''));
+                $candSubjectLower = mb_strtolower($candSubjectNorm);
+                $candBaseLower = mb_strtolower($this->baseSubject($candSubjectNorm));
+                $candIsReply = $this->hasReplyPrefix($candSubjectNorm);
 
-                $sim = $this->jaccardSimilarity($candTokens, $parentTokens);
-                if ($sim >= 0.90) {
+                // Case 1: same sender + exact subject
+                if ((string)$candidate->sender_email === (string)$email->sender_email && $candSubjectLower === $seedSubjectLower) {
                     $threadChildren[] = $candidate;
+                    continue;
+                }
+
+                // Case 2: reply to same base subject (ignore sender)
+                if ($candIsReply && $candBaseLower === $seedBaseLower) {
+                    $threadChildren[] = $candidate;
+                    continue;
                 }
             }
         }
@@ -564,34 +540,38 @@ class MailboxController extends Controller
             return collect();
         }
 
+        // Collect thread emails using same rule as listing
         $baseQuery = Email::where('profile_id', $profile->id)
             ->where('folder_id', $seedEmail->folder_id)
             ->where('is_archived', false)
-            ->where('sender_email', $seedEmail->sender_email)
+            ->select(['id','uuid','subject','from','sender_email','sent_at','has_read','is_archived','is_starred','is_deleted','folder_id','profile_id'])
             ->orderBy('sent_at', 'desc');
 
         $candidates = $baseQuery->get();
-        $seedTokens = $this->tokenizeBody($this->normalizeBody($seedEmail->html_body ?? ''));
 
-        // If no body/tokens, return just the seed email
-        if (empty($seedTokens)) {
-            return collect([$seedEmail]);
-        }
+        $seedSubjectNorm = $this->normalizeSubjectText((string)($seedEmail->subject ?? ''));
+        $seedSubjectLower = mb_strtolower($seedSubjectNorm);
+        $seedBaseLower = mb_strtolower($this->baseSubject($seedSubjectNorm));
 
         $thread = collect([$seedEmail]);
         foreach ($candidates as $candidate) {
             if ($candidate->id === $seedEmail->id) { continue; }
-            $candTokens = $this->tokenizeBody($this->normalizeBody($candidate->html_body ?? ''));
-            if (empty($candTokens)) { continue; }
 
-            $countA = max(1, count($candTokens));
-            $countB = max(1, count($seedTokens));
-            $lenRatio = min($countA, $countB) / max($countA, $countB);
-            if ($lenRatio < 0.8) { continue; }
+            $candSubjectNorm = $this->normalizeSubjectText((string)($candidate->subject ?? ''));
+            $candSubjectLower = mb_strtolower($candSubjectNorm);
+            $candBaseLower = mb_strtolower($this->baseSubject($candSubjectNorm));
+            $candIsReply = $this->hasReplyPrefix($candSubjectNorm);
 
-            $sim = $this->jaccardSimilarity($candTokens, $seedTokens);
-            if ($sim >= 0.90) {
+            // Case 1: same sender + exact subject
+            if ((string)$candidate->sender_email === (string)$seedEmail->sender_email && $candSubjectLower === $seedSubjectLower) {
                 $thread->push($candidate);
+                continue;
+            }
+
+            // Case 2: reply to same base subject (ignore sender)
+            if ($candIsReply && $candBaseLower === $seedBaseLower) {
+                $thread->push($candidate);
+                continue;
             }
         }
 
