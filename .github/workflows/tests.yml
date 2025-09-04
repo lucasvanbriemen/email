@@ -10,6 +10,10 @@ permissions:
 jobs:
   tests:
     runs-on: self-hosted
+    container:
+      image: php:8.3
+      options: --memory=50m --memory-swap=50m
+
     env:
       APP_ENV: testing
       DB_CONNECTION: mariadb
@@ -20,13 +24,7 @@ jobs:
       DB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
       DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
 
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [ '8.3' ]
-
-    name: Run tests on PHP ${{ matrix.php }}
-
+    name: Run tests on PHP 8.3
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,7 +32,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: 8.3
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, pdo_mysql
           coverage: xdebug
 
