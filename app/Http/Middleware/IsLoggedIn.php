@@ -16,7 +16,7 @@ class IsLoggedIn
     public function handle(Request $request, Closure $next): Response
     {
         // Prod only
-        if (app()->environment('local')) {
+        if (app()->environment('local') || app()->environment('testing')) {
             $authToken = config('app.user_token');
         } else {
             $authToken = $_COOKIE['auth_token'] ?? null;
