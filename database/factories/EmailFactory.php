@@ -13,7 +13,7 @@ class EmailFactory extends Factory
     protected $model = Email::class;
 
     public function definition(): array
-    {        
+    {
         return [
             'profile_id' => 1,  // Use a default value
             'credential_id' => 1, // Use a default value
