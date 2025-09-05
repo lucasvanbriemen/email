@@ -14,9 +14,9 @@ class EmailModelTest extends TestCase
     {
         $fillableAttributes = [
             'profile_id',
+            'sender_id',
+            'sender_name',
             'subject',
-            'from',
-            'sender_email',
             'to',
             'sent_at',
             'has_read',

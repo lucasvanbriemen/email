@@ -159,7 +159,7 @@ Artisan::command("get_emails", function () {
             // Prepare notification data before dispatching
             $senderName = $email->getSenderDisplayName();
             $emailSubject = $email->subject;
-            
+
             dispatch(function () use ($senderName, $emailSubject, $url) {
                 NtfyHelper::sendNofication(
                     $senderName,
