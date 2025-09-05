@@ -74,14 +74,26 @@ Artisan::command("get_emails", function () {
                 ->value('id');
 
             $sender = $message->getFrom()[0]->mail ?? null;
+            $incomingEmailSender = null;
             if ($sender) {
-                $incomingEmailSender = IncomingEmailSender::firstOrCreate(
-                    ['email' => $sender],
-                    [
+                try {
+                    $incomingEmailSender = IncomingEmailSender::firstOrCreate(
+                        ['email' => $sender],
+                        [
+                            'name' => $message->getFrom()[0]->personal ?? $sender,
+                            'top_level_domain' => IncomingEmailSender::email_to_domain($sender),
+                        ]
+                    );
+                } catch (\Exception $e) {
+                    Log::error('Failed to create IncomingEmailSender: ' . $e->getMessage());
+                    // Create a basic sender without the logo functionality
+                    $incomingEmailSender = new IncomingEmailSender([
+                        'email' => $sender,
                         'name' => $message->getFrom()[0]->personal ?? $sender,
                         'top_level_domain' => IncomingEmailSender::email_to_domain($sender),
-                    ]
-                );
+                    ]);
+                    $incomingEmailSender->saveQuietly(); // Save without triggering events
+                }
             }
 
 
@@ -94,7 +106,7 @@ Artisan::command("get_emails", function () {
                 'uid' => $message->getUid(),
                 'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
                 'folder_id' => $folderId,
-                'sender_id' => $incomingEmailSender->id,
+                'sender_id' => $incomingEmailSender ? $incomingEmailSender->id : null,
                 'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
                     return $to->mail ?? null;
                 })->filter()->all()) ?: null,
@@ -143,10 +155,14 @@ Artisan::command("get_emails", function () {
             $url = config('app.url') . '/' . $profile->linked_profile_count . '/folder/inbox/mail/' . $email->uuid;
 
             // Send notification
-            dispatch(function () use ($email, $url) {
+            // Prepare notification data before dispatching
+            $senderName = $incomingEmailSender ? ($incomingEmailSender->name ?? $sender) : ($sender ?? 'Unknown Sender');
+            $emailSubject = $email->subject;
+            
+            dispatch(function () use ($senderName, $emailSubject, $url) {
                 NtfyHelper::sendNofication(
-                    $email->sender->name ?? $email->to ?? 'Unknown Sender',
-                    $email->subject,
+                    $senderName,
+                    $emailSubject,
                     $url
                 );
             });
