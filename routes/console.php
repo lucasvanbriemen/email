@@ -107,6 +107,7 @@ Artisan::command("get_emails", function () {
                 'html_body' => $message->getHTMLBody() ?: $message->getTextBody(),
                 'folder_id' => $folderId,
                 'sender_id' => $incomingEmailSender ? $incomingEmailSender->id : null,
+                'sender_name' => $message->getFrom()[0]->personal ?? $sender ?? null,
                 'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
                     return $to->mail ?? null;
                 })->filter()->all()) ?: null,
@@ -159,13 +160,13 @@ Artisan::command("get_emails", function () {
             $senderName = $incomingEmailSender ? ($incomingEmailSender->name ?? $sender) : ($sender ?? 'Unknown Sender');
             $emailSubject = $email->subject;
             
-            // dispatch(function () use ($senderName, $emailSubject, $url) {
+            dispatch(function () use ($senderName, $emailSubject, $url) {
                 NtfyHelper::sendNofication(
                     $senderName,
                     $emailSubject,
                     $url
                 );
-            // });
+            });
         }
     }
 

@@ -41,7 +41,7 @@
         {{-- {{ dump($email->sender) }} - {{ dump($email->sender_id) }} - {{ dump(App\Models\IncomingEmailSender::where('id', $email->sender_id)->first()) }} --}}
 
         <img src="/{{ $email->sender->logo_url }}" alt="{{ $email['from'] }}" class='email-avatar'>
-        <span class='email-from-name'>{{ $email->sender->name }}</span>
+        <span class='email-from-name'>{{ $email->getSenderDisplayName() }}</span>
     </div>
     <p class='email-subject'>{{ $email['subject'] }}</p>
 
