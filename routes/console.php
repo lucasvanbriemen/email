@@ -157,7 +157,7 @@ Artisan::command("get_emails", function () {
 
             // Send notification
             // Prepare notification data before dispatching
-            $senderName = $incomingEmailSender ? ($incomingEmailSender->name ?? $sender) : ($sender ?? 'Unknown Sender');
+            $senderName = $email->getSenderDisplayName();
             $emailSubject = $email->subject;
             
             dispatch(function () use ($senderName, $emailSubject, $url) {
