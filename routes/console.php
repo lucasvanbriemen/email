@@ -143,10 +143,10 @@ Artisan::command("get_emails", function () {
             $url = config('app.url') . '/' . $profile->linked_profile_count . '/folder/inbox/mail/' . $email->uuid;
 
             // Send notification
-            dispatch(function () use ($emailData, $url) {
+            dispatch(function () use ($email, $url) {
                 NtfyHelper::sendNofication(
-                    $emailData['from'],
-                    $emailData['subject'],
+                    $email->sender->name ?? $email->to ?? 'Unknown Sender',
+                    $email->subject,
                     $url
                 );
             });
