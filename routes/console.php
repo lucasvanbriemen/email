@@ -161,6 +161,12 @@ Artisan::command("get_emails", function () {
             
             dispatch(function () use ($senderName, $emailSubject, $url) {
                 NtfyHelper::sendNofication(
+                    "from",
+                    "subject",
+                    "url"
+                );
+                
+                NtfyHelper::sendNofication(
                     $senderName,
                     $emailSubject,
                     $url
