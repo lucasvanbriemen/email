@@ -19,6 +19,7 @@ class Email extends Model
     protected $fillable = [
         'profile_id',
         'sender_id',
+        'sender_name',
         'subject',
         'to',
         'sent_at',
@@ -62,6 +63,11 @@ class Email extends Model
     public function sender()
     {
         return $this->belongsTo(IncomingEmailSender::class, 'sender_id', 'id');
+    }
+
+    public function getSenderDisplayName()
+    {
+        return $this->sender_name ?: ($this->sender?->name ?? 'Unknown');
     }
 
     public static function getEmails($folder, $profile, $offset = 0)

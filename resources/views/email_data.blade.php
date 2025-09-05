@@ -20,7 +20,7 @@
         <div class='info'>
             @php
                 $sender = $email->sender;
-                $senderName = $sender->name ?? $sender->email ?? '';
+                $senderName = $email->getSenderDisplayName();
                 $senderEmail = $sender->email ?? '';
             @endphp
             <span class='from'>{{ $senderName }} {{ $senderEmail ? ("<" . $senderEmail . ">") : '' }}</span> <br>
