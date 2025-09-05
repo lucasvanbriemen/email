@@ -152,12 +152,12 @@ Artisan::command("get_emails", function () {
                 continue; // Skip if profile not found
             }
 
-            $url = config('app.url') . '/' . $profile->linked_profile_count . '/folder/inbox/mail/' . $email->uuid;
+            // $url = config('app.url') . '/' . $profile->linked_profile_count . '/folder/inbox/mail/' . $email->uuid;
 
-            // Send notification
-            // Prepare notification data before dispatching
-            $senderName = $incomingEmailSender ? ($incomingEmailSender->name ?? $sender) : ($sender ?? 'Unknown Sender');
-            $emailSubject = $email->subject;
+            // // Send notification
+            // // Prepare notification data before dispatching
+            // $senderName = $incomingEmailSender ? ($incomingEmailSender->name ?? $sender) : ($sender ?? 'Unknown Sender');
+            // $emailSubject = $email->subject;
             
             dispatch(function () use ($senderName, $emailSubject, $url) {
                 NtfyHelper::sendNofication(
@@ -166,11 +166,11 @@ Artisan::command("get_emails", function () {
                     "url"
                 );
                 
-                NtfyHelper::sendNofication(
-                    $senderName,
-                    $emailSubject,
-                    $url
-                );
+                // NtfyHelper::sendNofication(
+                //     $senderName,
+                //     $emailSubject,
+                //     $url
+                // );
             });
         }
     }
