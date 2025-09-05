@@ -159,7 +159,7 @@ Artisan::command("get_emails", function () {
             // $senderName = $incomingEmailSender ? ($incomingEmailSender->name ?? $sender) : ($sender ?? 'Unknown Sender');
             // $emailSubject = $email->subject;
             
-            dispatch(function () use ($senderName, $emailSubject, $url) {
+            // dispatch(function () use ($senderName, $emailSubject, $url) {
                 NtfyHelper::sendNofication(
                     "from",
                     "subject",
@@ -171,7 +171,7 @@ Artisan::command("get_emails", function () {
                 //     $emailSubject,
                 //     $url
                 // );
-            });
+            // });
         }
     }
 
@@ -183,7 +183,7 @@ Artisan::command("get_emails", function () {
 });
 
 Schedule::command('get_emails')
-    ->everyFifteenSeconds()
+    ->everyThirtySeconds()
     // Use a short-lived lock so stale locks auto-expire instead of requiring manual clears.
     // Expiration is in minutes; 2 keeps overlap protection while avoiding day-long stuck locks.
     ->withoutOverlapping(2)
