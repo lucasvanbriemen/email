@@ -14,10 +14,6 @@ class DashboardController extends Controller
         $profiles = Profile::where('user_id', currentUser()->id)->get();
 
         // If there is only one, we dont need to show the profile selection
-        if ($profiles->count() === 1) {
-            // return redirect()->route('mailbox.overview', ['linked_profile_id' => $profiles->first()->id, 'folder' => 'inbox']);
-        }
-
         $last_activity = currentUser()->last_activity;
 
         $emails = Email::whereIn('profile_id', $profiles->pluck('id'))

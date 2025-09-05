@@ -104,13 +104,37 @@
         }
 
         .last-update {
-            position: absolute;
-            right: 1rem;
-            bottom: 1rem;
+            position: fixed;
+            right: 2rem;
+            bottom: 2rem;
             color: var(--text-color-secondary);
             background-color: var(--background-color-one);
             padding: 0.5rem 1rem;
             border-radius: 1rem;
+        }
+
+        .no-emails {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            width: 50%;
+            
+            background-color: var(--background-color-one);
+            border: 2px solid var(--background-color-one);
+
+            color: var(--text-color-secondary);
+
+            padding: 1rem;
+            margin: 1rem auto;
+            border-radius: 1rem;
+
+            h2 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--text-color);
+            }
         }
     }
 
