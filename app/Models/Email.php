@@ -67,7 +67,13 @@ class Email extends Model
 
     public function getSenderDisplayName()
     {
-        return $this->sender_name ?: ($this->sender?->name ?? 'Unknown');
+        // Always prioritize the sender_name from the email itself as it's email-specific
+        // Only fall back to sender->name if sender_name is null/empty
+        if (!empty($this->sender_name)) {
+            return $this->sender_name;
+        }
+
+        return $this->sender?->name ?? $this->sender?->email ?? 'Unknown';
     }
 
     public static function getEmails($folder, $profile, $offset = 0)
