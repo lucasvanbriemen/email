@@ -41,6 +41,5 @@
         <span class='email-from-name'>{{ $email->getSenderDisplayName() }}</span>
     </div>
     <p class='email-subject'>{{ $email['subject'] }}</p>
-
     <p class='email-sent-at'>{{ readableTime($email['sent_at']) }}</p>
 </div>
