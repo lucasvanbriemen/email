@@ -113,6 +113,28 @@ Artisan::command("get_emails", function () {
                 })->filter()->all()) ?: null,
             ];
 
+            // If the subject contains `cancelled: CI` dont even bother saving the email
+            if (str_contains(strtolower($emailData['subject'] ?? ''), 'run cancelled: ci')) {
+                // Delete the email from the server to avoid long run time
+                continue;
+            }
+
+            // If the body contains the following logic, dont even bother saving the email
+            // - starts with a @mention
+            // - pushed
+            // - some number
+            // - commit/commits
+            if (preg_match('/^@\w+.*pushed\s+\d+\s+commit(s)?/is', $emailData['html_body'] ?? '')) {
+                // Delete the email from the server to avoid long run time
+                continue;
+            }
+
+            // If the body contains Merged #number into, dont even bother saving the email
+            if (preg_match('/Merged\s+#\d+\s+into/is', $emailData['html_body'] ?? '')) {
+                // Delete the email from the server to avoid long run time
+                continue;
+            }
+
             $email = Email::create($emailData);
 
             // atchements
