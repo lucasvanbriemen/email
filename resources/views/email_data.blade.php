@@ -43,65 +43,7 @@
         </div>
     </div>
 
-    @if (!empty($threadChildren) && count($threadChildren) > 0)
-        <div class='relevant-messages'>
-            <div class='header'>Relevant messages ({{ count($threadChildren) }})</div>
-            <ul class='list'>
-                @foreach ($threadChildren as $child)
-                    @php
-                        $linked_profile_id = request()->segment(1);
-                        $current_folder = request()->segment(3);
-                        $childPath = "/{$linked_profile_id}/folder/{$current_folder}/mail/{$child->uuid}";
-                    @endphp
-                    <li>
-                        <a href='{{ $childPath }}' onclick="event.preventDefault(); emailListing.openEmail(document.querySelector(`.email-item[data-email-id='{{ $child->uuid }}']`) ?? { dataset: { path: '{{ $childPath }}' }, classList: { add(){}, remove(){} } });">
-                            <span class='subject'>{{ $child->subject ?: 'No Subject' }}</span>
-                            @php $childSender = $child->sender; @endphp
-                            <span class='from'>{{ $childSender->name ?? $childSender->email ?? '' }}</span>
-                            <span class='time'>{{ readableTime($child->sent_at) }}</span>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 
-    @foreach ($attachments as $attachment)
-        {{-- Every ICS attachment --}}
-        @php
-            $isIcs = strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION)) === 'ics';
-            if (!$isIcs) continue;
-
-            $icsContent = $attachment->getContent();
-            $events = parseIcsContent($icsContent);
-            $parsedIcs = $events[0] ?? [];
-            $parsedIcs["DTSTART"] =  \App\Helpers\IcsHelper::getDateTime($parsedIcs, 'DTSTART', 'Europe/Amsterdam');
-            $parsedIcs["DTEND"]   =  \App\Helpers\IcsHelper::getDateTime($parsedIcs, 'DTEND', 'Europe/Amsterdam');
-            $parsedIcs["ATTENDEE"] = $parsedIcs["ATTENDEE"] ?? [];
-        @endphp
-
-        <div class='ics-header'>
-            <h1 class='subject'>{{ $parsedIcs["SUMMARY"] }}</h1>
-
-            <div class='info'>
-                {{ readableTime($parsedIcs["DTSTART"]) }} until {{ readableTime($parsedIcs["DTEND"]) }} <br>
-
-                @foreach ($parsedIcs["ATTENDEE"] as $attendee)
-                    <span class='attendee'>{{ str_ireplace('mailto:', '', $attendee) }}</span><br>
-                @endforeach
-            </div>
-
-            <div title="Add to Calendar" class="addeventatc">
-                Add to Calendar
-                <span class="start">{{ $parsedIcs["DTSTART"] ?? '' }}</span>
-                <span class="end">{{ $parsedIcs["DTEND"] ?? '' }}</span>
-                <span class="timezone">Europe/Amsterdam</span>
-                <span class="title">{{ $parsedIcs["SUMMARY"] ?? '' }}</span>
-                <span class="description">{{ $parsedIcs["DESCRIPTION"] ?? '' }}</span>
-                <span class="location">{{ $parsedIcs["LOCATION"] ?? '' }}</span>
-            </div>
-        </div>
-    @endforeach
 
     <iframe srcdoc="<style>body{font-family: sans-serif;}</style><base target='_top'>{{ $email->html_body }}" class='email-body' onload="email.init()"></iframe>
 
@@ -126,4 +68,27 @@
             </a>
         @endforeach
     </div>
+
+    @if (!empty($threadChildren) && count($threadChildren) > 0)
+        <div class='relevant-messages'>
+            <div class='header'>Relevant messages ({{ count($threadChildren) }})</div>
+            <ul class='list'>
+                @foreach ($threadChildren as $child)
+                    @php
+                        $linked_profile_id = request()->segment(1);
+                        $current_folder = request()->segment(3);
+                        $childPath = "/{$linked_profile_id}/folder/{$current_folder}/mail/{$child->uuid}";
+                    @endphp
+                    <li>
+                        <a href='{{ $childPath }}' onclick="event.preventDefault(); emailListing.openEmail(document.querySelector(`.email-item[data-email-id='{{ $child->uuid }}']`) ?? { dataset: { path: '{{ $childPath }}' }, classList: { add(){}, remove(){} } });">
+                            <span class='subject'>{{ $child->subject ?: 'No Subject' }}</span>
+                            @php $childSender = $child->sender; @endphp
+                            <span class='from'>{{ $childSender->name ?? $childSender->email ?? '' }}</span>
+                            <span class='time'>{{ readableTime($child->sent_at) }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 </div>
