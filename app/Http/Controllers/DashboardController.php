@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Email;
-use Illuminate\Support\Facades\DB;
 use App\Models\Profile;
 
 class DashboardController extends Controller
