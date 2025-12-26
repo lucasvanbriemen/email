@@ -18,11 +18,13 @@ export default {
   setCssVariables() {
     document.documentElement.setAttribute("data-theme", this.getTheme());
     const url = this.themeUrl.replace("THEME_NAME", this.getTheme());
-    const colors = api.get(url);
-
-    colors.forEach(color => {
-      document.documentElement.style.setProperty(`--${color.name}`, color.value);
-    });
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(color => {
+                document.documentElement.style.setProperty(`--${color.name}`, color.value);
+            });
+        })
 
     this.custom_colors.forEach(color => {
       const name = `--${color.name}`;

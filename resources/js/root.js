@@ -9,7 +9,6 @@ const exportsMap = {
     email: './email/email.js',
     emailQuickActions: './email/quick_actions.js',
     emailContextMenu: './email/context_menu.js',
-    dashboard: './dashboard.js',
     loader: './loader.js',
 };
 
