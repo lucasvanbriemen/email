@@ -15,10 +15,10 @@ export default {
     return this.selectedTheme;
   },
 
-  async applyTheme() {
+  setCssVariables() {
     document.documentElement.setAttribute("data-theme", this.getTheme());
     const url = this.themeUrl.replace("THEME_NAME", this.getTheme());
-    const colors = await api.get(url);
+    const colors = api.get(url);
 
     colors.forEach(color => {
       document.documentElement.style.setProperty(`--${color.name}`, color.value);
