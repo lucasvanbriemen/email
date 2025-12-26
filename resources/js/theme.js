@@ -1,87 +1,33 @@
 export default {
+  themeUrl: "https://components.lucasvanbriemen.nl/api/colors?theme=THEME_NAME",
+  selectedTheme: "auto",
 
-    theme: 'auto', // 'light' or 'dark', 'auto' will use the system preference. If you want to force a theme, use 'light' or 'dark'
+  custom_colors: [
+    
+  ],
 
-    colors: {
-        'background-color': {
-            light: '#ffffff',
-            dark: '#121212',
-        },
-
-        'background-color-one': {
-            light: '#d5e1ed',
-            dark: '#1E1E1E',
-        },
-
-        'background-color-two': {
-            light: '#aab5bf',
-            dark: '#303030',
-        },
-
-        'modal-background-color': {
-            light: '#d5e1ed',
-            dark: '#303030',
-        },
-
-        'success-color': {
-            light: '#84e897',
-            dark: '#41ab55',
-        },
-
-        'error-color': {
-            light: '#f59790',
-            dark: '#d44439',
-        },
-
-        'starred-color': {
-            light: '#f4c430',
-            dark: '#f4c430',
-        },
-
-        'text-color': {
-            light: '#000000',
-            dark: '#E0E0E0',
-        },
-
-        'text-color-secondary': {
-            light: '#6e6e6e',
-            dark: '#B0B0B0',
-        },
-
-        'border-color': {
-            light: '#000000',
-            dark: '#444444',
-        },
-
-        'primary-color': {
-            light: '#4285f4',
-            dark: '#1266f1',
-        },
-
-        'primary-color-dark': {
-            light: '#1266f1',
-            dark: '#224887',
-        },
-
-        'font-family': {
-            light: 'Roboto, sans-serif',
-            dark: 'Roboto, sans-serif',
-        },
-    },
-
-    getCurrentTheme() {
-        if (this.theme === 'light' || this.theme === 'dark') {
-            return this.theme;
-        }
-
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    },
-
-    setCssVariables() {
-        const currentTheme = this.getCurrentTheme();
-
-        for (const [key, value] of Object.entries(this.colors)) {
-            document.documentElement.style.setProperty(`--${key}`, value[currentTheme]);
-        }
+  getTheme() {
+    if (this.selectedTheme === "auto") {
+      const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      return darkModeMediaQuery.matches ? "dark" : "light";
     }
+
+    return this.selectedTheme;
+  },
+
+  async applyTheme() {
+    document.documentElement.setAttribute("data-theme", this.getTheme());
+    const url = this.themeUrl.replace("THEME_NAME", this.getTheme());
+    const colors = await api.get(url);
+
+    colors.forEach(color => {
+      document.documentElement.style.setProperty(`--${color.name}`, color.value);
+    });
+
+    this.custom_colors.forEach(color => {
+      const name = `--${color.name}`;
+      const value = this.getTheme() === "dark" ? color.dark : color.light;
+      document.documentElement.style.setProperty(name, value);
+    });
+  },
 };
