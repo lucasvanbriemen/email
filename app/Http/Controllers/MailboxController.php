@@ -33,15 +33,15 @@ class MailboxController extends Controller
             ]);
         }
 
-        // $response = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
-        // $data = $response->getData(true);  // Convert to array
-        // $listingHTML = $data['html'];
+        $response = $this->getListingHTML($linked_profile_id, $selectedFolder->path);
+        $data = $response->getData(true);  // Convert to array
+        $listingHTML = $data['html'];
 
         // Use the threaded total count from the listing header
         $totalEmailCount = $data['header']['total_email_count'] ?? 0;
 
         return view('overview', [
-            'listingHTML' => "<h1>test</h1>",
+            'listingHTML' => $listingHTML,
 
             'selectedFolder' => $selectedFolder,
             'totalEmailCount' => $totalEmailCount,
