@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import theme from '../lib/theme.js';
+  import api from '../lib/api.js';
   import page from 'page';
   import Dashboard from './pages/Dashboard.svelte';
   import About from './pages/About.svelte';
