@@ -5,14 +5,14 @@
   import page from 'page';
   import Header from './Header.svelte';
   import Dashboard from './pages/Dashboard.svelte';
-  import About from './pages/About.svelte';
+  import EmailListing from './pages/EmailListing.svelte';
 
   let currentComponent;
   let params = {};
 
   const routes = {
     '/': Dashboard,
-    '/about': About,
+    '/:group': EmailListing,
   };
 
   onMount(() => {
@@ -22,9 +22,9 @@
       params = {};
     });
 
-    page('/about', () => {
-      currentComponent = routes['/about'];
-      params = {};
+    page('/:group', ctx => {
+      currentComponent = routes['/:group'];
+      params = { group: ctx.params.group };
     });
 
     // Catch all other routes and render the default component
