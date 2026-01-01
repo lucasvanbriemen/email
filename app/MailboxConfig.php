@@ -13,6 +13,7 @@ class MailboxConfig
                     '*'
                 ]
             ],
+        ],
         [
             'path' => 'work',
             'name' => 'Work',
