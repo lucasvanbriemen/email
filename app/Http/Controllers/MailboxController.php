@@ -19,9 +19,7 @@ class MailboxController extends Controller
     {
         $groups = MailboxConfig::GROUPS;
 
-        return response()->json([
-            'groups' => $groups,
-        ]);
+        return response()->json( array_values($groups));
     }
 
     public function index($linked_profile_id = null, $folder = null)
