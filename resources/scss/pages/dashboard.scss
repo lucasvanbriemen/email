@@ -1,3 +1,14 @@
-.sidebar {
-  background-color: red;
+main {
+  display: flex;
+  gap: 0;
+
+  .sidebar {
+    background-color: var(--background-color-one);
+    height: 100vh;
+    width: 200px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 }
