@@ -35,10 +35,6 @@ Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/archive_thread', [M
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/delete_thread', [MailboxController::class, 'deleteThread'])->middleware(['is_logged_in'])->name('mailbox.folder.mail.delete_thread');
 Route::post('{linked_profile_id}/folder/{folder}/mail/{uuid}/star_thread', [MailboxController::class, 'starThread'])->middleware(['is_logged_in'])->name('mailbox.folder.mail.star_thread');
 
-Route::get('/is_loggedin', function() { 
-    return response()->json(currentUser()->name);
-})->middleware(['is_logged_in'])->name('mailbox.search');
-
 Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
     Route::get('/account/{linked_profile_id}', [AccountController::class, 'edit'])->name('account.edit.profile');

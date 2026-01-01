@@ -8,11 +8,21 @@ use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Models\Profile;
+use App\MailboxConfig;
 use App\Models\Tag;
 
 class MailboxController extends Controller
 {
     protected $DEFAULT_FOLDER = 'inbox';
+
+    public function metadata()
+    {
+        $groups = MailboxConfig::GROUPS;
+
+        return response()->json([
+            'groups' => $groups,
+        ]);
+    }
 
     public function index($linked_profile_id = null, $folder = null)
     {

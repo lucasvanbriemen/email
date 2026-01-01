@@ -16,7 +16,7 @@ class Profile extends Model
         'linked_profile_count'
     ];
 
-       // On create
+    // On create
     protected static function booted()
     {
         // If an credential is made, we also want to create a folder for it

@@ -1,5 +1,11 @@
 <script>
-  let message = 'Email Client';
+  import { onMount } from 'svelte';
+
+  let metadata = $state({});
+
+  onMount(async () => {
+    metadata = await api.get(route('mailbox.metadata'));
+  });
 </script>
 
 <div>
