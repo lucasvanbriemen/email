@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import theme from '../lib/theme.js';
   import page from 'page';
   import Dashboard from './pages/Dashboard.svelte';
   import About from './pages/About.svelte';
@@ -32,6 +33,9 @@
 
     // Start the router
     page.start();
+
+    theme.applyTheme();
+    window.api = api;
   });
 </script>
 

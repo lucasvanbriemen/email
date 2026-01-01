@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OutboundMailController;
+
+Route::get('/{any}', function () {
+    return view('spa');
+})->middleware(['is_logged_in'])->where('any', '.*')->name('spa.catchall');
+
+
 Route::get('/', [DashboardController::class, 'index'])->middleware(['is_logged_in'])->name('dashboard');
 
 Route::get('{linked_profile_id}/folder/{folder}', [MailboxController::class, 'index'])->middleware(['is_logged_in'])->name('mailbox.overview');
@@ -40,7 +46,3 @@ Route::middleware('auth')->group(function () {
     Route::post('/account/{linked_profile_id}/imap', [AccountController::class, 'storeImapCredentials'])->name('account.credentials.store.imap');
     Route::post('/account/{linked_profile_id}/smtp', [AccountController::class, 'storeSmtpCredentials'])->name('account.credentials.store.smtp');
 });
-
-Route::get('/{any}', function () {
-    return view('spa');
-})->middleware(['is_logged_in'])->where('any', '.*')->name('spa.catchall');
