@@ -12,16 +12,14 @@
 <header>
   <div class="logo">
     <Icon name="logo" size="2rem" />
-    <span>Email</span>
+    <span class="title">Email</span>
   </div>
 
   <div class="separator"></div>
 
-  <div class="actions">
-    {#each groups as group}
-      <a href="/{group.path}">{group.name}</a>
-    {/each}
-  </div>
+  {#each groups as group}
+    <a href="/{group.path}">{group.name}</a>
+  {/each}
 </header>
 
 <style>
