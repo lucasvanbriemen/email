@@ -10,10 +10,10 @@
 </script>
 
 <header>
-  <div class="logo">
-    <Icon name="logo" size="2rem" />
+  <a class="logo" href="/">
+    <Icon name="logo" />
     <span class="title">Email</span>
-  </div>
+  </a>
 
   <div class="separator"></div>
 
