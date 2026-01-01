@@ -45,7 +45,7 @@
 <Header />
 
 {#if currentComponent}
-  <svelte:component this={currentComponent} {params} />
+  <svelte:component this={currentComponent} {...params} />
 {/if}
 
 <style>

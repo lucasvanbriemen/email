@@ -1,4 +1,28 @@
 <script>
+  import { onMount, untrack } from "svelte";
+
+  let { group } = $props();
+  let emailData = $state([]);
+  let isLoading = $state(true);
+
+  onMount(async () => {
+    getEmails();
+  });
+
+  async function getEmails () {
+    isLoading = true;
+    console.log("Fetching emails for group:", group);
+    emailData = await api.get("/api/mailbox/folder/" + group);
+    isLoading = false;
+  }
+
+  $effect(() => {
+    void group
+
+    untrack(() => {
+      getEmails();
+    });
+  });
 </script>
 
 <div>
