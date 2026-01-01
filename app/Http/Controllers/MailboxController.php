@@ -19,17 +19,183 @@ class MailboxController extends Controller
     {
         $groups = MailboxConfig::GROUPS;
 
-        return response()->json( array_values($groups));
+        return response()->json(array_values($groups));
     }
 
     public function emails($group)
     {
         $allGroups = MailboxConfig::GROUPS;
+        $groupConfig = null;
+
         foreach ($allGroups as $allGroupsItem) {
             if ($allGroupsItem['path'] === $group) {
-                $group = $allGroupsItem;
+                $groupConfig = $allGroupsItem;
                 break;
             }
+        }
+
+        if (!$groupConfig) {
+            return response()->json(['error' => 'Group not found'], 404);
+        }
+
+        $page = (int) request()->query('page', 1);
+        $perPage = 50;
+
+        $rules = $groupConfig['rules'];
+        $query = Email::query();
+
+        // Apply rules dynamically based on rule type
+        foreach ($rules as $ruleType => $patterns) {
+            $this->applyRuleToQuery($query, $ruleType, $patterns);
+        }
+
+        // Get total count before pagination
+        $total = $query->count();
+
+        // Apply pagination
+        $emails = $query->orderBy('sent_at', 'desc')
+            ->skip(($page - 1) * $perPage)
+            ->take($perPage)
+            ->get();
+
+        $lastPage = (int) ceil($total / $perPage);
+
+        return response()->json([
+            'data' => $emails,
+            'pagination' => [
+                'current_page' => $page,
+                'per_page' => $perPage,
+                'total' => $total,
+                'last_page' => $lastPage,
+                'from' => $total === 0 ? 0 : (($page - 1) * $perPage) + 1,
+                'to' => min($page * $perPage, $total),
+                'has_next' => $page < $lastPage,
+                'has_previous' => $page > 1,
+            ]
+        ]);
+    }
+
+    /**
+     * Apply a rule filter to the query based on rule type
+     */
+    private function applyRuleToQuery($query, $ruleType, $patterns)
+    {
+        if (!is_array($patterns)) {
+            return;
+        }
+
+        match ($ruleType) {
+            'from' => $this->applyFromRule($query, $patterns),
+            'to' => $this->applyToRule($query, $patterns),
+            'subject' => $this->applySubjectRule($query, $patterns),
+            'body' => $this->applyBodyRule($query, $patterns),
+            'has_attachment' => $this->applyHasAttachmentRule($query, $patterns),
+            'is_starred' => $this->applyIsStarredRule($query, $patterns),
+            'is_read' => $this->applyIsReadRule($query, $patterns),
+            default => null,
+        };
+    }
+
+    /**
+     * Apply 'from' rule - filter by sender email
+     */
+    private function applyFromRule($query, $patterns)
+    {
+        $query->whereHas('sender', function ($q) use ($patterns) {
+            $q->where(function ($subQ) use ($patterns) {
+                foreach ($patterns as $pattern) {
+                    $this->applyEmailPattern($subQ, 'email', $pattern);
+                }
+            });
+        });
+    }
+
+    /**
+     * Apply 'to' rule - filter by recipient email
+     */
+    private function applyToRule($query, $patterns)
+    {
+        $query->where(function ($q) use ($patterns) {
+            foreach ($patterns as $pattern) {
+                $this->applyEmailPattern($q, 'to', $pattern);
+            }
+        });
+    }
+
+    /**
+     * Apply 'subject' rule - filter by subject line
+     */
+    private function applySubjectRule($query, $patterns)
+    {
+        $query->where(function ($q) use ($patterns) {
+            foreach ($patterns as $pattern) {
+                $q->orWhere('subject', 'like', '%' . $pattern . '%');
+            }
+        });
+    }
+
+    /**
+     * Apply 'body' rule - filter by email body content
+     */
+    private function applyBodyRule($query, $patterns)
+    {
+        $query->where(function ($q) use ($patterns) {
+            foreach ($patterns as $pattern) {
+                $q->orWhere('html_body', 'like', '%' . $pattern . '%');
+            }
+        });
+    }
+
+    /**
+     * Apply 'has_attachment' rule - filter by whether email has attachments
+     */
+    private function applyHasAttachmentRule($query, $patterns)
+    {
+        $hasAttachment = in_array(true, $patterns) || in_array('true', $patterns) || in_array(1, $patterns);
+
+        if ($hasAttachment) {
+            $query->whereHas('attachments');
+        } else {
+            $query->whereDoesntHave('attachments');
+        }
+    }
+
+    /**
+     * Apply 'is_starred' rule - filter by starred status
+     */
+    private function applyIsStarredRule($query, $patterns)
+    {
+        $isStarred = in_array(true, $patterns) || in_array('true', $patterns) || in_array(1, $patterns);
+        $query->where('is_starred', $isStarred);
+    }
+
+    /**
+     * Apply 'is_read' rule - filter by read status
+     */
+    private function applyIsReadRule($query, $patterns)
+    {
+        $isRead = in_array(true, $patterns) || in_array('true', $patterns) || in_array(1, $patterns);
+        $query->where('has_read', $isRead);
+    }
+
+    /**
+     * Apply email pattern matching (handles *, *@domain, @domain, exact)
+     */
+    private function applyEmailPattern($query, $field, $pattern)
+    {
+        if ($pattern === '*') {
+            // Match all emails
+            $query->orWhereRaw('1=1');
+        } elseif (str_starts_with($pattern, '*@')) {
+            // Match *@domain.com pattern
+            $domain = substr($pattern, 2);
+            $query->orWhere($field, 'like', '%@' . $domain);
+        } elseif (str_starts_with($pattern, '@')) {
+            // Match @domain.com pattern (including subdomains)
+            $query->orWhere($field, 'like', '%' . $pattern);
+        } else {
+            // Exact match
+            $query->orWhere($field, $pattern);
         }
     }
 
