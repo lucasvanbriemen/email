@@ -20,6 +20,7 @@ $routes = collect(Route::getRoutes())->map(function ($route) {
 <body>
     <script>
         const API_ROUTES = @json($routes);
+        const currentDomain = window.location.origin;
 
         function route(name, params = {}) {
             const route = API_ROUTES.find(r => r.name === name);

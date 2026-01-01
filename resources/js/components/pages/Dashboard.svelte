@@ -4,8 +4,7 @@
   let groups = $state([]);
 
   onMount(async () => {
-    groups = await api.get(route('mailbox.metadata'));
-    console.log(groups);
+    groups = await api.get('/api/mailbox/metadata');
   });
 </script>
 

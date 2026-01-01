@@ -34,7 +34,12 @@ export default {
       options.body = JSON.stringify(data);
     }
 
-    return fetch(url, options)
+    let fullUrl = url;
+    if (url.startsWith('/')) {
+      fullUrl = currentDomain + url;
+    }
+
+    return fetch(fullUrl, options)
       .then(async (response) => {
         // app.setLoading(false);
         if (response.headers.get("content-type")?.includes("application/json")) { return response.json(); }
