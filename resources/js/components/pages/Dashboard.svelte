@@ -8,7 +8,7 @@
   });
 </script>
 
-<div>
+<div class="sidebar">
   <h1>groups</h1>
   {#each groups as group}
     <a href="/{group.path}">{group.name}</a>
@@ -16,5 +16,5 @@
 </div>
 
 <style>
- 
+  @import '../../../scss/pages/dashboard.scss';
 </style>
