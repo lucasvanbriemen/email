@@ -12,7 +12,7 @@
   async function getEmails () {
     isLoading = true;
     console.log("Fetching emails for group:", group);
-    emailData = await api.get("/api/mailbox/folder/" + group);
+    emailData = await api.get("/api/mailbox/" + group);
     isLoading = false;
   }
 

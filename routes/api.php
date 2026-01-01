@@ -6,4 +6,6 @@ use App\Http\Controllers\MailboxController;
 
 Route::middleware(IsLoggedIn::class)->group(function () {
     Route::get('/mailbox/metadata', [MailboxController::class, 'metadata'])->name('mailbox.metadata');
+
+    Route::get('/mailbox/{group}', [MailboxController::class, 'emails'])->name('mailbox.emails');
 });

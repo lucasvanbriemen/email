@@ -22,6 +22,17 @@ class MailboxController extends Controller
         return response()->json( array_values($groups));
     }
 
+    public function emails($group)
+    {
+        $allGroups = MailboxConfig::GROUPS;
+        foreach ($allGroups as $allGroupsItem) {
+            if ($allGroupsItem['path'] === $group) {
+                $group = $allGroupsItem;
+                break;
+            }
+        }
+    }
+
     public function index($linked_profile_id = null, $folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
