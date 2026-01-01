@@ -3,6 +3,7 @@
   import theme from '../lib/theme.js';
   import api from '../lib/api.js';
   import page from 'page';
+  import Header from './Header.svelte';
   import Dashboard from './pages/Dashboard.svelte';
   import About from './pages/About.svelte';
 
@@ -36,9 +37,12 @@
     page.start();
 
     theme.applyTheme();
-    window.api = api;
   });
+  
+  window.api = api;
 </script>
+
+<Header />
 
 {#if currentComponent}
   <svelte:component this={currentComponent} {params} />
