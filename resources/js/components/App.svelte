@@ -1,8 +1,8 @@
 <script>
   import { onMount } from 'svelte';
   import page from 'page';
-  import Dashboard from './Dashboard.svelte';
-  import About from './About.svelte';
+  import Dashboard from './pages/Dashboard.svelte';
+  import About from './pages/About.svelte';
 
   let currentComponent;
   let params = {};

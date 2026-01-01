@@ -41,8 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/account/{linked_profile_id}/smtp', [AccountController::class, 'storeSmtpCredentials'])->name('account.credentials.store.smtp');
 });
 
-if (config('app.env') === 'local') {
-    Route::get('/{any}', function () {
-        return view('spa');
-    })->middleware(['is_logged_in'])->where('any', '.*')->name('spa.catchall');
-}
+Route::get('/{any}', function () {
+    return view('spa');
+})->middleware(['is_logged_in'])->where('any', '.*')->name('spa.catchall');
