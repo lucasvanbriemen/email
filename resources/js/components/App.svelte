@@ -43,3 +43,7 @@
 {#if currentComponent}
   <svelte:component this={currentComponent} {params} />
 {/if}
+
+<style>
+  @import '../../scss/gloabal.scss';
+</style>
