@@ -49,30 +49,10 @@ class MailboxController extends Controller
             $this->applyRuleToQuery($query, $ruleType, $patterns);
         }
 
-        // Get total count before pagination
-        $total = $query->count();
+        // Apply pagination using Laravel's paginate method
+        $emails = $query->orderBy('sent_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
 
-        // Apply pagination
-        $emails = $query->orderBy('sent_at', 'desc')
-            ->skip(($page - 1) * $perPage)
-            ->take($perPage)
-            ->get();
-
-        $lastPage = (int) ceil($total / $perPage);
-
-        return response()->json([
-            'data' => $emails,
-            'pagination' => [
-                'current_page' => $page,
-                'per_page' => $perPage,
-                'total' => $total,
-                'last_page' => $lastPage,
-                'from' => $total === 0 ? 0 : (($page - 1) * $perPage) + 1,
-                'to' => min($page * $perPage, $total),
-                'has_next' => $page < $lastPage,
-                'has_previous' => $page > 1,
-            ]
-        ]);
+        return response()->json($emails);
     }
 
     /**
