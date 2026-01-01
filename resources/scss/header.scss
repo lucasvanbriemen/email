@@ -12,11 +12,6 @@ header {
     align-items: center;
     gap: 0.5rem;
 
-    :global(svg) {
-      width: 2rem;
-      height: 2rem;
-    }
-
     .title {
       font-size: 1.25rem;
       font-weight: bold;
