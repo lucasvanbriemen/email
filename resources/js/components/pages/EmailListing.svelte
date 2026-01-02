@@ -33,7 +33,7 @@
 </script>
 
 <main>
-  <div>
+  <div class="email-list">
     {#if isLoading}
       <p>Loading...</p>
     {:else}

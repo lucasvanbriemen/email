@@ -3,6 +3,11 @@ main {
   display: flex;
   gap: 1rem;
 
+  .email-list {
+    border-right: 1px solid var(--background-color-one);
+    padding-right: 1rem;
+  }
+
   >div {
     display: flex;
     flex-direction: column;
