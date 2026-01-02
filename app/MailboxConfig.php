@@ -20,6 +20,9 @@ class MailboxConfig
             'rules' => [
                 'from' => [
                     '*@webinargeek.com'
+                ],
+                'to' => [
+                    '*@webinargeek.com'
                 ]
             ],
         ],

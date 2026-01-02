@@ -63,7 +63,6 @@ class MailboxController extends Controller
         match ($ruleType) {
             'from' => $this->applyFromRule($query, $patterns),
             'to' => $this->applyToRule($query, $patterns),
-            'subject' => $this->applySubjectRule($query, $patterns),
             default => null,
         };
     }
@@ -90,18 +89,6 @@ class MailboxController extends Controller
         $query->where(function ($q) use ($patterns) {
             foreach ($patterns as $pattern) {
                 $this->applyEmailPattern($q, 'to', $pattern);
-            }
-        });
-    }
-
-    /**
-     * Apply 'subject' rule - filter by subject line
-     */
-    private function applySubjectRule($query, $patterns)
-    {
-        $query->where(function ($q) use ($patterns) {
-            foreach ($patterns as $pattern) {
-                $q->orWhere('subject', 'like', '%' . $pattern . '%');
             }
         });
     }
