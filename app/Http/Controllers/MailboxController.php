@@ -68,10 +68,6 @@ class MailboxController extends Controller
             'from' => $this->applyFromRule($query, $patterns),
             'to' => $this->applyToRule($query, $patterns),
             'subject' => $this->applySubjectRule($query, $patterns),
-            'body' => $this->applyBodyRule($query, $patterns),
-            'has_attachment' => $this->applyHasAttachmentRule($query, $patterns),
-            'is_starred' => $this->applyIsStarredRule($query, $patterns),
-            'is_read' => $this->applyIsReadRule($query, $patterns),
             default => null,
         };
     }
@@ -112,50 +108,6 @@ class MailboxController extends Controller
                 $q->orWhere('subject', 'like', '%' . $pattern . '%');
             }
         });
-    }
-
-    /**
-     * Apply 'body' rule - filter by email body content
-     */
-    private function applyBodyRule($query, $patterns)
-    {
-        $query->where(function ($q) use ($patterns) {
-            foreach ($patterns as $pattern) {
-                $q->orWhere('html_body', 'like', '%' . $pattern . '%');
-            }
-        });
-    }
-
-    /**
-     * Apply 'has_attachment' rule - filter by whether email has attachments
-     */
-    private function applyHasAttachmentRule($query, $patterns)
-    {
-        $hasAttachment = in_array(true, $patterns) || in_array('true', $patterns) || in_array(1, $patterns);
-
-        if ($hasAttachment) {
-            $query->whereHas('attachments');
-        } else {
-            $query->whereDoesntHave('attachments');
-        }
-    }
-
-    /**
-     * Apply 'is_starred' rule - filter by starred status
-     */
-    private function applyIsStarredRule($query, $patterns)
-    {
-        $isStarred = in_array(true, $patterns) || in_array('true', $patterns) || in_array(1, $patterns);
-        $query->where('is_starred', $isStarred);
-    }
-
-    /**
-     * Apply 'is_read' rule - filter by read status
-     */
-    private function applyIsReadRule($query, $patterns)
-    {
-        $isRead = in_array(true, $patterns) || in_array('true', $patterns) || in_array(1, $patterns);
-        $query->where('has_read', $isRead);
     }
 
     /**
