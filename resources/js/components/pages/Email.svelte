@@ -20,7 +20,7 @@
       return { src: email.html_body };
     }
 
-    return { srcDoc: email.html_body };
+    return { srcDoc: `<style>body{font-family: sans-serif;}</style><base target='_top'>${email.html_body}` };
   }
 
   $effect(() => {
