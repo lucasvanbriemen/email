@@ -10,42 +10,6 @@
   align-items: center;
   gap: 1rem;
 
-  :global(.item-open) {
-    margin-top: 0.25rem;
-
-    :global(svg) {
-      stroke: var(--success-color);
-      fill: var(--success-color);
-    }
-  }
-
-  :global(.item-closed) {
-    margin-top: 0.25rem;
-
-    :global(svg) {
-      stroke: var(--error-color);
-      fill: var(--error-color);
-    }
-  }
-
-  :global(.item-merged) {
-    margin-top: 0.25rem;
-
-    :global(svg) {
-      stroke: var(--merged-color);
-      fill: var(--merged-color);
-    }
-  }
-
-  :global(.item-draft) {
-    margin-top: 0.25rem;
-
-    :global(svg) {
-      stroke: var(--draft-color);
-      fill: var(--draft-color);
-    }
-  }
-
   .content {
     display: flex;
     flex-direction: column;
@@ -78,25 +42,6 @@
         padding: 0.25rem 0.5rem;
         border-radius: 1rem;
         font-size: 0.75rem;
-      }
-    }
-  }
-
-  .assignees {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-
-    img {
-      height: 2rem;
-      width: 2rem;
-      border-radius: 50%;
-      margin-left: -1.25rem;
-    }
-
-    &:hover {
-      img {
-        margin-left: 0.25rem;
       }
     }
   }
