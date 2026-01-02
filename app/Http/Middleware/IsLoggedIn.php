@@ -32,7 +32,7 @@ class IsLoggedIn
         if (app()->environment('local')) {
             $authToken = config('app.user_token');
         } else {
-            $authToken = $_COOKIE['auth_token'] ?? null;
+            $authToken = $_COOKIE['auth_token'] ?? $request->bearerToken() ?? null;
         }
 
         $ch = curl_init('https://login.lucasvanbriemen.nl/api/user/token/' . $authToken);
