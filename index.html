@@ -30,7 +30,7 @@
         // Fetch routes from API on app startup
         async function loadRoutes() {
             try {
-                const response = await fetch('/api/routes');
+                const response = await fetch(currentDomain + '/api/routes');
                 const routes = await response.json();
                 routes.forEach(r => {
                     API_ROUTES[r.name] = r;
