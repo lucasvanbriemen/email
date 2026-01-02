@@ -30,7 +30,7 @@
   });
 </script>
 
-<div>
+<main>
   {#if isLoading}
     <p>Loading...</p>
   {:else}
@@ -38,24 +38,8 @@
       <ListItem {email} />
     {/each}
   {/if}
-</div>
+</main>
 
 <style>
-  div {
-    padding: 2rem;
-  }
-
-  a {
-    display: inline-block;
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 0.25rem;
-  }
-
-  a:hover {
-    background-color: #0056b3;
-  }
+  @import '../../../scss/pages/email-listing.scss';
 </style>
