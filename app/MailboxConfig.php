@@ -8,17 +8,16 @@ class MailboxConfig
         [
             'path' => 'home',
             'name' => 'Home',
-            'rules' => [
-                'from' => [
-                    '*'
-                ]
-            ],
+            'rules' => [],
         ],
         [
             'path' => 'work',
             'name' => 'Work',
             'rules' => [
                 'from' => [
+                    '*@webinargeek.com'
+                ],
+                'to' => [
                     '*@webinargeek.com'
                 ]
             ],
@@ -28,8 +27,8 @@ class MailboxConfig
             'name' => 'GitHub',
             'rules' => [
                 'from' => [
-                    '@github.com',
-                    '@notifications.github.com',
+                    '*@github.com',
+                    '*@notifications.github.com',
                 ]
             ],
         ],

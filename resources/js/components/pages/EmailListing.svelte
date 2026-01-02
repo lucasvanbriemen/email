@@ -1,8 +1,10 @@
 <script>
   import { onMount, untrack } from "svelte";
+  import ListItem from "../ListItem.svelte";
 
   let { group } = $props();
   let emailData = $state([]);
+  let emails = $state([]);
   let isLoading = $state(true);
 
   onMount(async () => {
@@ -13,6 +15,9 @@
     isLoading = true;
     console.log("Fetching emails for group:", group);
     emailData = await api.get("/api/mailbox/" + group);
+
+    emails = emailData.data;
+
     isLoading = false;
   }
 
@@ -26,9 +31,13 @@
 </script>
 
 <div>
-  <h1>About Page</h1>
-  <p>This is the about page</p>
-  <a href="/">Go to Dashboard</a>
+  {#if isLoading}
+    <p>Loading...</p>
+  {:else}
+    {#each emails as email}
+      <ListItem {email} />
+    {/each}
+  {/if}
 </div>
 
 <style>

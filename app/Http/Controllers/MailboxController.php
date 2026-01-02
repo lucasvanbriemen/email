@@ -19,17 +19,82 @@ class MailboxController extends Controller
     {
         $groups = MailboxConfig::GROUPS;
 
-        return response()->json( array_values($groups));
+        return response()->json(array_values($groups));
     }
 
     public function emails($group)
     {
         $allGroups = MailboxConfig::GROUPS;
+        $groupConfig = null;
+
         foreach ($allGroups as $allGroupsItem) {
             if ($allGroupsItem['path'] === $group) {
-                $group = $allGroupsItem;
+                $groupConfig = $allGroupsItem;
                 break;
             }
+        }
+
+        $emailQuery = Email::query();
+
+        $rules = $groupConfig['rules'];
+        foreach ($rules as $ruleType => $selectors) {
+            $this->filterBasedOnRule($emailQuery, $ruleType, $selectors);
+        }
+
+        $page = request()->query('page', 1);
+        $emails = $emailQuery->orderBy('sent_at', 'desc')->paginate(50, ['id', 'uuid', 'subject', 'created_at', 'to', 'sender_name'], 'page', $page);
+
+        return response()->json($emails);
+    }
+
+    /**
+     * Apply a rule filter to the query based on rule type
+     */
+    private function filterBasedOnRule($query, $ruleType, $selectors)
+    {
+        $functionName = 'filter' . ucfirst($ruleType) . 'Field';
+        if (method_exists($this, $functionName)) {
+            $this->$functionName($query, $selectors);
+            return;
+        }
+    }
+
+    /**
+     * Apply 'from' rule - filter by sender email
+     */
+    private function filterFromField($query, $selectors)
+    {
+        $query->whereHas('sender', function ($q) use ($selectors) {
+            $q->where(function ($subQ) use ($selectors) {
+                foreach ($selectors as $selector) {
+                    $this->applyEmailPattern($subQ, 'email', $selector);
+                }
+            });
+        });
+    }
+
+    /**
+     * Apply 'to' rule - filter by recipient email
+     */
+    private function filterToField($query, $selectors)
+    {
+        $query->where(function ($q) use ($selectors) {
+            foreach ($selectors as $selector) {
+                $this->applyEmailPattern($q, 'to', $selector);
+            }
+        });
+    }
+
+    /**
+     * Apply email pattern matching (handles, *@domain, exact)
+     */
+    private function applyEmailPattern($query, $field, $pattern)
+    {
+        if (str_starts_with($pattern, '*@')) {
+            $domain = substr($pattern, 2);
+            $query->orWhere($field, 'like', '%@' . $domain);
+        } else {
+            $query->orWhere($field, $pattern);
         }
     }
 
