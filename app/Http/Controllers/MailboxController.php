@@ -38,7 +38,7 @@ class MailboxController extends Controller
 
         $rules = $groupConfig['rules'];
         foreach ($rules as $ruleType => $selectors) {
-            $this->applyRuleToQuery($emailQuery, $ruleType, $selectors);
+            $this->filterBasedOnRule($emailQuery, $ruleType, $selectors);
         }
 
         $page = request()->query('page', 1);
@@ -50,9 +50,9 @@ class MailboxController extends Controller
     /**
      * Apply a rule filter to the query based on rule type
      */
-    private function applyRuleToQuery($query, $ruleType, $selectors)
+    private function filterBasedOnRule($query, $ruleType, $selectors)
     {
-        $functionName = 'apply' . ucfirst($ruleType) . 'Rule';
+        $functionName = 'filter' . ucfirst($ruleType) . 'Field';
         if (method_exists($this, $functionName)) {
             $this->$functionName($query, $selectors);
             return;
@@ -62,7 +62,7 @@ class MailboxController extends Controller
     /**
      * Apply 'from' rule - filter by sender email
      */
-    private function applyFromRule($query, $selectors)
+    private function filterFromField($query, $selectors)
     {
         $query->whereHas('sender', function ($q) use ($selectors) {
             $q->where(function ($subQ) use ($selectors) {
@@ -76,7 +76,7 @@ class MailboxController extends Controller
     /**
      * Apply 'to' rule - filter by recipient email
      */
-    private function applyToRule($query, $selectors)
+    private function filterToField($query, $selectors)
     {
         $query->where(function ($q) use ($selectors) {
             foreach ($selectors as $selector) {
