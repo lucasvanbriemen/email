@@ -27,7 +27,6 @@
       const attachmentsData = await api.get(`/api/email/${uuid}/attachments`);
       attachments = attachmentsData.attachments || [];
     } catch (e) {
-      console.error("Failed to load attachments", e);
       attachments = [];
     }
 

@@ -22,7 +22,6 @@
 
   async function getEmails (pageNum = 1) {
     isLoading = true;
-    console.log("Fetching emails for group:", group, "page:", pageNum, "search:", searchQuery);
 
     let url = "/api/mailbox/" + group + "?page=" + pageNum;
     if (searchQuery.trim()) {
