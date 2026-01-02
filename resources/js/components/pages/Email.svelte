@@ -2,14 +2,15 @@
   import { onMount } from "svelte";
 
   let { uuid } = $props();
+  let email = $state({});
 
   onMount(async () => {
-    console.log("Fetching email:", uuid);
+    email = await api.get("/api/email/" + uuid);
   });
 </script>
 
 <article>
-  {uuid}
+  <h1>{email.subject}</h1>
 </article>
 
 <style>

@@ -98,6 +98,13 @@ class MailboxController extends Controller
         }
     }
 
+    public function email($uuid)
+    {
+        $email = Email::where('uuid', $uuid)->first();
+
+        return response()->json($email);
+    }
+
     public function index($linked_profile_id = null, $folder = null)
     {
         $selectedFolder = $folder ?: $this->DEFAULT_FOLDER;
