@@ -10,9 +10,13 @@
 </script>
 
 <article>
-  <h1>{email.subject}</h1>
+  <header>
+    <h1>{email.subject}</h1>
+  </header>
+
+  <iframe srcdoc={email.html_body} frameborder="0" width="100%" height="600px"></iframe>
 </article>
 
 <style>
-  @import '../../../scss/pages/email-listing.scss';
+  @import '../../../scss/pages/email.scss';
 </style>
