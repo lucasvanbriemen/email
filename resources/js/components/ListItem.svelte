@@ -3,10 +3,6 @@
   import page from 'page';
   let { email, group } = $props();
 
-  function subTitle() {
-    return `opened ${email.created_at} by ${email.sender_name}`;
-  }
-
   function handleClick(e) {
     e.preventDefault();
     page.show(`/${group}/${email.uuid}`);
@@ -20,7 +16,7 @@
   <div class="content">
     <h3>{email.subject}</h3>
     <div class="meta">
-      {subTitle()}
+      send by {email.sender_name} {email.created_at}
     </div>
   </div>
 </a>
