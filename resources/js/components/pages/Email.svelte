@@ -9,6 +9,14 @@
     email = await api.get("/api/email/" + uuid);
     isLoading = false;
   });
+
+  function getIframeProps(email) {
+    if (email.sender === "ntfy@ltvb.nl") {
+      return { src: email.html_body };
+    }
+
+    return { srcDoc: email.html_body };
+  }
 </script>
 
 {#if isLoading}
@@ -20,7 +28,7 @@
       <h1>{email.sender.name}</h1>
     </header>
 
-    <iframe srcdoc={email.html_body} frameborder="0" width="100%" height="600px"></iframe>
+    <iframe {...getIframeProps(email)} frameborder="0" width="100%" height="600px"></iframe>
   </article>
 {/if}
 
