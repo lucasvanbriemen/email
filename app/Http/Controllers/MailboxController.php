@@ -34,11 +34,7 @@ class MailboxController extends Controller
             }
         }
 
-        if (!$groupConfig) {
-            return response()->json(['error' => 'Group not found'], 404);
-        }
-
-        $page = (int) request()->query('page', 1);
+        $page = request()->query('page', 1);
         $perPage = 50;
 
         $rules = $groupConfig['rules'];
@@ -50,7 +46,7 @@ class MailboxController extends Controller
         }
 
         // Apply pagination using Laravel's paginate method
-        $emails = $query->orderBy('sent_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
+        $emails = $query->orderBy('sent_at', 'desc')->paginate($perPage, ['id', 'uuid', 'subject', 'created_at', 'to', 'sender_name'], 'page', $page);
 
         return response()->json($emails);
     }
