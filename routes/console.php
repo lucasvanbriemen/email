@@ -194,6 +194,10 @@ Artisan::command("get_emails", function () use ($emailMatchesPattern) {
     );
 });
 
+// DEPRECATED: Use the new queue-based email fetching system instead
+// Run `php artisan emails:dispatch` and `php artisan queue:work --queue=email_fetching` instead
+// The old scheduler is kept here for rollback purposes, but commented out.
+/*
 Schedule::command('get_emails')
     ->everyThirtySeconds()
     // Use a short-lived lock so stale locks auto-expire instead of requiring manual clears.
@@ -209,6 +213,7 @@ Schedule::command('get_emails')
     ->onFailure(function () {
                 Log::error('Failed to fetch emails at ' . now());
     });
+*/
 
 
 Artisan::command('ntfy', function () {
