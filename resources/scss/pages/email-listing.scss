@@ -7,20 +7,30 @@ main {
   .email-list {
     border-right: 1px solid var(--background-color-one);
     padding-right: 1rem;
+    width: 30%;
+    margin: 0 auto;
+  }
+
+  &:has(:not(.email-view)) {
+    .email-list {
+      width: calc(min(100%, 110ch));
+    }
+  }
+
+  .email-view {
+    width: 70%;
   }
   
   >div {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width: 50%;
     max-height: calc(100dvh - 5.5rem);
 
     overflow: auto;
   }
 
   @media (max-width: 768px) {
-
     .email-list {
       width: 100%;
     }
