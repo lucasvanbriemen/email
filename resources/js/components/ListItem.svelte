@@ -10,8 +10,8 @@
 
 </script>
 
-<a class="list-item" class:unread={!email.has_read} href="#{email.uuid}" on:click={handleClick}>
-  <img src="/{email.sender_logo_url}" alt="{email.sender_name}" class="logo" />
+<a class="list-item" class:unread={!email.has_read} href="#{email.uuid}" onclick={handleClick}>
+  <img src="/{email.sender.logo_url}" alt="{email.sender_name}" class="logo" />
 
   <div class="content">
     <h3>{email.subject}</h3>
