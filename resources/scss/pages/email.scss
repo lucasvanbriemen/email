@@ -25,8 +25,9 @@ article {
 
   iframe {
     border-radius: 1rem;
-    border: 2px solid var(--background-color-one);
-    height: max-content;
     background-color: white;
+    display: block;
+    width: calc(100% - 1rem);
+    padding: 1rem 0.5rem;
   }
 }
