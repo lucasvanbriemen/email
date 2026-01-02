@@ -27,8 +27,8 @@ class MailboxConfig
             'name' => 'GitHub',
             'rules' => [
                 'from' => [
-                    '@github.com',
-                    '@notifications.github.com',
+                    '*@github.com',
+                    '*@notifications.github.com',
                 ]
             ],
         ],

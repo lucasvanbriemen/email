@@ -86,19 +86,14 @@ class MailboxController extends Controller
     }
 
     /**
-     * Apply email pattern matching (handles, *@domain, @domain, exact)
+     * Apply email pattern matching (handles, *@domain, exact)
      */
     private function applyEmailPattern($query, $field, $pattern)
     {
         if (str_starts_with($pattern, '*@')) {
-            // Match *@domain.com pattern
             $domain = substr($pattern, 2);
             $query->orWhere($field, 'like', '%@' . $domain);
-        } elseif (str_starts_with($pattern, '@')) {
-            // Match @domain.com pattern (including subdomains)
-            $query->orWhere($field, 'like', '%' . $pattern);
         } else {
-            // Exact match
             $query->orWhere($field, $pattern);
         }
     }
