@@ -23,10 +23,11 @@
   <p>Loading email...</p>
 {:else}
   <article>
-    <header>
-      <h1>{email.subject}</h1>
-      <h1>{email.sender.name}</h1>
-    </header>
+    <div class="header">
+      <h2>{email.subject}</h2>
+      <p>{email.sender.name} ({email.sender.email})</p>
+      <p>{email.to} ({email.created_at_human})</p>
+    </div>
 
     <iframe {...getIframeProps(email)} frameborder="0" width="100%" height="600px"></iframe>
   </article>
