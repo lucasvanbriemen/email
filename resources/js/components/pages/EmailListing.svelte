@@ -6,8 +6,10 @@
   let emailData = $state([]);
   let emails = $state([]);
   let isLoading = $state(true);
+  let previousGroup = $state(null);
 
   onMount(async () => {
+    previousGroup = group;
     getEmails();
   });
 
@@ -22,11 +24,10 @@
   }
 
   $effect(() => {
-    void group
-
-    untrack(() => {
+    if (group !== previousGroup) {
+      previousGroup = group;
       getEmails();
-    });
+    }
   });
 </script>
 
@@ -35,7 +36,7 @@
     <p>Loading...</p>
   {:else}
     {#each emails as email}
-      <ListItem {email} />
+      <ListItem {email} {group} />
     {/each}
   {/if}
 </main>
