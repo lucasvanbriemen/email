@@ -12,7 +12,7 @@ use DateTimeZone;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Webklex\IMAP\Client;
+use Webklex\PHPIMAP\Client;
 use Webklex\IMAP\Facades\Client as ClientFacade;
 
 class EmailFetchingService
@@ -20,7 +20,7 @@ class EmailFetchingService
     /**
      * Connect to IMAP server with given credentials
      */
-    public function connectToImap(ImapCredentials $credential): Client
+    public function connectToImap(ImapCredentials $credential): ?Client
     {
         $client = ClientFacade::make([
             'host'          => $credential->host,
