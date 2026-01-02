@@ -42,8 +42,10 @@ header {
   }
 
   &.is-mobile {
+    position: absolute;
+    bottom: 0;
     padding-bottom: 2rem;
-
+    
     .logo .title {
       display: none;
     }
