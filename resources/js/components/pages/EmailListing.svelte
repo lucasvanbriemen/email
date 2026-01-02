@@ -1,6 +1,7 @@
 <script>
   import { onMount, untrack } from "svelte";
   import ListItem from "../ListItem.svelte";
+  import Email from "./Email.svelte";
 
   let { group, emailUuid } = $props();
   let emailData = $state([]);
@@ -44,7 +45,7 @@
 
   <div>
     {#if emailUuid}
-      {emailUuid}
+      <Email uuid={emailUuid} />
     {/if}
   </div>
 </main>
