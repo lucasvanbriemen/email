@@ -20,7 +20,6 @@ class FetchEmailsForProfileJob implements ShouldQueue
     public $tries = 3;
     public $timeout = 120;
     public $backoff = [60, 300, 900]; // 1 min, 5 min, 15 min
-    public $queue = 'email_fetching';
 
     /**
      * The ImapCredentials instance

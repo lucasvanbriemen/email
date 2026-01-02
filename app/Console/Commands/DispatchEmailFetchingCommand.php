@@ -107,7 +107,8 @@ class DispatchEmailFetchingCommand extends Command
 
         foreach ($credentials as $credential) {
             try {
-                FetchEmailsForProfileJob::dispatch($credential);
+                FetchEmailsForProfileJob::dispatch($credential)
+                    ->onQueue(config('email_fetching.queue_name', 'email_fetching'));
                 $dispatchedCount++;
             } catch (\Exception $e) {
                 $this->error(
