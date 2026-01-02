@@ -50,4 +50,8 @@
     cursor: pointer;
     border: 2px solid var(--primary-color-dark);
   }
+
+  &.unread {
+    border: 1px solid var(--primary-color-dark);
+  }
 }

@@ -19,8 +19,7 @@
   onMount(() => {
     // Register all routes with page.js
     page('/', () => {
-      currentComponent = routes['/'];
-      params = {};
+      page.redirect('/home');
     });
 
     page('/:group', ctx => {
@@ -33,10 +32,9 @@
       params = { group: ctx.params.group, emailUuid: ctx.params.emailUuid };
     });
 
-    // Catch all other routes and render the default component
+    // Catch all other routes and redirect to home
     page('*', () => {
-      currentComponent = routes['/'];
-      params = {};
+      page.redirect('/home');
     });
 
     // Start the router

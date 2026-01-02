@@ -1,7 +1,9 @@
 <script>
   import { onMount, untrack } from "svelte";
+  import { fly } from "svelte/transition";
   import ListItem from "../ListItem.svelte";
   import Email from "./Email.svelte";
+  import SkeletonLoader from "../SkeletonLoader.svelte";
 
   let { group, emailUuid } = $props();
   let emailData = $state([]);
@@ -35,7 +37,7 @@
 <main>
   <div class="email-list">
     {#if isLoading}
-      <p>Loading...</p>
+      <SkeletonLoader type="list-item" count={5} />
     {:else}
       {#each emails as email}
         <ListItem {email} {group} />
@@ -44,7 +46,7 @@
   </div>
 
   {#if emailUuid}
-    <div class="email-view">
+    <div class="email-view" transition:fly={{ x: 300, duration: 300 }}>
       <Email uuid={emailUuid} />
     </div>
   {/if}
