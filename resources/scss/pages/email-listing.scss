@@ -16,7 +16,7 @@ main {
       justify-content: space-between;
       gap: 1rem;
       padding: 1rem;
-      background-color: var(--background-color-one);
+      background-color: var(--background-color-two);
       border-radius: 1rem;
       margin-top: 1rem;
       flex-wrap: wrap;
@@ -25,10 +25,10 @@ main {
         flex: 1;
         min-width: 150px;
         padding: 0.5rem 1rem;
-        border: 1px solid var(--primary-color-dark);
+        border: 1px solid var(--background-color-one);
         background-color: var(--background-color);
         color: var(--text-color);
-        border-radius: 0.5rem;
+        border-radius: 2rem;
         font-size: 0.875rem;
 
         &::placeholder {
@@ -45,17 +45,16 @@ main {
 
       button {
         padding: 0.5rem 1rem;
-        border: 1px solid var(--primary-color-dark);
+        border: 2px solid var(--primary-color-dark);
         background-color: var(--background-color);
         color: var(--text-color);
-        border-radius: 0.5rem;
+        border-radius: 2rem;
         cursor: pointer;
         font-size: 0.875rem;
         transition: all 0.2s ease;
 
         &:hover:not(:disabled) {
           background-color: var(--primary-color-dark);
-          color: var(--background-color);
         }
 
         &:disabled {
