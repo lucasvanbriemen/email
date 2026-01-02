@@ -52,11 +52,11 @@ class MailboxController extends Controller
      */
     private function applyRuleToQuery($query, $ruleType, $selectors)
     {
-        match ($ruleType) {
-            'from' => $this->applyFromRule($query, $selectors),
-            'to' => $this->applyToRule($query, $selectors),
-            default => null,
-        };
+        $functionName = 'apply' . ucfirst($ruleType) . 'Rule';
+        if (method_exists($this, $functionName)) {
+            $this->$functionName($query, $selectors);
+            return;
+        }
     }
 
     /**
