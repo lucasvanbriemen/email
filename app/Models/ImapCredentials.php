@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use  App\Models\Folder;
@@ -23,7 +24,18 @@ class ImapCredentials extends Authenticatable
         'encryption',
         'username',
         'password',
+        'last_fetched_at',
+        'last_fetch_error',
+        'fetch_attempts',
     ];
+
+    /**
+     * Get the profile that owns this IMAP credential
+     */
+    public function profile(): BelongsTo
+    {
+        return $this->belongsTo(Profile::class);
+    }
 
     protected static function booted()
     {
