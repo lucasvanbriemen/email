@@ -46,6 +46,7 @@ class MailboxController extends Controller
 
         foreach ($emails as $email) {
             $email->created_at_human = $email->created_at->diffForHumans();
+            $email->load('sender');
         }
 
         return response()->json($emails);
