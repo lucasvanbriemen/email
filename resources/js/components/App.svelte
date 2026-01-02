@@ -13,6 +13,7 @@
   const routes = {
     '/': Dashboard,
     '/:group': EmailListing,
+    '/:group/:emailUuid': EmailListing,
   };
 
   onMount(() => {
@@ -24,7 +25,12 @@
 
     page('/:group', ctx => {
       currentComponent = routes['/:group'];
-      params = { group: ctx.params.group };
+      params = { group: ctx.params.group, emailUuid: null };
+    });
+
+    page('/:group/:emailUuid', ctx => {
+      currentComponent = routes['/:group/:emailUuid'];
+      params = { group: ctx.params.group, emailUuid: ctx.params.emailUuid };
     });
 
     // Catch all other routes and render the default component

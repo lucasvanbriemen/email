@@ -2,7 +2,7 @@
   import { onMount, untrack } from "svelte";
   import ListItem from "../ListItem.svelte";
 
-  let { group } = $props();
+  let { group, emailUuid } = $props();
   let emailData = $state([]);
   let emails = $state([]);
   let isLoading = $state(true);
