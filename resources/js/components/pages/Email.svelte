@@ -6,17 +6,26 @@
   let isLoading = $state(true);
 
   onMount(async () => {
-    email = await api.get("/api/email/" + uuid);
-    isLoading = false;
+    await loadEmail();
   });
 
+  async function loadEmail () {
+    isLoading = true;
+    email = await api.get("/api/email/" + uuid);
+    isLoading = false;
+  }
+
   function getIframeProps(email) {
-    if (email.sender === "ntfy@ltvb.nl") {
+    if (email.sender.email === "ntfy@ltvb.nl") {
       return { src: email.html_body };
     }
 
     return { srcDoc: email.html_body };
   }
+
+  $effect(() => {
+    loadEmail();
+  });
 </script>
 
 {#if isLoading}
