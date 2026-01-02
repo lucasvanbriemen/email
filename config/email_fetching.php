@@ -16,7 +16,7 @@ return [
     | How often the dispatcher sends jobs to fetch emails from each profile
     | Recommended: 30 seconds for balance between responsiveness and load
     */
-    'fetch_interval' => env('EMAIL_FETCH_INTERVAL', 30),
+    'fetch_interval' => env('EMAIL_FETCH_INTERVAL', 5),
 
     /*
     | Queue Name
