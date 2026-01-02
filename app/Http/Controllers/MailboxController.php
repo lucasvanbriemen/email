@@ -106,6 +106,11 @@ class MailboxController extends Controller
     {
         $email = Email::where('uuid', $uuid)->first();
 
+        $email->load('sender');
+
+        $email->has_read = true;
+        $email->save();
+
         return response()->json($email);
     }
 
