@@ -1,6 +1,7 @@
 <script>
   import { onMount, untrack } from "svelte";
   import { fly } from "svelte/transition";
+  import page from "page";
   import ListItem from "../ListItem.svelte";
   import Email from "./Email.svelte";
   import SkeletonLoader from "../SkeletonLoader.svelte";
@@ -32,6 +33,10 @@
       getEmails();
     }
   });
+
+  function goBack() {
+    page.show(`/${group}`);
+  }
 </script>
 
 <main>
@@ -47,6 +52,9 @@
 
   {#if emailUuid}
     <div class="email-view" transition:fly={{ x: 300, duration: 300 }}>
+      <button class="go-back-btn" on:click={goBack} aria-label="Go back to email list">
+        ← Back
+      </button>
       <Email uuid={emailUuid} />
     </div>
   {/if}

@@ -15,7 +15,13 @@ use App\Models\Attachment;
 use App\Models\Profile;
 use App\Models\IncomingEmailSender;
 
-Artisan::command("get_emails", function () {
+// Helper function to match email against wildcard pattern
+$emailMatchesPattern = function ($email, $pattern) {
+    $pattern = str_replace('*', '.*', preg_quote($pattern, '/'));
+    return preg_match('/^' . $pattern . '$/', $email) === 1;
+};
+
+Artisan::command("get_emails", function () use ($emailMatchesPattern) {
     $imapCredentials = ImapCredentials::all();
 
     // Loop through each IMAP credential
@@ -160,22 +166,11 @@ Artisan::command("get_emails", function () {
                 }
             }
 
-            // Since we have created a copy of the email, we can delete it from the server to make run time faster.
-            // $message->delete();
-
             if (!config('app.ntfy.enabled')) {
                 continue; // Skip notification if not enabled
             }
 
-
-            // set the URL for the notification
-            $profile = Profile::where('id', $email->profile_id)->first();
-            if (!$profile) {
-                Log::error('Profile not found for email: ' . $email->id);
-                continue; // Skip if profile not found
-            }
-
-            $url = config('app.url') . '/' . $profile->linked_profile_count . '/folder/inbox/mail/' . $email->uuid;
+            $url = config('app.url') . '/home/' . $email->uuid;
 
             // Send notification
             // Prepare notification data before dispatching
