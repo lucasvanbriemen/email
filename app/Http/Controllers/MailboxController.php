@@ -42,7 +42,7 @@ class MailboxController extends Controller
         }
 
         $page = request()->query('page', 1);
-        $emails = $emailQuery->orderBy('sent_at', 'desc')->paginate(50, ['id', 'uuid', 'subject', 'created_at', 'to', 'sender_name'], 'page', $page);
+        $emails = $emailQuery->orderBy('sent_at', 'desc')->paginate(50, ['id', 'uuid', 'subject', 'created_at', 'to', 'sender_name', 'sender_id'], 'page', $page);
 
         foreach ($emails as $email) {
             $email->created_at_human = $email->created_at->diffForHumans();
