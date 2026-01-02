@@ -16,7 +16,7 @@
   <div class="content">
     <h3>{email.subject}</h3>
     <div class="meta">
-      send by {email.sender_name} {email.created_at}
+      {email.sender_name} {email.created_at_human}
     </div>
   </div>
 </a>
