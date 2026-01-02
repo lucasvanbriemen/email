@@ -23,3 +23,9 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Tauri
+/src-tauri/target
+/dist
+/src-tauri/target/**
+src-tauri/Cargo.lock

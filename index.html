@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Client</title>
+    <script type="module" src="/resources/js/main.js"></script>
+</head>
+<body>
+    <script>
+        // Route helper for API calls
+        const API_ROUTES = {};
+        const currentDomain = "https://email.lucasvanbriemen.nl";
+
+        function route(name, params = {}) {
+            const route = API_ROUTES[name];
+            if (!route) {
+                console.warn(`Route ${name} not found`);
+                return '';
+            }
+
+            let uri = route.uri;
+            for (const [key, value] of Object.entries(params)) {
+                const cleanKey = key.startsWith('$') ? key.slice(1) : key;
+                uri = uri.replace(`{${cleanKey}}`, encodeURIComponent(value));
+            }
+            return `/${uri}`;
+        }
+
+        // Fetch routes from API on app startup
+        async function loadRoutes() {
+            try {
+                const response = await fetch('/api/routes');
+                const routes = await response.json();
+                routes.forEach(r => {
+                    API_ROUTES[r.name] = r;
+                });
+            } catch (error) {
+                console.error('Failed to load routes:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadRoutes);
+    </script>
+
+    <div id="app"></div>
+</body>
+</html>
