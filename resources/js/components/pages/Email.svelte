@@ -38,7 +38,7 @@
       <p>{email.to} ({email.created_at_human})</p>
     </div>
 
-    <iframe {...getIframeProps(email)} frameborder="0" width="100%" height="600px"></iframe>
+    <iframe {...getIframeProps(email)} frameborder="0" width="100%"></iframe>
   </article>
 {/if}
 
