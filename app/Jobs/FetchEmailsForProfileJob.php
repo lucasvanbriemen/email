@@ -33,7 +33,6 @@ class FetchEmailsForProfileJob implements ShouldQueue
     public function __construct(ImapCredentials $credential)
     {
         $this->credential = $credential;
-        $this->queue = config('email_fetching.queue_name', 'email_fetching');
     }
 
     /**
