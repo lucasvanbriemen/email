@@ -8,11 +8,7 @@ class MailboxConfig
         [
             'path' => 'home',
             'name' => 'Home',
-            'rules' => [
-                'from' => [
-                    '*'
-                ]
-            ],
+            'rules' => [],
         ],
         [
             'path' => 'work',
