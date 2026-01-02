@@ -41,6 +41,16 @@ class MailboxController extends Controller
             $this->filterBasedOnRule($emailQuery, $ruleType, $selectors);
         }
 
+        // Apply search filter if search query provided
+        $search = request()->query('search', null);
+        if ($search) {
+            $emailQuery->where(function ($q) use ($search) {
+                $q->where('subject', 'like', '%' . $search . '%')
+                  ->orWhere('to', 'like', '%' . $search . '%')
+                  ->orWhere('sender_name', 'like', '%' . $search . '%');
+            });
+        }
+
         $page = request()->query('page', 1);
         $emails = $emailQuery->orderBy('sent_at', 'desc')->paginate(50, ['id', 'uuid', 'subject', 'created_at', 'to', 'sender_name', 'sender_id'], 'page', $page);
 

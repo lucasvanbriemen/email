@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import SkeletonLoader from "../SkeletonLoader.svelte";
 
-  let { uuid } = $props();
+  let { uuid, parentEmail } = $props();
   let email = $state({});
   let attachments = $state([]);
   let isLoading = $state(true);
@@ -16,6 +16,11 @@
   async function loadEmail () {
     isLoading = true;
     email = await api.get("/api/email/" + uuid);
+
+    // Update parent email object if provided
+    if (parentEmail) {
+      parentEmail.has_read = true;
+    }
 
     // Load attachments
     try {
