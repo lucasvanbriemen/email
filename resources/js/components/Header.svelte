@@ -9,7 +9,7 @@
   });
 </script>
 
-<header>
+<header class:is-mobile={IS_MOBILE}>
   <a class="logo" href="/">
     <Icon name="logo" size="2rem" />
     <span class="title">Email</span>

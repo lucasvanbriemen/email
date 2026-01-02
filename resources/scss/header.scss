@@ -20,14 +20,6 @@ header {
     }
   }
 
-  .separator {
-    width: 3px;
-    height: 2rem;
-    background-color: var(--border-color);
-    border-radius: 1rem;
-    transform: rotate(25deg);
-  }
-
   a:not(.logo) {
     text-decoration: none;
     font-size: 1rem;
@@ -46,6 +38,14 @@ header {
     &.active {
       border: 2px solid var(--primary-color-dark);
       color: var(--text-color);
+    }
+  }
+
+  &.is-mobile {
+    padding-bottom: 2rem;
+
+    .logo .title {
+      display: none;
     }
   }
 }
