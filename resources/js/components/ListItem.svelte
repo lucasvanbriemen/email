@@ -14,10 +14,9 @@
   <img src="/{email.sender_logo_url}" alt="{email.sender_name}" class="logo" />
 
   <div class="content">
-    <h3>{email.sender_name}</h3>
+    <h3>{email.subject}</h3>
     <div class="meta">
-      {email.subject}
-      <span class="time">{email.created_at_human}</span>
+      {email.sender_name} - {email.created_at_human} 
     </div>
   </div>
 </a>
