@@ -106,10 +106,11 @@ class MailboxController extends Controller
     {
         $email = Email::where('uuid', $uuid)->first();
 
-        $email->load('sender');
-
         $email->has_read = true;
         $email->save();
+
+        $email->load('sender');
+        $email->created_at_human = $email->created_at->diffForHumans();
 
         return response()->json($email);
     }
