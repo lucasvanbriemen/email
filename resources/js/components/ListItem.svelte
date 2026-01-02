@@ -1,5 +1,4 @@
 <script>
-  import Icon from "./Icon.svelte";
   import page from 'page';
   let { email, group } = $props();
 
@@ -11,12 +10,13 @@
 </script>
 
 <a class="list-item" href="#{email.uuid}" on:click={handleClick}>
-  <Icon name=logo size="1.5rem"/>
+  <img src="/{email.sender_logo_url}" alt="{email.sender_name}" class="logo" />
 
   <div class="content">
-    <h3>{email.subject}</h3>
+    <h3>{email.sender_name}</h3>
     <div class="meta">
-      {email.sender_name} {email.created_at_human}
+      {email.subject}
+      <span class="time">{email.created_at_human}</span>
     </div>
   </div>
 </a>
