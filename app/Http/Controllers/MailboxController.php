@@ -34,19 +34,15 @@ class MailboxController extends Controller
             }
         }
 
-        $page = request()->query('page', 1);
-        $perPage = 50;
+        $emailQuery = Email::query();
 
         $rules = $groupConfig['rules'];
-        $query = Email::query();
-
-        // Apply rules dynamically based on rule type
-        foreach ($rules as $ruleType => $patterns) {
-            $this->applyRuleToQuery($query, $ruleType, $patterns);
+        foreach ($rules as $ruleType => $selectors) {
+            $this->applyRuleToQuery($emailQuery, $ruleType, $selectors);
         }
 
-        // Apply pagination using Laravel's paginate method
-        $emails = $query->orderBy('sent_at', 'desc')->paginate($perPage, ['id', 'uuid', 'subject', 'created_at', 'to', 'sender_name'], 'page', $page);
+        $page = request()->query('page', 1);
+        $emails = $emailQuery->orderBy('sent_at', 'desc')->paginate(50, ['id', 'uuid', 'subject', 'created_at', 'to', 'sender_name'], 'page', $page);
 
         return response()->json($emails);
     }
@@ -54,15 +50,11 @@ class MailboxController extends Controller
     /**
      * Apply a rule filter to the query based on rule type
      */
-    private function applyRuleToQuery($query, $ruleType, $patterns)
+    private function applyRuleToQuery($query, $ruleType, $selectors)
     {
-        if (!is_array($patterns)) {
-            return;
-        }
-
         match ($ruleType) {
-            'from' => $this->applyFromRule($query, $patterns),
-            'to' => $this->applyToRule($query, $patterns),
+            'from' => $this->applyFromRule($query, $selectors),
+            'to' => $this->applyToRule($query, $selectors),
             default => null,
         };
     }
@@ -70,12 +62,12 @@ class MailboxController extends Controller
     /**
      * Apply 'from' rule - filter by sender email
      */
-    private function applyFromRule($query, $patterns)
+    private function applyFromRule($query, $selectors)
     {
-        $query->whereHas('sender', function ($q) use ($patterns) {
-            $q->where(function ($subQ) use ($patterns) {
-                foreach ($patterns as $pattern) {
-                    $this->applyEmailPattern($subQ, 'email', $pattern);
+        $query->whereHas('sender', function ($q) use ($selectors) {
+            $q->where(function ($subQ) use ($selectors) {
+                foreach ($selectors as $selector) {
+                    $this->applyEmailPattern($subQ, 'email', $selector);
                 }
             });
         });
@@ -84,11 +76,11 @@ class MailboxController extends Controller
     /**
      * Apply 'to' rule - filter by recipient email
      */
-    private function applyToRule($query, $patterns)
+    private function applyToRule($query, $selectors)
     {
-        $query->where(function ($q) use ($patterns) {
-            foreach ($patterns as $pattern) {
-                $this->applyEmailPattern($q, 'to', $pattern);
+        $query->where(function ($q) use ($selectors) {
+            foreach ($selectors as $selector) {
+                $this->applyEmailPattern($q, 'to', $selector);
             }
         });
     }
