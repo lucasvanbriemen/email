@@ -2,6 +2,7 @@ main {
   margin: 1rem 1rem 0 1rem;
   display: flex;
   gap: 1rem;
+  position: relative;
 
   .email-list {
     border-right: 1px solid var(--background-color-one);
@@ -16,5 +17,26 @@ main {
     max-height: calc(100dvh - 5.5rem);
 
     overflow: auto;
+  }
+
+  @media (max-width: 768px) {
+
+    .email-list {
+      width: 100%;
+    }
+
+    .email-view {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      background-color: var(--background-color);
+
+      article {
+        margin: 0 auto;
+      }
+    }
   }
 }

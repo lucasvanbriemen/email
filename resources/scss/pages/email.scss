@@ -26,7 +26,7 @@ article {
   iframe {
     border-radius: 1rem;
     border: 2px solid var(--background-color-one);
-    height: 80dvh;
+    height: max-content;
     background-color: white;
   }
 }

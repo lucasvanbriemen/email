@@ -43,11 +43,11 @@
     {/if}
   </div>
 
-  <div>
-    {#if emailUuid}
+  {#if emailUuid}
+    <div class="email-view">
       <Email uuid={emailUuid} />
-    {/if}
-  </div>
+    </div>
+  {/if}
 </main>
 
 <style>
