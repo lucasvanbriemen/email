@@ -32,13 +32,21 @@
 </script>
 
 <main>
-  {#if isLoading}
-    <p>Loading...</p>
-  {:else}
-    {#each emails as email}
-      <ListItem {email} {group} />
-    {/each}
-  {/if}
+  <div>
+    {#if isLoading}
+      <p>Loading...</p>
+    {:else}
+      {#each emails as email}
+        <ListItem {email} {group} />
+      {/each}
+    {/if}
+  </div>
+
+  <div>
+    {#if emailUuid}
+      {emailUuid}
+    {/if}
+  </div>
 </main>
 
 <style>
