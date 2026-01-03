@@ -112,13 +112,13 @@ export const mobileGestures = {
         element.style.transition = 'all 0.3s ease-out';
         element.style.transform = 'translateX(100%)';
         element.style.opacity = '0';
+        onClose?.();
 
         setTimeout(() => {
-          onClose?.();
           element.style.transition = 'none';
           element.style.transform = 'translateX(0)';
           element.style.opacity = '1';
-        }, 300);
+        }, 500);
       } else {
         // Reset position
         element.style.transition = 'all 0.2s ease-out';
