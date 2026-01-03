@@ -4,7 +4,7 @@
 
   let groups = $state([]);
   let currentPath = window.location.pathname;
-  let activeGroup = $state('work')
+  let activeGroup = $state('home')
 
   onMount(async () => {
     groups = await api.get('/api/mailbox/metadata');
