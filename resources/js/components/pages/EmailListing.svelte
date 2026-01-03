@@ -5,6 +5,7 @@
   import ListItem from "../ListItem.svelte";
   import Email from "./Email.svelte";
   import SkeletonLoader from "../SkeletonLoader.svelte";
+  import mobileGestures from "../../lib/mobileGestures.js";
 
   let { group, emailUuid } = $props();
   let emailData = $state({});
@@ -14,10 +15,39 @@
   let currentPage = $state(1);
   let searchQuery = $state("");
   let selectedEmail = $state(null);
+  let emailListContainer;
+  let emailViewContainer;
+  let cleanupPullToRefresh;
+  let cleanupSwipeToClose;
 
   onMount(async () => {
     previousGroup = group;
     getEmails();
+
+    // Setup mobile gestures
+    if (IS_MOBILE) {
+      setTimeout(() => {
+        const listContainer = document.querySelector('.email-list');
+        if (listContainer) {
+          cleanupPullToRefresh = mobileGestures.setupPullToRefresh(
+            listContainer,
+            () => getEmails(currentPage)
+          );
+        }
+
+        if (emailViewContainer && emailUuid) {
+          cleanupSwipeToClose = mobileGestures.setupSwipeToClose(
+            emailViewContainer,
+            () => goBack()
+          );
+        }
+      }, 0);
+    }
+
+    return () => {
+      cleanupPullToRefresh?.();
+      cleanupSwipeToClose?.();
+    };
   });
 
   async function getEmails (pageNum = 1) {
@@ -75,13 +105,24 @@
     }
   });
 
+  $effect(() => {
+    // Setup swipe-to-close when email is selected on mobile
+    if (IS_MOBILE && emailUuid && emailViewContainer) {
+      cleanupSwipeToClose?.();
+      cleanupSwipeToClose = mobileGestures.setupSwipeToClose(
+        emailViewContainer,
+        () => goBack()
+      );
+    }
+  });
+
   function goBack() {
     page.show(`/${group}`);
   }
 </script>
 
 <main class:is-mobile={IS_MOBILE}>
-  <div class="email-list">
+  <div class="email-list" bind:this={emailListContainer}>
 
     {#if !isLoading && emailData.total > 0}
       <div class="pagination">
@@ -119,7 +160,7 @@
   </div>
 
   {#if emailUuid}
-    <div class="email-view" transition:fly={{ x: 300, duration: 300 }}>
+    <div class="email-view" bind:this={emailViewContainer} transition:fly={{ x: 300, duration: 300 }}>
       <button class="go-back-btn" onclick={goBack}>
         Back
       </button>
