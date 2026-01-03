@@ -11,6 +11,7 @@ main {
     .email-list {
       border-right: none !important;
       gap: 0.25rem;
+      padding-right: 0 !important;
     }
 
     height: calc(100vh - 9rem);
