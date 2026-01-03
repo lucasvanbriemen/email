@@ -4,12 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Email;
-use App\Models\Folder;
-use App\Models\Attachment;
-use App\Models\User;
-use App\Models\Profile;
 use App\MailboxConfig;
-use App\Models\Tag;
 
 class MailboxController extends Controller
 {
