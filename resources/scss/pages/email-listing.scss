@@ -12,6 +12,8 @@ main {
       border-right: none !important;
       gap: 0.25rem;
     }
+
+    height: calc(100vh - 9rem);
   }
 
   .email-list {
