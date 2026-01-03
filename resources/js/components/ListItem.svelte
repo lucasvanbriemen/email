@@ -13,7 +13,7 @@
 </script>
 
 <a class="list-item" class:unread={!email.has_read} href="#{email.uuid}" onclick={handleClick} class:selected={email.selected}>
-  <img src="/{email.sender.image_path}" alt="{email.sender_name}" class="logo" />
+  <img src="{currentDomain}/{email.sender.image_path}" alt="{email.sender_name}" class="logo" />
 
   <div class="content">
     <h3>{email.subject}</h3>

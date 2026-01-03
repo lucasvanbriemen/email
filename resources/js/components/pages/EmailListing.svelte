@@ -80,7 +80,7 @@
   }
 </script>
 
-<main>
+<main class:is-mobile={IS_MOBILE}>
   <div class="email-list">
 
     {#if !isLoading && emailData.total > 0}
@@ -111,7 +111,9 @@
       <SkeletonLoader type="list-item" count={5} />
     {:else}
       {#each emails as email (email.uuid)}
-        <ListItem {email} {group} />
+        <div>
+          <ListItem {email} {group} />
+        </div>
       {/each}
     {/if}
   </div>
