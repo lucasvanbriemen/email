@@ -3,6 +3,7 @@
   import theme from '../lib/theme.js';
   import api from '../lib/api.js';
   import page from 'page';
+  import { currentGroup } from '../stores/currentGroup.js';
   import Header from './Header.svelte';
   import Dashboard from './pages/Dashboard.svelte';
   import EmailListing from './pages/EmailListing.svelte';
@@ -25,11 +26,13 @@
     page('/:group', ctx => {
       currentComponent = routes['/:group'];
       params = { group: ctx.params.group, emailUuid: null };
+      currentGroup.set(ctx.params.group);
     });
 
     page('/:group/:emailUuid', ctx => {
       currentComponent = routes['/:group/:emailUuid'];
       params = { group: ctx.params.group, emailUuid: ctx.params.emailUuid };
+      currentGroup.set(ctx.params.group);
     });
 
     // Catch all other routes and redirect to home
@@ -42,7 +45,7 @@
 
     theme.applyTheme();
   });
-  
+
   window.api = api;
 </script>
 
