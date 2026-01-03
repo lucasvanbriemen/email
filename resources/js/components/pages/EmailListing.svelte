@@ -111,7 +111,9 @@
       <SkeletonLoader type="list-item" count={5} />
     {:else}
       {#each emails as email (email.uuid)}
-        <ListItem {email} {group} />
+        <div>
+          <ListItem {email} {group} />
+        </div>
       {/each}
     {/if}
   </div>
