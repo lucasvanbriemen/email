@@ -96,10 +96,10 @@ export const mobileGestures = {
       const diffY = Math.abs(currentY - startY);
 
       // Only trigger horizontal swipe if movement is more horizontal than vertical
-      if (Math.abs(diffX) > diffY && diffX < 0 && Math.abs(diffX) < MAX_SWIPE_DISTANCE) {
+      if (Math.abs(diffX) > diffY && diffX > 0 && diffX < MAX_SWIPE_DISTANCE) {
         e.preventDefault();
         element.style.transform = `translateX(${diffX}px)`;
-        element.style.opacity = 1 - Math.abs(diffX) / MAX_SWIPE_DISTANCE * 0.3;
+        element.style.opacity = 1 - diffX / MAX_SWIPE_DISTANCE * 0.3;
       }
     };
 
@@ -107,10 +107,10 @@ export const mobileGestures = {
       const diff = currentX - startX;
       isGesturing = false;
 
-      if (Math.abs(diff) > SWIPE_THRESHOLD && diff < 0) {
-        // Swipe left to close
+      if (diff > SWIPE_THRESHOLD) {
+        // Swipe right to close
         element.style.transition = 'all 0.3s ease-out';
-        element.style.transform = 'translateX(-100%)';
+        element.style.transform = 'translateX(100%)';
         element.style.opacity = '0';
 
         setTimeout(() => {

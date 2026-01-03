@@ -160,7 +160,7 @@
   </div>
 
   {#if emailUuid}
-    <div class="email-view" bind:this={emailViewContainer} transition:fly={{ x: 300, duration: 300 }}>
+    <div class="email-view" bind:this={emailViewContainer} transition:fly={!IS_MOBILE ? { x: 300, duration: 300 } : undefined}>
       <button class="go-back-btn" onclick={goBack}>
         Back
       </button>
