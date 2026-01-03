@@ -30,14 +30,6 @@ class Profile extends Model
                     'path' => $key,
                 ]);
             }
-
-            foreach (Tag::$defaultTags as $tag) {
-                Tag::create([
-                    'name' => $tag['name'],
-                    'color' => $tag['color'],
-                    'profile_id' => $credential->id,
-                ]);
-            }
         });
     }
 
