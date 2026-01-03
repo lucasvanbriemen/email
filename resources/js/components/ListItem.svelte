@@ -12,7 +12,7 @@
 
 </script>
 
-<a class="list-item" class:unread={!email.has_read} href="#{email.uuid}" onclick={handleClick} class:selected={email.selected}>
+<a class="list-item" class:unread={!email.has_read} class:is-mobile={IS_MOBILE} href="#{email.uuid}" onclick={handleClick} class:selected={email.selected}>
   <img src="{currentDomain}/{email.sender.image_path}" alt="{email.sender_name}" class="logo" />
 
   <div class="content">
