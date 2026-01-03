@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte';
   import Icon from './Icon.svelte';
-  import page from 'page';
 
   let groups = $state([]);
 
