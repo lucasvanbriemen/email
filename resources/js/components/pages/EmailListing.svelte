@@ -1,6 +1,7 @@
 <script>
   import { onMount, untrack } from "svelte";
   import { fly } from "svelte/transition";
+  import { easeIn } from 'svelte/easing';
   import page from "page";
   import ListItem from "../ListItem.svelte";
   import Email from "./Email.svelte";
@@ -160,7 +161,7 @@
   </div>
 
   {#if emailUuid}
-    <div class="email-view" bind:this={emailViewContainer} transition:fly={{ x: 300, duration: 300 }}>
+    <div class="email-view" bind:this={emailViewContainer} transition:fly={{ x: 300, duration: 200, easing: easeIn }}>
       <button class="go-back-btn" onclick={goBack}>
         Back
       </button>
