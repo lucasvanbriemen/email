@@ -13,8 +13,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, var(--background-color-two) 0%, transparent 100%);
-    color: var(--text-color-secondary);
+    background: var(--background-color-one);
     font-size: 0.875rem;
     font-weight: 500;
     opacity: 0;
@@ -123,7 +122,6 @@ main {
 
   .email-view {
     width: 70%;
-    will-change: transform, opacity;
 
     .go-back-btn {
       display: none;
