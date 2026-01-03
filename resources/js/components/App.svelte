@@ -5,7 +5,10 @@
   import page from 'page';
   import Header from './Header.svelte';
   import Dashboard from './pages/Dashboard.svelte';
+  import '@ionic/core/css/ionic.bundle.css';
   import EmailListing from './pages/EmailListing.svelte';
+  import { defineCustomElements } from '@ionic/core/loader';
+  defineCustomElements(window);
 
   let currentComponent;
   let params = {};
