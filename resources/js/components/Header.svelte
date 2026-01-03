@@ -3,22 +3,18 @@
   import Icon from './Icon.svelte';
 
   let groups = $state([]);
-  let currentPath = $state(window.location.pathname);
+  let currentPath = window.location.pathname;
   let activeGroup = $state('work')
 
   onMount(async () => {
     groups = await api.get('/api/mailbox/metadata');
-    setActiveGroup();
-    window.addEventListener('popstate', setActiveGroup);
-  });
 
-  function setActiveGroup() {
     groups.forEach(group => {
       if (currentPath.includes(group.path)) {
         activeGroup = group.path;
       }
     });
-  }
+  });
 </script>
 
 <header class:is-mobile={IS_MOBILE}>
