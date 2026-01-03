@@ -119,6 +119,31 @@
   function goBack() {
     page.show(`/${group}`);
   }
+
+  function groupEmailsByDate(emailList) {
+    const groups = {};
+
+    emailList.forEach(email => {
+      const date = new Date(email.created_at);
+      const dateKey = date.toDateString(); // "Sun Jan 23 2025"
+
+      if (!groups[dateKey]) {
+        groups[dateKey] = [];
+      }
+      groups[dateKey].push(email);
+    });
+
+    return groups;
+  }
+
+  function formatDateHeader(dateString) {
+    const date = new Date(dateString);
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const day = date.getDate();
+
+    return `${dayName} ${month} ${day}`;
+  }
 </script>
 
 <main class:is-mobile={IS_MOBILE}>
@@ -151,9 +176,14 @@
     {#if isLoading}
       <SkeletonLoader type="list-item" count={5} />
     {:else}
-      {#each emails as email (email.uuid)}
-        <div>
-          <ListItem {email} {group} />
+      {#each Object.entries(groupEmailsByDate(emails)) as [dateKey, dateEmails]}
+        <div class="date-group">
+          <h3 class="date-header">{formatDateHeader(dateKey)}</h3>
+          {#each dateEmails as email (email.uuid)}
+            <div>
+              <ListItem {email} {group} />
+            </div>
+          {/each}
         </div>
       {/each}
     {/if}

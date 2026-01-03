@@ -161,6 +161,7 @@ class EmailFetchingService
             'folder_id' => $folderId,
             'sender_id' => $incomingEmailSender ? $incomingEmailSender->id : null,
             'sender_name' => $message->getFrom()[0]->personal ?? $sender ?? null,
+            'sender_email' => $sender,
             'to' => implode(', ', collect($message->getTo()?->all() ?? [])->map(function ($to) {
                 return $to->mail ?? null;
             })->filter()->all()) ?: null,
@@ -172,8 +173,11 @@ class EmailFetchingService
      */
     public function shouldFilterMessage(array $emailData): bool
     {
-        // Filter out CI-related emails
-        if (str_contains(strtolower($emailData['subject'] ?? ''), 'run cancelled: ci')) {
+        // Filter out GitHub "run cancelled" notifications
+        $subject = strtolower($emailData['subject'] ?? '');
+        $senderEmail = strtolower($emailData['sender_email'] ?? '');
+
+        if (str_contains($subject, 'run cancelled') && $senderEmail === 'noreply@github.com') {
             return true;
         }
 

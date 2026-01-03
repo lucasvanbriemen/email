@@ -8,7 +8,9 @@ class MailboxConfig
         [
             'path' => 'home',
             'name' => 'Home',
-            'rules' => [],
+            'rules' => [
+                'exclude_from' => ['work', 'github', 'pathe']
+            ],
         ],
         [
             'path' => 'work',

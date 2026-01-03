@@ -62,6 +62,12 @@ class MailboxController extends Controller
      */
     private function filterBasedOnRule($query, $ruleType, $selectors)
     {
+        // Handle exclusion rules
+        if ($ruleType === 'exclude_from') {
+            $this->filterExcludeFromField($query, $selectors);
+            return;
+        }
+
         $functionName = 'filter' . ucfirst($ruleType) . 'Field';
         if (method_exists($this, $functionName)) {
             $this->$functionName($query, $selectors);
@@ -96,6 +102,42 @@ class MailboxController extends Controller
     }
 
     /**
+     * Apply 'exclude_from' rule - exclude emails matching other groups
+     */
+    private function filterExcludeFromField($query, $groupPaths)
+    {
+        $allGroups = MailboxConfig::GROUPS;
+
+        // Collect all rules from groups to exclude
+        $excludeRules = [];
+        foreach ($allGroups as $group) {
+            if (in_array($group['path'], $groupPaths)) {
+                $excludeRules[] = $group['rules'];
+            }
+        }
+
+        // Apply exclusions using whereDoesntHave for 'from' rules
+        foreach ($excludeRules as $rules) {
+            if (isset($rules['from'])) {
+                $query->whereDoesntHave('sender', function ($q) use ($rules) {
+                    $q->where(function ($subQ) use ($rules) {
+                        foreach ($rules['from'] as $selector) {
+                            $this->applyEmailPattern($subQ, 'email', $selector);
+                        }
+                    });
+                });
+            }
+
+            // Apply exclusions for 'to' rules
+            if (isset($rules['to'])) {
+                foreach ($rules['to'] as $selector) {
+                    $this->applyNegativeEmailPattern($query, 'to', $selector);
+                }
+            }
+        }
+    }
+
+    /**
      * Apply email pattern matching (handles, *@domain, exact)
      */
     private function applyEmailPattern($query, $field, $pattern)
@@ -105,6 +147,19 @@ class MailboxController extends Controller
             $query->orWhere($field, 'like', '%@' . $domain);
         } else {
             $query->orWhere($field, $pattern);
+        }
+    }
+
+    /**
+     * Apply negative email pattern matching (NOT LIKE)
+     */
+    private function applyNegativeEmailPattern($query, $field, $pattern)
+    {
+        if (str_starts_with($pattern, '*@')) {
+            $domain = substr($pattern, 2);
+            $query->where($field, 'not like', '%@' . $domain);
+        } else {
+            $query->where($field, '!=', $pattern);
         }
     }
 
