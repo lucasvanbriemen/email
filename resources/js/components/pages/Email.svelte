@@ -43,8 +43,20 @@
 
   function handleIframeLoad() {
     if (iframeEl?.contentDocument?.body) {
+      // Initial height calculation
       const height = iframeEl.contentDocument.body.scrollHeight;
       iframeHeight = `${height}px`;
+
+      // Watch for content changes and recalculate height
+      try {
+        const resizeObserver = new ResizeObserver(() => {
+          const newHeight = iframeEl.contentDocument.body.scrollHeight;
+          iframeHeight = `${newHeight}px`;
+        });
+        resizeObserver.observe(iframeEl.contentDocument.body);
+      } catch (e) {
+        // ResizeObserver might fail for cross-origin iframes, that's ok
+      }
     }
   }
 
