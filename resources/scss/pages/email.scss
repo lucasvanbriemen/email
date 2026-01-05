@@ -46,6 +46,10 @@ article {
     min-height: 500px;
   }
 
+  iframe[scr] {
+    min-height: 80vh;
+  }
+
   .attachments {
     display: flex;
     flex-direction: column;
