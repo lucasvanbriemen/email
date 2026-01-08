@@ -31,7 +31,10 @@ class MailboxConfig
                 'from' => [
                     '*@github.com',
                     '*@notifications.github.com',
-                ]
+                ],
+                'sender_name' => [
+                    'github GUI'
+                ],
             ],
         ],
         [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Email;
+use Illuminate\Support\Str;
 use App\MailboxConfig;
 
 class MailboxController extends Controller
@@ -32,8 +33,22 @@ class MailboxController extends Controller
         $emailQuery = Email::query();
 
         $rules = $groupConfig['rules'];
-        foreach ($rules as $ruleType => $selectors) {
-            $this->filterBasedOnRule($emailQuery, $ruleType, $selectors);
+
+        // Apply rules with OR logic between different rule types
+        if (!empty($rules)) {
+            $emailQuery->where(function ($query) use ($rules) {
+                foreach ($rules as $ruleType => $selectors) {
+                    if ($ruleType === 'exclude_from') {
+                        // exclude_from should still apply as AND (it's an exclusion)
+                        $this->filterExcludeFromField($query, $selectors);
+                    } else {
+                        // Other rules should be OR'd together
+                        $query->orWhere(function ($subQuery) use ($ruleType, $selectors) {
+                            $this->filterBasedOnRule($subQuery, $ruleType, $selectors);
+                        });
+                    }
+                }
+            });
         }
 
         // Apply search filter if search query provided
@@ -68,7 +83,7 @@ class MailboxController extends Controller
             return;
         }
 
-        $functionName = 'filter' . ucfirst($ruleType) . 'Field';
+        $functionName = 'filter' . Str::studly($ruleType) . 'Field';
         if (method_exists($this, $functionName)) {
             $this->$functionName($query, $selectors);
             return;
@@ -86,6 +101,18 @@ class MailboxController extends Controller
                     $this->applyEmailPattern($subQ, 'email', $selector);
                 }
             });
+        });
+    }
+
+    /**
+     * Apply 'sender_name' rule - filter by sender name
+     */
+    private function filterSenderNameField($query, $selectors)
+    {
+        $query->where(function ($q) use ($selectors) {
+            foreach ($selectors as $selector) {
+                $q->orWhere('sender_name', $selector);
+            }
         });
     }
 
@@ -132,6 +159,13 @@ class MailboxController extends Controller
             if (isset($rules['to'])) {
                 foreach ($rules['to'] as $selector) {
                     $this->applyNegativeEmailPattern($query, 'to', $selector);
+                }
+            }
+
+            // Apply exclusions for 'sender_name' rules
+            if (isset($rules['sender_name'])) {
+                foreach ($rules['sender_name'] as $selector) {
+                    $query->where('sender_name', '!=', $selector);
                 }
             }
         }
