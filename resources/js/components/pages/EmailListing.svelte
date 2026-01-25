@@ -15,8 +15,8 @@
   let currentPage = $state(1);
   let searchQuery = $state("");
   let selectedEmail = $state(null);
-  let emailListContainer;
-  let emailViewContainer;
+  let emailListContainer = $state(null);
+  let emailViewContainer = $state(null);
   let cleanupPullToRefresh;
   let cleanupSwipeToClose;
 

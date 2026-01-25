@@ -6,7 +6,7 @@
   let email = $state({});
   let attachments = $state([]);
   let isLoading = $state(true);
-  let iframeEl;
+  let iframeEl = $state(null);
   let iframeHeight = $state("auto");
 
   onMount(async () => {
