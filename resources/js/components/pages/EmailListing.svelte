@@ -14,8 +14,6 @@
   let previousGroup = $state(null);
   let currentPage = $state(1);
   let searchQuery = $state("");
-  let selectedEmail = $state(null);
-  let emailListContainer = $state(null);
   let emailViewContainer = $state(null);
   let cleanupPullToRefresh;
   let cleanupSwipeToClose;
@@ -147,7 +145,7 @@
 </script>
 
 <main class:is-mobile={IS_MOBILE}>
-  <div class="email-list" bind:this={emailListContainer}>
+  <div class="email-list">
 
     {#if !isLoading && emailData.total > 0}
       <div class="pagination">
