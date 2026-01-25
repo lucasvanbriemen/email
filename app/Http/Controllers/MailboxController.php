@@ -18,7 +18,7 @@ class MailboxController extends Controller
         return response()->json(array_values($groups));
     }
 
-    public function emails($group)
+    public function index($group)
     {
         $allGroups = MailboxConfig::GROUPS;
         $groupConfig = null;
@@ -197,7 +197,7 @@ class MailboxController extends Controller
         }
     }
 
-    public function email($uuid)
+    public function show($uuid)
     {
         $email = Email::where('uuid', $uuid)->first();
 
