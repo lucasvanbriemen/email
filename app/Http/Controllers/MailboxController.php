@@ -18,6 +18,19 @@ class MailboxController extends Controller
         return response()->json(array_values($groups));
     }
 
+    public function show($uuid)
+    {
+        $email = Email::where('uuid', $uuid)->first();
+
+        $email->has_read = true;
+        $email->save();
+
+        $email->load('sender');
+        $email->created_at_human = $email->created_at->diffForHumans();
+
+        return response()->json($email);
+    }
+
     public function index($group)
     {
         $allGroups = MailboxConfig::GROUPS;
@@ -195,18 +208,5 @@ class MailboxController extends Controller
         } else {
             $query->where($field, '!=', $pattern);
         }
-    }
-
-    public function show($uuid)
-    {
-        $email = Email::where('uuid', $uuid)->first();
-
-        $email->has_read = true;
-        $email->save();
-
-        $email->load('sender');
-        $email->created_at_human = $email->created_at->diffForHumans();
-
-        return response()->json($email);
     }
 }
