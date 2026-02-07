@@ -125,4 +125,54 @@ class Email extends Model
 
         $email->save();
     }
+
+    public function getPreview()
+    {
+        $body = $this->html_body;
+
+        // Remove script tags and content
+        $body = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $body);
+
+        // Remove style tags and content
+        $body = preg_replace('/<style[^>]*>.*?<\/style>/is', '', $body);
+
+        // Remove comments
+        $body = preg_replace('/<!--.*?-->/is', '', $body);
+
+        // Remove doctype and head tags with content
+        $body = preg_replace('/<head[^>]*>.*?<\/head>/is', '', $body);
+        $body = preg_replace('/<\!DOCTYPE[^>]*>/is', '', $body);
+
+        // Strip all HTML tags
+        $body = strip_tags($body);
+
+        // Decode HTML entities
+        $body = html_entity_decode($body, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        // Remove zero-width characters and special whitespace
+        $body = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $body);
+
+        // Replace all types of whitespace (including tabs, newlines, non-breaking spaces) with single space
+        $body = preg_replace('/\s+/u', ' ', $body);
+
+        // Remove multiple consecutive dots
+        $body = preg_replace('/\.{2,}/', '.', $body);
+
+        // Trim whitespace
+        $body = trim($body);
+
+        if (empty($body)) {
+            return '';
+        }
+
+        // Get first 100 characters
+        $preview = mb_substr($body, 0, 100);
+
+        // Add ellipsis if truncated
+        if (mb_strlen($body) > 100) {
+            $preview .= '...';
+        }
+
+        return $preview;
+    }
 }

@@ -68,7 +68,7 @@ class EmailApiController extends Controller
                     'subject' => $email->subject,
                     'sender' => $email->sender ? $email->sender->email : $email->sender_name,
                     'date' => $this->formatDate($email->sent_at),
-                    'preview' => $this->getPreview($email->html_body),
+                    'preview' => $email->getPreview(),
                     'unread' => !$email->has_read,
                 ];
             })->values(),
@@ -113,53 +113,5 @@ class EmailApiController extends Controller
         }
 
         return null;
-    }
-
-    private function getPreview($html)
-    {
-        // Remove script tags and content
-        $text = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $html);
-
-        // Remove style tags and content
-        $text = preg_replace('/<style[^>]*>.*?<\/style>/is', '', $text);
-
-        // Remove comments
-        $text = preg_replace('/<!--.*?-->/is', '', $text);
-
-        // Remove doctype and head tags with content
-        $text = preg_replace('/<head[^>]*>.*?<\/head>/is', '', $text);
-        $text = preg_replace('/<\!DOCTYPE[^>]*>/is', '', $text);
-
-        // Strip all HTML tags
-        $text = strip_tags($text);
-
-        // Decode HTML entities
-        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-        // Remove zero-width characters and special whitespace
-        $text = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $text);
-
-        // Replace all types of whitespace (including tabs, newlines, non-breaking spaces) with single space
-        $text = preg_replace('/\s+/u', ' ', $text);
-
-        // Remove multiple consecutive dots
-        $text = preg_replace('/\.{2,}/', '.', $text);
-
-        // Trim whitespace
-        $text = trim($text);
-
-        if (empty($text)) {
-            return '';
-        }
-
-        // Get first 100 characters
-        $preview = mb_substr($text, 0, 100);
-
-        // Add ellipsis if truncated
-        if (mb_strlen($text) > 100) {
-            $preview .= '...';
-        }
-
-        return $preview;
     }
 }
