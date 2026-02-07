@@ -15,25 +15,17 @@ class AgentApiController extends Controller
         $toDate = request()->query('to_date');
         $unreadOnly = request()->query('unread_only', false);
 
-        $query = Email::query();
+        $query = Email::select('emails.*');
 
-        if ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('subject', 'like', '%' . $keyword . '%')
-                  ->orWhere('html_body', 'like', '%' . $keyword . '%');
-            });
-        }
-
-        if ($sender) {
-            $query->whereHas('sender', function ($q) use ($sender) {
-                $q->where('email', 'like', '%' . $sender . '%');
-            });
+        // Apply indexed filters first (date, read status)
+        if ($unreadOnly === 'true' || $unreadOnly === 1 || $unreadOnly === true) {
+            $query->where('emails.has_read', false);
         }
 
         if ($fromDate) {
             try {
                 $fromDateTime = Carbon::createFromFormat('Y-m-d', $fromDate)->startOfDay();
-                $query->where('sent_at', '>=', $fromDateTime);
+                $query->where('emails.sent_at', '>=', $fromDateTime);
             } catch (\Exception $e) {
                 return response()->json([
                     'error' => 'Invalid from_date format. Use YYYY-MM-DD'
@@ -44,7 +36,7 @@ class AgentApiController extends Controller
         if ($toDate) {
             try {
                 $toDateTime = Carbon::createFromFormat('Y-m-d', $toDate)->endOfDay();
-                $query->where('sent_at', '<=', $toDateTime);
+                $query->where('emails.sent_at', '<=', $toDateTime);
             } catch (\Exception $e) {
                 return response()->json([
                     'error' => 'Invalid to_date format. Use YYYY-MM-DD'
@@ -52,11 +44,23 @@ class AgentApiController extends Controller
             }
         }
 
-        if ($unreadOnly === 'true' || $unreadOnly === 1 || $unreadOnly === true) {
-            $query->where('has_read', false);
+        // Apply sender filter with join
+        if ($sender) {
+            $query->join('sender_email', 'emails.sender_id', '=', 'sender_email.id')
+                  ->where('sender_email.email', 'like', '%' . $sender . '%');
         }
 
-        $emails = $query->orderBy('sent_at', 'desc')
+        // Apply text search last (most expensive)
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('emails.subject', 'like', '%' . $keyword . '%')
+                  ->orWhere('emails.html_body', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        $emails = $query->distinct()
+            ->with('sender')
+            ->orderBy('emails.sent_at', 'desc')
             ->limit(10)
             ->get();
 
