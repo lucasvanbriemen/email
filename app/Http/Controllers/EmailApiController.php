@@ -7,10 +7,6 @@ use Carbon\Carbon;
 
 class EmailApiController extends Controller
 {
-    /**
-     * Search emails with filters
-     * GET /api/emails/search
-     */
     public function search()
     {
         $keyword = request()->query('keyword');
@@ -87,10 +83,6 @@ class EmailApiController extends Controller
         return response()->json($response);
     }
 
-    /**
-     * Get full email by ID
-     * GET /api/emails/{id}
-     */
     public function show($id)
     {
         $email = Email::where('uuid', $id)->first();
@@ -113,9 +105,6 @@ class EmailApiController extends Controller
         ]);
     }
 
-    /**
-     * Format a date, handling both Carbon instances and strings
-     */
     private function formatDate($date)
     {
         if ($date instanceof \Carbon\Carbon) {
@@ -133,9 +122,6 @@ class EmailApiController extends Controller
         return null;
     }
 
-    /**
-     * Extract readable text preview from HTML, removing all markup
-     */
     private function getPreview($html)
     {
         // Remove script tags and content
