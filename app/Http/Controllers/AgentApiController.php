@@ -15,7 +15,10 @@ class AgentApiController extends Controller
         $toDate = request()->query('to_date');
         $unreadOnly = request()->query('unread_only', false);
 
-        $query = Email::select('emails.*');
+        // Select only needed columns for better performance
+        $query = Email::select('emails.id', 'emails.uuid', 'emails.subject', 'emails.sent_at',
+                               'emails.html_body', 'emails.has_read', 'emails.sender_id',
+                               'emails.sender_name');
 
         // Apply indexed filters first (date, read status)
         if ($unreadOnly === 'true' || $unreadOnly === 1 || $unreadOnly === true) {
@@ -50,12 +53,9 @@ class AgentApiController extends Controller
                   ->where('sender_email.email', 'like', '%' . $sender . '%');
         }
 
-        // Apply text search last (most expensive)
+        // Apply FULLTEXT search (much faster than LIKE)
         if ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('emails.subject', 'like', '%' . $keyword . '%')
-                  ->orWhere('emails.html_body', 'like', '%' . $keyword . '%');
-            });
+            $query->whereRaw("MATCH(emails.subject, emails.html_body) AGAINST(? IN BOOLEAN MODE)", [$keyword]);
         }
 
         $emails = $query->distinct()
