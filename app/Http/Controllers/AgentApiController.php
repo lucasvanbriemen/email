@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Email;
 use Carbon\Carbon;
 
-class EmailApiController extends Controller
+class AgentApiController extends Controller
 {
     public function search()
     {
@@ -67,7 +67,7 @@ class EmailApiController extends Controller
                     'id' => $email->uuid,
                     'subject' => $email->subject,
                     'sender' => $email->sender ? $email->sender->email : $email->sender_name,
-                    'date' => $this->formatDate($email->sent_at),
+                    'date' => $email->sent_at->format('Y-m-d H:i:s'),
                     'preview' => $email->getPreview(),
                     'unread' => !$email->has_read,
                 ];

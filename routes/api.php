@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsLoggedIn;
 use App\Http\Middleware\EmailApiAuth;
 use App\Http\Controllers\MailboxController;
-use App\Http\Controllers\EmailApiController;
+use App\Http\Controllers\AgentApiController;
 
 // Routes endpoint for frontend (no auth required)
 Route::get('/routes', function () {
@@ -24,8 +24,8 @@ Route::middleware(IsLoggedIn::class)->group(function () {
 });
 
 Route::middleware(EmailApiAuth::class)->group(function () {
-    Route::get('/emails/search', [EmailApiController::class, 'search'])->name('api.emails.search');
-    Route::get('/emails/{id}', [EmailApiController::class, 'show'])->name('api.emails.show');
+    Route::get('/emails/search', [AgentApiController::class, 'search'])->name('api.emails.search');
+    Route::get('/emails/{id}', [AgentApiController::class, 'show'])->name('api.emails.show');
 });
 
 Route::get('404', function () {
