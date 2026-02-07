@@ -93,25 +93,8 @@ class EmailApiController extends Controller
             'id' => $email->uuid,
             'subject' => $email->subject,
             'sender' => $email->sender ? $email->sender->email : $email->sender_name,
-            'date' => $this->formatDate($email->sent_at),
+            'date' => $email->sent_at->format('Y-m-d H:i:s'),
             'body' => strip_tags($email->html_body),
         ]);
-    }
-
-    private function formatDate($date)
-    {
-        if ($date instanceof \Carbon\Carbon) {
-            return $date->format('Y-m-d');
-        }
-
-        if (is_string($date)) {
-            try {
-                return Carbon::parse($date)->format('Y-m-d');
-            } catch (\Exception $e) {
-                return $date;
-            }
-        }
-
-        return null;
     }
 }
