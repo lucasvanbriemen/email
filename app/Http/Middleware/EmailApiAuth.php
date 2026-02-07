@@ -8,15 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EmailApiAuth
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();
-        $expectedToken = env('EMAIL_API_AUTH_TOKEN');
+        $expectedToken = env('AGENT_TOKEN');
 
         // If no token is configured, allow the request
         if (!$expectedToken) {

@@ -17,7 +17,6 @@ class EmailApiController extends Controller
 
         $query = Email::query();
 
-        // Search in subject and body
         if ($keyword) {
             $query->where(function ($q) use ($keyword) {
                 $q->where('subject', 'like', '%' . $keyword . '%')
@@ -25,14 +24,12 @@ class EmailApiController extends Controller
             });
         }
 
-        // Filter by sender
         if ($sender) {
             $query->whereHas('sender', function ($q) use ($sender) {
                 $q->where('email', 'like', '%' . $sender . '%');
             });
         }
 
-        // Filter by date range
         if ($fromDate) {
             try {
                 $fromDateTime = Carbon::createFromFormat('Y-m-d', $fromDate)->startOfDay();
@@ -55,17 +52,14 @@ class EmailApiController extends Controller
             }
         }
 
-        // Filter unread emails only
         if ($unreadOnly === 'true' || $unreadOnly === 1 || $unreadOnly === true) {
             $query->where('has_read', false);
         }
 
-        // Get results (limit to 10 as per spec)
         $emails = $query->orderBy('sent_at', 'desc')
             ->limit(10)
             ->get();
 
-        // Transform to response format
         $response = [
             'count' => $emails->count(),
             'emails' => $emails->map(function ($email) {
@@ -93,7 +87,6 @@ class EmailApiController extends Controller
             ], 404);
         }
 
-        // Load sender relation
         $email->load('sender');
 
         return response()->json([
