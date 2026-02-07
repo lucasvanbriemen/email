@@ -36,6 +36,11 @@ class Email extends Model
         'uuid',
     ];
 
+    protected $casts = [
+        'sent_at' => 'datetime',
+        'has_read' => 'boolean',
+    ];
+
     public static $customViewFolders = [
         'trash',
         'all',
