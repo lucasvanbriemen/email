@@ -36,6 +36,11 @@ class Email extends Model
         'uuid',
     ];
 
+    protected $casts = [
+        'sent_at' => 'datetime',
+        'has_read' => 'boolean',
+    ];
+
     public static $customViewFolders = [
         'trash',
         'all',
@@ -119,5 +124,35 @@ class Email extends Model
         $email->folder_id = $trashFolder->id;
 
         $email->save();
+    }
+
+    public function getPreview()
+    {
+        $body = $this->html_body;
+
+        // Extract text content from HTML and clean it up
+        $body = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $body);
+        $body = preg_replace('/<style[^>]*>.*?<\/style>/is', '', $body);
+        $body = preg_replace('/<!--.*?-->/is', '', $body);
+        $body = preg_replace('/<head[^>]*>.*?<\/head>/is', '', $body);
+        $body = preg_replace('/<\!DOCTYPE[^>]*>/is', '', $body);
+        $body = strip_tags($body);
+        $body = html_entity_decode($body, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $body = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $body);
+        $body = preg_replace('/\s+/u', ' ', $body);
+        $body = preg_replace('/\.{2,}/', '.', $body);
+        $body = trim($body);
+
+        if (empty($body)) {
+            return '';
+        }
+
+        $preview = mb_substr($body, 0, 100);
+
+        if (mb_strlen($body) > 100) {
+            $preview .= '...';
+        }
+
+        return $preview;
     }
 }
