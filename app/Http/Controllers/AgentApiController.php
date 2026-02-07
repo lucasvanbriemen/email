@@ -16,9 +16,7 @@ class AgentApiController extends Controller
         $unreadOnly = request()->query('unread_only', false);
 
         // Select only needed columns for better performance
-        $query = Email::select('emails.id', 'emails.uuid', 'emails.subject', 'emails.sent_at',
-                               'emails.html_body', 'emails.has_read', 'emails.sender_id',
-                               'emails.sender_name');
+        $query = Email::select("emails.id", "emails.uuid", "emails.subject", "emails.sent_at", "emails.html_body", "emails.has_read", "emails.sender_id", "emails.sender_name");
 
         // Apply indexed filters first (date, read status)
         if ($unreadOnly === 'true' || $unreadOnly === 1 || $unreadOnly === true) {
@@ -58,11 +56,8 @@ class AgentApiController extends Controller
             $query->whereRaw("MATCH(emails.subject, emails.html_body) AGAINST(? IN BOOLEAN MODE)", [$keyword]);
         }
 
-        $emails = $query->distinct()
-            ->with('sender')
-            ->orderBy('emails.sent_at', 'desc')
-            ->limit(10)
-            ->get();
+        // We limit to 10 results to not overload the AI
+        $emails = $query->distinct()->with('sender')->orderBy('emails.sent_at', 'desc')->limit(10)->get();
 
         $response = [
             'count' => $emails->count(),
