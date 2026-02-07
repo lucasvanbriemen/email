@@ -23,7 +23,6 @@ Route::middleware(IsLoggedIn::class)->group(function () {
     Route::get('/email/{uuid}', [MailboxController::class, 'show'])->name('email.view');
 });
 
-// Email API for AI agents
 Route::middleware(EmailApiAuth::class)->group(function () {
     Route::get('/emails/search', [EmailApiController::class, 'search'])->name('api.emails.search');
     Route::get('/emails/{id}', [EmailApiController::class, 'show'])->name('api.emails.show');
