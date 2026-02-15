@@ -12,6 +12,7 @@ use DateTimeZone;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Webklex\PHPIMAP\Client;
 use Webklex\IMAP\Facades\Client as ClientFacade;
 
@@ -284,5 +285,13 @@ class EmailFetchingService
         // That way the agent knows it and can store the right data in its database
         $token = config('app.agent_token');
         $agentUrl = config('app.agent_url');
+
+        Http::withToken($token)->post($agentUrl . 'email', [
+            'subject' => $email->subject,
+            'date' => $email->sent_at->toIso8601String(),
+            'sender_name' => $email->sender_name,
+            'sender_email' => $email->sender_email,
+            'body_' => $email->html_body,
+        ]);
     }
 }

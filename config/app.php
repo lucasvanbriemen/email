@@ -130,4 +130,7 @@ return [
     ],
 
     'user_token' => env('USER_TOKEN'),
+
+    'agent_url' => 'https://ai.ltvb.nl/api/webhooks/',
+    'agent_token' => env('AGENT_TOKEN'),
 ];
