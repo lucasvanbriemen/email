@@ -288,7 +288,7 @@ class EmailFetchingService
         $token = config('app.agent_token');
         $agentUrl = config('app.agent_url');
 
-        Http::withToken($token)->post($agentUrl . 'email', [
+        Http::withHeaders(['X-Webhook-Token' => $token])->post($agentUrl . 'email', [
             'subject' => $email->subject,
             'date' => $email->sent_at->toIso8601String(),
             'sender_name' => $email->sender_name,
