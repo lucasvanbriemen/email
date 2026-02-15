@@ -277,4 +277,12 @@ class EmailFetchingService
             ->where('profile_id', $profileId)
             ->value('id');
     }
+
+    private function sendToAgent(Email $email): void
+    {
+        // We send the email to the agent as well when we get it
+        // That way the agent knows it and can store the right data in its database
+        $token = config('app.agent_token');
+        $agentUrl = config('app.agent_url');
+    }
 }
