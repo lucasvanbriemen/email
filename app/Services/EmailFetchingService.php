@@ -94,6 +94,8 @@ class EmailFetchingService
         // Send notification
         $this->dispatchNotification($email);
 
+        $this->sendToAgent($email);
+
         return $email;
     }
 
