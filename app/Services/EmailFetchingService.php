@@ -293,7 +293,7 @@ class EmailFetchingService
             'date' => $email->sent_at->toIso8601String(),
             'sender_name' => $email->sender_name,
             'sender_email' => $email->sender_email,
-            'body_clean' => $email->html_body,
+            'body_clean' => $email->getPreview(),
         ]);
     }
 }
