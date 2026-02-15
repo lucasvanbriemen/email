@@ -126,7 +126,7 @@ class Email extends Model
         $email->save();
     }
 
-    public function getPreview()
+    public function getCleanBody()
     {
         $body = $this->html_body;
 
@@ -142,6 +142,13 @@ class Email extends Model
         $body = preg_replace('/\s+/u', ' ', $body);
         $body = preg_replace('/\.{2,}/', '.', $body);
         $body = trim($body);
+
+        return $body;
+    }
+
+    public function getPreview()
+    {
+        $body = $this->getCleanBody();
 
         if (empty($body)) {
             return '';

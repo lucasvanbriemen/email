@@ -93,7 +93,7 @@ class AgentApiController extends Controller
             'subject' => $email->subject,
             'sender' => $email->sender ? $email->sender->email : $email->sender_name,
             'date' => $email->sent_at->format('Y-m-d H:i:s'),
-            'body' => strip_tags($email->html_body),
+            'body' => $email->getCleanBody(),
         ]);
     }
 }
