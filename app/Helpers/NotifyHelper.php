@@ -18,7 +18,7 @@ class NotifyHelper
             'title' => $title,
             'message' => $message,
             'url' => $url,
-            'image' => 'https://commons.wikimedia.org/wiki/Special:FilePath/GoldenGateBridge.jpg',
+            'image' => resource_path('svg/logo.png'),
         ])->throw();
     }
 }
