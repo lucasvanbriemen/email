@@ -249,7 +249,7 @@ class EmailFetchingService
             $emailSubject = $email->subject;
 
             dispatch(function () use ($senderName, $emailSubject, $url) {
-                NotifyHelper::sendNofication(
+                NotifyHelper::send(
                     $senderName,
                     $emailSubject,
                     $url
