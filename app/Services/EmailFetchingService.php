@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Helpers\NtfyHelper;
+use App\Helpers\NotifyHelper;
 use App\Models\ImapCredentials;
 use App\Models\Email;
 use App\Models\Folder;
@@ -249,7 +249,7 @@ class EmailFetchingService
             $emailSubject = $email->subject;
 
             dispatch(function () use ($senderName, $emailSubject, $url) {
-                NtfyHelper::sendNofication(
+                NotifyHelper::sendNofication(
                     $senderName,
                     $emailSubject,
                     $url
