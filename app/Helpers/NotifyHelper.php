@@ -13,12 +13,15 @@ class NotifyHelper
             return true;
         }
 
-        // Make a post request to compoments.lucasvanbriemen.nl/notify with the title, message and url as body
-        Http::post('https://components.lucasvanbriemen.nl/api/notify', [
-            'title' => $title,
-            'message' => $message,
-            'url' => $url,
-            'image' => resource_path('svg/logo.png'),
-        ])->throw();
+        try {
+            Http::post('https://components.lucasvanbriemen.nl/api/notify', [
+                'title' => $title,
+                'message' => $message,
+                'url' => $url,
+                'image' => 'https://email.lucasvanbriemen.nl/logo.png',
+            ])->throw();
+        } catch (\Exception $e) {
+            Log::warning('Failed to send notification: ' . $e->getMessage());
+        }
     }
 }
