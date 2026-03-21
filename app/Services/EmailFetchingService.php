@@ -246,15 +246,9 @@ class EmailFetchingService
         try {
             $url = config('app.url') . '/home/' . $email->uuid;
             $senderName = $email->getSenderDisplayName();
-            $emailSubject = $email->subject;
+            $emailSubject = (string) $email->subject;
 
-            dispatch(function () use ($senderName, $emailSubject, $url) {
-                NotifyHelper::send(
-                    $senderName,
-                    $emailSubject,
-                    $url
-                );
-            });
+            NotifyHelper::send($senderName, $emailSubject, $url);
         } catch (Exception $e) {
             Log::error('Failed to dispatch notification for email ' . $email->id . ': ' . $e->getMessage());
         }
