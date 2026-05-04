@@ -8,6 +8,7 @@ class MailboxConfig
         [
             'path' => 'home',
             'name' => 'Home',
+            'ios_icon' => 'house',
             'rules' => [
                 'exclude_from' => ['work', 'github', 'pathe']
             ],
@@ -15,6 +16,7 @@ class MailboxConfig
         [
             'path' => 'work',
             'name' => 'Work',
+            'ios_icon' => 'suitcase',
             'rules' => [
                 'from' => [
                     '*@webinargeek.com'
@@ -27,6 +29,7 @@ class MailboxConfig
         [
             'path' => 'github',
             'name' => 'GitHub',
+            'ios_icon' => 'chevron.left.forwardslash.chevron.right',
             'rules' => [
                 'from' => [
                     '*@github.com',
@@ -40,6 +43,7 @@ class MailboxConfig
         [
             'path' => 'pathe',
             'name' => 'Pathe',
+            'ios_icon' => 'popcorn',
             'rules' => [
                 'from' => [
                     '*@service.pathe.nl'
