@@ -12,11 +12,11 @@ struct ContentView: View {
             }
         }
         .task {
-            await getGroups()
+            await getEmails()
         }
     }
 
-    func getGroups() async {
+    func getEmails() async {
         let url = URL(string: "https://email.lucasvanbriemen.nl/api/mailbox/metadata")!
         let devToken = "DEV_TOKEN"
         
