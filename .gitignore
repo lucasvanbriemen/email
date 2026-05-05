@@ -29,3 +29,6 @@ yarn-error.log
 /dist
 /src-tauri/target/**
 src-tauri/Cargo.lock
+
+# iOS secrets
+/ios/email/Secrets.swift

@@ -17,11 +17,10 @@ struct ContentView: View {
     }
 
     func getGroups() async {
-        let url = URL(string: "https://email.lucasvanbriemen.nl/api/mailbox/metadata")!
-        let devToken = "DEV_TOKEN"
-        
+        let url = URL(string: "\(Secrets.baseURL)/mailbox/metadata")!
+
         var request = URLRequest(url: url)
-        request.setValue("Bearer \(devToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(Secrets.devToken)", forHTTPHeaderField: "Authorization")
 
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
