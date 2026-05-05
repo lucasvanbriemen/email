@@ -1,10 +1,3 @@
-//
-//  Email.swift
-//  email
-//
-//  Created by Lucas on 04/05/2026.
-//
-
 import Foundation
 
 public struct Email: Identifiable, Codable {

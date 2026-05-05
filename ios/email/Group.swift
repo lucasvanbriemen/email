@@ -1,10 +1,3 @@
-//
-//  Group.swift
-//  email
-//
-//  Created by Lucas on 04/05/2026.
-//
-
 import Foundation
 
 struct Group: Identifiable, Decodable {
