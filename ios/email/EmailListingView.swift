@@ -10,33 +10,11 @@ struct EmailListingView: View {
             List() {
                 ForEach(emails) { email in
                     NavigationLink(destination: EmailView(email: email.id)) {
-                        HStack() {
-                            AsyncImage(url: email.sender.imageURL) { phase in
-                                switch phase {
-                                case .success(let image):
-                                    image.resizable()
-                                case .failure:
-                                    Image(systemName: "person.fill").resizable()
-                                @unknown default:
-                                    Image(systemName: "person.fill").resizable()
-                                }
-                            }
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                            
-                            VStack(alignment: .leading) {
-                                Text(email.subject)
-                                    .font(.headline)
-                                Text(email.senderName)
-                            }
-                        }
+                        EmailRow(email: email)
                     }
                 }
             }
         }
-        
-        
         
         .task {
             await getGroups()
@@ -56,6 +34,34 @@ struct EmailListingView: View {
             emails = decoded.data
         } catch {
             print(">>> Decode failed: \(error)")
+        }
+    }
+}
+
+struct EmailRow: View {
+    let email: Email
+    
+    var body: some View {
+        HStack() {
+            AsyncImage(url: email.sender.imageURL) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable()
+                case .failure:
+                    Image(systemName: "person.fill").resizable()
+                @unknown default:
+                    Image(systemName: "person.fill").resizable()
+                }
+            }
+            .scaledToFit()
+            .frame(width: 40, height: 40)
+            .clipShape(Circle())
+            
+            VStack(alignment: .leading) {
+                Text(email.subject)
+                    .font(.headline)
+                Text(email.senderName)
+            }
         }
     }
 }
