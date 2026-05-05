@@ -17,11 +17,11 @@ struct EmailListingView: View {
         }
         
         .task {
-            await getGroups()
+            await getEmails()
         }
     }
     
-    func getGroups() async {
+    func getEmails() async {
         let url = URL(string: "https://email.lucasvanbriemen.nl/api/mailbox/" + group)!
         let devToken = "DEV_TOKEN"
         
