@@ -12,4 +12,3 @@ struct Group: Identifiable, Decodable {
         case image = "ios_icon"
     }
 }
-
