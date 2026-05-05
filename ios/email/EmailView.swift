@@ -1,14 +1,28 @@
 import SwiftUI
+import WebKit
 
 struct EmailView: View {
     let uuid: String
     @State var email: Email?
+    
+    let html_body = "<h1>Hello, world!</h1>"
+    
+    @State var webpage = WebPage()
     
     var body: some View {
         Text("Email view")
         
             .task {
                 await getEmail()
+            }
+        
+//        We want to render the HTML
+        WebView(webpage)
+            .task {
+                await getEmail()
+                if let body = email?.body {
+                    webpage.load(html: body)
+                }
             }
     }
     
@@ -23,7 +37,7 @@ struct EmailView: View {
             
             let decoder = JSONDecoder()
             self.email = try? decoder.decode(Email.self, from: data)
-            print(self.email?.subject)
+            print(self.email?.body)
         } catch {
             print(error)
         }

@@ -6,9 +6,11 @@ public struct Email: Identifiable, Codable {
     let subject: String
     let senderName: String
     let sender: Sender
+    let body: String?
     
     enum CodingKeys: String, CodingKey {
         case uuid, subject, sender
+        case body = "html_body"
         case senderName = "sender_name"
     }
 }
