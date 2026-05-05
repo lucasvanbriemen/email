@@ -9,7 +9,7 @@ struct EmailListingView: View {
         NavigationStack {
             List() {
                 ForEach(emails) { email in
-                    NavigationLink(destination: EmailView(email: email.id)) {
+                    NavigationLink(destination: EmailView(uuid: email.uuid)) {
                         EmailRow(email: email)
                     }
                 }
