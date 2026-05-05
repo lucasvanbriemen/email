@@ -29,8 +29,6 @@ struct ContentView: View {
         } catch {
             print("something went wrong")
         }
-        
-        print(groups)
     }
 }
 
