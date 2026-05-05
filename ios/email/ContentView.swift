@@ -6,7 +6,7 @@ struct ContentView: View {
     var body: some View {
         TabView {
             ForEach(groups) { group in
-                Tab(group.name, systemImage: group.image) {
+                Tab(group.name, systemImage: group.icon) {
                     EmailListingView(group: group.path)
                 }
             }
