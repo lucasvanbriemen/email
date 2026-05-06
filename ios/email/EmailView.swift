@@ -18,7 +18,7 @@ struct EmailView: View {
                 guard let email else { return }
                 
                 if email.sender.email == "ntfy@ltvb.nl" {
-                    var request = URLRequest(url: URL(string: email.body)!)
+                    var request = URLRequest(url: URL(string: email.body!)!)
                     
                     request.setValue("auth_token=\(Secrets.devToken)", forHTTPHeaderField: "Cookie")
                     webpage.load(request)
