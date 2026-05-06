@@ -17,11 +17,18 @@ struct EmailView: View {
                 await getEmail()
                 guard let email else { return }
                 
-                webpage.load(html: email.body!)
+                if email.sender.email == "ntfy@ltvb.nl" {
+                    var request = URLRequest(url: URL(string: email.body)!)
+                    
+                    request.setValue("auth_token=\(Secrets.devToken)", forHTTPHeaderField: "Cookie")
+                    webpage.load(request)
+                } else {
+                    webpage.load(html: email.body!)
+                }
+                
                 print(email.sender.email)
             }
     }
-
     func getEmail() async {
         guard let url = URL(string: "\(Secrets.baseURL)/email/\(uuid)") else { return }
         var request = URLRequest(url: url)
