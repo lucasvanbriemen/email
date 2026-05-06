@@ -18,10 +18,19 @@ struct EmailView: View {
                 guard let email else { return }
                 
                 if email.sender.email == "ntfy@ltvb.nl" {
-                    var request = URLRequest(url: URL(string: email.body!)!)
-                    
-                    request.setValue("auth_token=\(Secrets.devToken)", forHTTPHeaderField: "Cookie")
-                    webpage.load(request)
+                    let url = URL(string: email.body!)!
+
+                    if let host = url.host,
+                       let cookie = HTTPCookie(properties: [
+                           .domain: host,
+                           .path: "/",
+                           .name: "auth_token",
+                           .value: Secrets.devToken,
+                       ]) {
+                        await WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie)
+                    }
+
+                    webpage.load(URLRequest(url: url))
                 } else {
                     webpage.load(html: email.body!)
                 }
