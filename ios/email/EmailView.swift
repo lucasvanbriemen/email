@@ -3,43 +3,50 @@ import WebKit
 
 struct EmailView: View {
     let uuid: String
-    @State var email: Email?
-    
-    let html_body = "<h1>Hello, world!</h1>"
-    
-    @State var webpage = WebPage()
-    
+    @State private var email: Email?
+    @State private var webpage: WebPage
+
+    init(uuid: String) {
+        self.uuid = uuid
+        _webpage = State(initialValue: WebPage(navigationDecider: EmailNavigationDecider()))
+    }
+
     var body: some View {
-        Text("Email view")
-        
-            .task {
-                await getEmail()
-            }
-        
-//        We want to render the HTML
         WebView(webpage)
             .task {
                 await getEmail()
-                if let body = email?.body {
-                    webpage.load(html: body)
-                }
+                guard let email else { return }
+                
+                webpage.load(html: email.body!)
+                print(email.sender.email)
             }
     }
-    
+
     func getEmail() async {
-        let url = URL(string: "\(Secrets.baseURL)/email/\(uuid)")
-        
-        var request = URLRequest(url: url!)
+        guard let url = URL(string: "\(Secrets.baseURL)/email/\(uuid)") else { return }
+        var request = URLRequest(url: url)
         request.setValue("Bearer \(Secrets.devToken)", forHTTPHeaderField: "Authorization")
-        
+
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
-            
-            let decoder = JSONDecoder()
-            self.email = try? decoder.decode(Email.self, from: data)
-            print(self.email?.body)
+            self.email = try JSONDecoder().decode(Email.self, from: data)
         } catch {
             print(error)
         }
+    }
+}
+
+struct EmailNavigationDecider: WebPage.NavigationDeciding {
+    func decidePolicy(
+        for action: WebPage.NavigationAction,
+        preferences: inout WebPage.NavigationPreferences
+    ) async -> WKNavigationActionPolicy {
+        // For email content: open external links in Safari instead of in-place
+        if action.navigationType == .linkActivated,
+           let url = action.request.url {
+            await UIApplication.shared.open(url)
+            return .cancel
+        }
+        return .allow
     }
 }
