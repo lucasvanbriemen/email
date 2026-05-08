@@ -49,16 +49,10 @@
   window.api = api;
 </script>
 
-{#if !IS_MOBILE}
-  <Header />
-{/if}
+<Header />
 
 {#if currentComponent}
   <svelte:component this={currentComponent} {...params} />
-{/if}
-
-{#if IS_MOBILE}
-  <Header />
 {/if}
 
 <style>

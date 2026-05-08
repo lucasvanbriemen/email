@@ -5,7 +5,6 @@
   import ListItem from "../ListItem.svelte";
   import Email from "./Email.svelte";
   import SkeletonLoader from "../SkeletonLoader.svelte";
-  import mobileGestures from "../../lib/mobileGestures.js";
 
   let { group, emailUuid } = $props();
   let emailData = $state({});
@@ -21,26 +20,6 @@
   onMount(async () => {
     previousGroup = group;
     getEmails();
-
-    // Setup mobile gestures
-    if (IS_MOBILE) {
-      setTimeout(() => {
-        const listContainer = document.querySelector('.email-list');
-        if (listContainer) {
-          cleanupPullToRefresh = mobileGestures.setupPullToRefresh(
-            listContainer,
-            () => getEmails(currentPage)
-          );
-        }
-
-        if (emailViewContainer && emailUuid) {
-          cleanupSwipeToClose = mobileGestures.setupSwipeToClose(
-            emailViewContainer,
-            () => goBack()
-          );
-        }
-      }, 0);
-    }
 
     return () => {
       cleanupPullToRefresh?.();
@@ -103,17 +82,6 @@
     }
   });
 
-  $effect(() => {
-    // Setup swipe-to-close when email is selected on mobile
-    if (IS_MOBILE && emailUuid && emailViewContainer) {
-      cleanupSwipeToClose?.();
-      cleanupSwipeToClose = mobileGestures.setupSwipeToClose(
-        emailViewContainer,
-        () => goBack()
-      );
-    }
-  });
-
   function goBack() {
     page.show(`/${group}`);
   }
@@ -144,7 +112,7 @@
   }
 </script>
 
-<main class:is-mobile={IS_MOBILE}>
+<main>
   <div class="email-list">
 
     {#if !isLoading && emailData.total > 0}
