@@ -43,7 +43,7 @@
     // Start the router
     page.start();
 
-    theme.applyTheme();
+    theme.init();
   });
 
   window.api = api;

@@ -26,4 +26,12 @@ export default {
       document.documentElement.style.setProperty(`--${name}`, value);
     });
   },
+
+  init() {
+    this.applyTheme();
+
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+      this.applyTheme();
+    });
+  }
 };
