@@ -18,6 +18,10 @@ header {
       font-size: 1.25rem;
       font-weight: bold;
     }
+
+    svg {
+      stroke: none !important;
+    }
   }
 
   a:not(.logo) {
