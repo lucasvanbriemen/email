@@ -4,15 +4,6 @@ main {
   gap: 1rem;
   position: relative;
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   .email-list {
     border-right: 1px solid var(--background-color-one);
     padding-right: 1rem;
