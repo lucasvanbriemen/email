@@ -1,8 +1,8 @@
 .list-item {
   padding: calc(0.5rem - 4px) calc(1rem - 4px);
-  background-color: var(--background-color-one);
+  background-color: var(--surface-at-1);
   border-radius: 1rem;
-  border: 2px solid var(--background-color-one);
+  border: 2px solid var(--outline-variant);
 
   text-decoration: none;
 
@@ -44,7 +44,7 @@
         margin: 0 0.25rem;
       }
 
-      color: var(--text-color-secondary);
+      color: var(--on-surface-variant);
 
       .label {
         margin: 0.25rem;
@@ -57,16 +57,17 @@
 
   &:hover {
     cursor: pointer;
-    border: 2px solid var(--primary-color-dark);
+    border: 2px solid var(--primary);
   }
 
   &.selected {
     cursor: pointer;
-    border: 2px solid var(--primary-color-dark);
-    background-color: var(--primary-color-light);
+    border: 2px solid var(--primary);
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
   }
 
   &.unread {
-    border: 1px solid var(--primary-color-dark);
+    border: 1px solid var(--primary);
   }
 }
