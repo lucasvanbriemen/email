@@ -18,7 +18,7 @@ article {
   animation: fadeInSlideUp 0.3s ease-out;
 
   .header {
-    background-color: var(--background-color-one);
+    background-color: var(--surface-at-1);
     padding: 1rem;
     border-radius: 1rem;
 
@@ -33,13 +33,13 @@ article {
 
     p {
       margin: 0;
-      color: var(--text-color-secondary);
+      color: var(--on-surface-variant);
     }
   }
 
   iframe {
     border-radius: 1rem;
-    background-color: #fff;
+    background-color: var(--surface-at-1);
     display: block;
     width: 100%;
     height: auto;
@@ -59,7 +59,7 @@ article {
     .attachments-header {
       font-weight: 500;
       font-size: 0.9rem;
-      color: var(--text-color-secondary);
+      color: var(--on-surface-variant);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -72,15 +72,15 @@ article {
 
     .attachment {
       padding: 0.5rem 0.75rem;
-      background-color: var(--background-color-one);
+      background-color: var(--surface-at-1);
       border-radius: 0.5rem;
       text-decoration: none;
-      color: var(--primary-color);
+      color: var(--primary);
       font-size: 0.875rem;
       transition: background-color 0.2s, color 0.2s;
 
       &:hover {
-        background-color: var(--background-color-two);
+        background-color: var(--surface-at-2);
         text-decoration: underline;
       }
     }
