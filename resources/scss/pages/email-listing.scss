@@ -5,7 +5,7 @@ main {
   position: relative;
 
   .email-list {
-    border-right: 1px solid var(--background-color-one);
+    border-right: 1px solid var(--surface-at-5);
     padding-right: 1rem;
     width: 30%;
     margin: 0 auto;
@@ -19,7 +19,7 @@ main {
       .date-header {
         font-size: 0.875rem;
         font-weight: 600;
-        color: var(--text-color-secondary);
+        color: var(--on-surface);
         text-transform: capitalize;
         padding: 0.5rem 0.75rem;
         margin: 0;
@@ -33,7 +33,7 @@ main {
       justify-content: space-between;
       gap: 1rem;
       padding: 1rem;
-      background-color: var(--background-color-two);
+      background-color: var(--surface-at-2);
       border-radius: 1rem;
       flex-wrap: wrap;
 
@@ -41,36 +41,33 @@ main {
         flex: 1;
         min-width: 150px;
         padding: 0.5rem 1rem;
-        border: 1px solid var(--background-color-one);
-        background-color: var(--background-color);
-        color: var(--text-color);
+        border: 1px solid var(--outline-variant);
         border-radius: 2rem;
         font-size: 0.875rem;
 
         &::placeholder {
-          color: var(--text-color-secondary);
+          color: var(--on-surface-variant);
           opacity: 0.7;
         }
 
         &:focus {
           outline: none;
-          border-color: var(--primary-color);
-          box-shadow: 0 0 0 2px rgba(var(--primary-color-dark-rgb), 0.1);
+          border-color: var(--primary);
         }
       }
 
       button {
         padding: 0.5rem 1rem;
-        border: 2px solid var(--primary-color-dark);
-        background-color: var(--background-color);
-        color: var(--text-color);
+        border: 2px solid var(--primary);
         border-radius: 2rem;
         cursor: pointer;
         font-size: 0.875rem;
         transition: all 0.2s ease;
+        cursor: pointer;
 
         &:hover:not(:disabled) {
-          background-color: var(--primary-color-dark);
+          background-color: var(--primary-container);
+          color: var(--on-primary-container);
         }
 
         &:disabled {
@@ -81,7 +78,7 @@ main {
 
       .pagination-info {
         font-size: 0.875rem;
-        color: var(--text-color-secondary);
+        color: var(--on-surface-variant);
         white-space: nowrap;
       }
     }
@@ -121,8 +118,6 @@ main {
       left: 0;
       width: 100%;
       height: 100%;
-
-      background-color: var(--background-color);
 
       .go-back-btn {
         display: block;
