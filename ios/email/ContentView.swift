@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var groups: [Group] = []
-    
+
     var body: some View {
         TabView {
             ForEach(groups) { group in
@@ -34,4 +34,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-
