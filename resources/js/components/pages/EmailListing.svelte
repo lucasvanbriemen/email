@@ -11,9 +11,7 @@
   let emails = $state([]);
   let isLoading = $state(true);
   let previousGroup = $state(null);
-  let currentPage = $state(1);
   let searchQuery = $state("");
-  let emailViewContainer = $state(null);
   let cleanupPullToRefresh;
   let cleanupSwipeToClose;
 
@@ -38,7 +36,6 @@
     emailData = await api.get(url);
 
     emails = emailData.data;
-    currentPage = pageNum;
 
     emailData.data.forEach(email => {
       email.selected = false;
@@ -48,7 +45,6 @@
   }
 
   function handleSearch() {
-    currentPage = 1;
     getEmails(1);
   }
 
@@ -76,7 +72,6 @@
   $effect(() => {
     if (group !== previousGroup) {
       previousGroup = group;
-      currentPage = 1;
       searchQuery = "";
       getEmails(1);
     }
@@ -156,7 +151,7 @@
   </div>
 
   {#if emailUuid}
-    <div class="email-view" bind:this={emailViewContainer} transition:fly={{ x: 300, duration: 200 }}>
+    <div class="email-view" transition:fly={{ x: 300, duration: 200 }}>
       <button class="go-back-btn" onclick={goBack}>
         Back
       </button>
