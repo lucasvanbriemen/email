@@ -1,5 +1,5 @@
 <script>
-  import { onMount, untrack } from "svelte";
+  import { onMount } from "svelte";
   import { fly } from "svelte/transition";
   import page from "page";
   import ListItem from "../ListItem.svelte";
@@ -12,17 +12,10 @@
   let isLoading = $state(true);
   let previousGroup = $state(null);
   let searchQuery = $state("");
-  let cleanupPullToRefresh;
-  let cleanupSwipeToClose;
 
   onMount(async () => {
     previousGroup = group;
     getEmails();
-
-    return () => {
-      cleanupPullToRefresh?.();
-      cleanupSwipeToClose?.();
-    };
   });
 
   async function getEmails (pageNum = 1) {
