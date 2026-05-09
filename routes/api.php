@@ -6,17 +6,6 @@ use App\Http\Middleware\AgentApiAuth;
 use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\AgentApiController;
 
-// Routes endpoint for frontend (no auth required)
-Route::get('/routes', function () {
-    return collect(Route::getRoutes())->map(function ($route) {
-        return [
-            'uri' => $route->uri(),
-            'name' => $route->getName(),
-            'method' => $route->methods()[0] ?? 'GET',
-        ];
-    })->values();
-});
-
 Route::middleware(IsLoggedIn::class)->group(function () {
     Route::get('/mailbox/metadata', [MailboxController::class, 'metadata'])->name('mailbox.metadata');
     Route::get('/mailbox/{group}', [MailboxController::class, 'index'])->name('mailbox.emails');
