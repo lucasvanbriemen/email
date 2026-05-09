@@ -60,7 +60,7 @@ struct EmailNavigationDecider: WebPage.NavigationDeciding {
         // For email content: open external links in Safari instead of in-place
         if action.navigationType == .linkActivated,
            let url = action.request.url {
-            UIApplication.shared.open(url)
+            await UIApplication.shared.open(url)
             return .cancel
         }
         return .allow
