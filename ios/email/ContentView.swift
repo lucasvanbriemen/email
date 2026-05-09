@@ -17,14 +17,8 @@ struct ContentView: View {
     }
 
     func getGroups() async {
-        let url = URL(string: "\(Secrets.baseURL)/mailbox/metadata")!
-
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(Secrets.devToken)", forHTTPHeaderField: "Authorization")
-
         do {
-            let (data, _) = try await URLSession.shared.data(for: request)
-            groups = try JSONDecoder().decode([Group].self, from: data)
+            groups = try await SeverApi.get(endpoint: "mailbox/metadata")
         } catch {
             print("something went wrong")
         }
