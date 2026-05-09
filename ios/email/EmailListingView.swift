@@ -4,15 +4,20 @@ struct EmailListingView: View {
     let group: String
     
     @State var emails: [Email] = []
+    @State var isLoading: Bool = true
     
     var body: some View {
         NavigationStack {
             List() {
-                ForEach(emails) { email in
-                    NavigationLink(destination: EmailView(uuid: email.uuid)) {
-                        EmailRow(email: email)
+                ForEach(sortedEmailsByDate(), id: \.0) { (day, dayEmails) in
+                    Section(header: Text(Self.dayFormatter.string(from: day))) {
+                        ForEach(dayEmails) { email in
+                            NavigationLink(destination: EmailView(uuid: email.uuid)) {
+                                EmailRow(email: email)
+                            }
+                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        }
                     }
-                    .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 }
             }
         }
@@ -26,10 +31,30 @@ struct EmailListingView: View {
         do {
             let decoded: EmailListResponse = try await SeverApi.get(endpoint: "mailbox/\(group)")
             emails = decoded.data
+            isLoading = false
         } catch {
             print(">>> Decode failed: \(error)")
         }
     }
+    
+    func sortedEmailsByDate() -> [(Date, [Email])] {
+        var groups: [Date: [Email]] = [:]
+        let calendar = Calendar.current
+
+        for email in emails {
+            guard let date = email.created_at else { continue }
+            let dayKey = calendar.startOfDay(for: date)
+            groups[dayKey, default: []].append(email)
+        }
+
+        return groups.sorted { $0.key > $1.key }
+    }
+
+    static let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE MMM d yyyy"
+        return formatter
+    }()
 }
 
 struct EmailRow: View {
