@@ -12,6 +12,7 @@ struct EmailListingView: View {
                     NavigationLink(destination: EmailView(uuid: email.uuid)) {
                         EmailRow(email: email)
                     }
+                    .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 }
             }
         }
