@@ -22,14 +22,8 @@ struct EmailListingView: View {
     }
     
     func getEmails() async {
-        let url = URL(string: "\(Secrets.baseURL)/mailbox/" + group)!
-
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(Secrets.devToken)", forHTTPHeaderField: "Authorization")
-        
         do {
-            let (data, _) = try await URLSession.shared.data(for: request)
-            let decoded = try JSONDecoder().decode(EmailListResponse.self, from: data)
+            let decoded: EmailListResponse = try await SeverApi.get(endpoint: "mailbox/\(group)")
             emails = decoded.data
         } catch {
             print(">>> Decode failed: \(error)")
