@@ -34,18 +34,11 @@ struct EmailView: View {
                 } else {
                     webpage.load(html: email.body!)
                 }
-                
-                print(email.sender.email)
             }
     }
     func getEmail() async {
-        guard let url = URL(string: "\(Secrets.baseURL)/email/\(uuid)") else { return }
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(Secrets.devToken)", forHTTPHeaderField: "Authorization")
-
         do {
-            let (data, _) = try await URLSession.shared.data(for: request)
-            self.email = try JSONDecoder().decode(Email.self, from: data)
+            email = try await SeverApi.get(endpoint: "email/\(uuid)")
         } catch {
             print(error)
         }
