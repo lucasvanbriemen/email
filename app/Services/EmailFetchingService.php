@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Helpers\NotifyHelper;
+use App\Helpers\ApnsHelper;
 use App\Models\ImapCredentials;
 use App\Models\Email;
 use App\Models\Folder;
 use App\Models\Attachment;
 use App\Models\IncomingEmailSender;
+use App\Models\Profile;
 use DateTimeZone;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +95,8 @@ class EmailFetchingService
 
         // Send notification
         $this->dispatchNotification($email);
+
+        $this->dispatchPush($email);
 
         $this->sendToAgent($email);
 
@@ -251,6 +255,28 @@ class EmailFetchingService
             NotifyHelper::send($senderName, $emailSubject, $url);
         } catch (Exception $e) {
             Log::error('Failed to dispatch notification for email ' . $email->id . ': ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Send APNs push for new email to all of the owning user's devices
+     */
+    public function dispatchPush(Email $email): void
+    {
+        try {
+            $userId = Profile::where('id', $email->profile_id)->value('user_id');
+            if (!$userId) {
+                return;
+            }
+
+            ApnsHelper::sendToUser(
+                $userId,
+                $email->getSenderDisplayName() ?: 'New email',
+                (string) $email->subject,
+                ['email_uuid' => $email->uuid],
+            );
+        } catch (Exception $e) {
+            Log::error('Failed to dispatch APNs push for email ' . $email->id . ': ' . $e->getMessage());
         }
     }
 

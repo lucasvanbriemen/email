@@ -129,6 +129,14 @@ return [
         'enabled' => env('NTFY_ENABLED', true),
     ],
 
+    'apns' => [
+        'enabled' => env('APNS_ENABLED', false),
+        'cert_path' => env('APNS_CERT_PATH'),
+        'cert_password' => env('APNS_CERT_PASSWORD'),
+        'topic' => env('APNS_TOPIC', 'nl.ltvb.email'),
+        'environment' => env('APNS_ENVIRONMENT', 'development'),
+    ],
+
     'user_token' => env('USER_TOKEN'),
 
     'agent_url' => 'https://ai.ltvb.nl/api/webhooks/',
