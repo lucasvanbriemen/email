@@ -51,4 +51,13 @@ class MailboxConfig
             ],
         ],
     ];
+
+    public const IGNORE_SUBJECTS = [
+        "Mail Delivery Subsystem",
+        "Undelivered Mail Returned to Sender",
+    ];
+
+    public const MUTE_NOTIFICATIONS = [
+        "🎫 Ticketbevestiging Pathé"
+    ];
 }
