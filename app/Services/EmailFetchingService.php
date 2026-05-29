@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Webklex\PHPIMAP\Client;
 use Webklex\IMAP\Facades\Client as ClientFacade;
-use MailboxConfig;
+use App\MailboxConfig;
 
 class EmailFetchingService
 {

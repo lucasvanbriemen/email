@@ -58,6 +58,6 @@ class MailboxConfig
     ];
 
     public const MUTE_NOTIFICATIONS = [
-        "🎫 Ticketbevestiging Pathé"
+        "🎫 Ticketbevestiging Pathé"
     ];
 }
