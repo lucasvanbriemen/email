@@ -16,7 +16,7 @@ return [
     | How often the dispatcher sends jobs to fetch emails from each profile
     | Recommended: 30 seconds for balance between responsiveness and load
     */
-    'fetch_interval' => env('EMAIL_FETCH_INTERVAL', 5),
+    'fetch_interval' => env('EMAIL_FETCH_INTERVAL', 30),
 
     /*
     | Queue Name
@@ -46,5 +46,5 @@ return [
     | Retry After (seconds)
     | Time to wait before retrying a failed job
     */
-    'retry_after' => env('EMAIL_FETCH_RETRY_AFTER', 90),
+    'retry_after' => env('EMAIL_FETCH_RETRY_AFTER', 300),
 ];

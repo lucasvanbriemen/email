@@ -6,6 +6,7 @@ use App\Models\ImapCredentials;
 use App\Services\EmailFetchingService;
 use Exception;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,13 +14,20 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class FetchEmailsForProfileJob implements ShouldQueue
+class FetchEmailsForProfileJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 3;
     public $timeout = 120;
     public $backoff = [60, 300, 900]; // 1 min, 5 min, 15 min
+
+    /**
+     * How long the unique lock is held (seconds). Acts as a safety net in case
+     * a job dies without releasing the lock; should comfortably exceed the
+     * worst-case runtime (timeout + max backoff).
+     */
+    public $uniqueFor = 1800;
 
     /**
      * The ImapCredentials instance
@@ -32,6 +40,15 @@ class FetchEmailsForProfileJob implements ShouldQueue
     public function __construct(ImapCredentials $credential)
     {
         $this->credential = $credential;
+    }
+
+    /**
+     * Unique key for the job. Prevents the dispatcher from piling up multiple
+     * concurrent/queued fetches for the same credential.
+     */
+    public function uniqueId(): string
+    {
+        return (string) $this->credential->id;
     }
 
     /**
@@ -142,13 +159,5 @@ class FetchEmailsForProfileJob implements ShouldQueue
         } catch (Exception $e) {
             Log::error("Failed to update credential on job failure: " . $e->getMessage());
         }
-    }
-
-    /**
-     * Determine the time at which the job should timeout.
-     */
-    public function retryUntil(): \DateTime
-    {
-        return now()->addHours(1);
     }
 }
