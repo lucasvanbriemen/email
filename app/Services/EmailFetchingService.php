@@ -85,6 +85,18 @@ class EmailFetchingService
             return null;
         }
 
+        // 
+        $ignoredSubjects = MailboxConfig::IGNORE_SUBJECTS;
+        if (in_array($emailData['subject'], $ignoredSubjects)) {
+            // Delete from server to avoid long run time
+            try {
+                $message->delete();
+            } catch (Exception $e) {
+                Log::warning('Failed to delete ignored email from server: ' . $e->getExceptionMessage());
+            }
+            return null;
+        }
+
         // Save email
         $email = Email::create($emailData);
 
