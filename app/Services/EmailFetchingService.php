@@ -108,7 +108,11 @@ class EmailFetchingService
         // Send notification
         // $this->dispatchNotification($email);
 
-        $this->dispatchPush($email);
+        $mutedSubjects = MailboxConfig::MUTE_NOTIFICATIONS;
+
+        if (!in_array($emailData['subject'], $mutedSubjects)) {
+            $this->dispatchPush($email);
+        }
 
         $this->sendToAgent($email);
 
