@@ -1,5 +1,6 @@
 class Email < ApplicationRecord
   paginates_per 25
+  belongs_to :sender
 
   # Emails belonging to the mailbox group identified by `path`.
   # Unknown path -> all emails.
@@ -26,9 +27,9 @@ class Email < ApplicationRecord
     binds = []
 
     if rules[:from].present?
-      scope = scope.joins("LEFT JOIN sender_email ON sender_email.id = emails.sender_id")
+      scope = scope.joins("LEFT JOIN senders ON senders.id = emails.sender_id")
       rules[:from].each do |pattern|
-        clauses << "sender_email.email LIKE ?"
+        clauses << "senders.email LIKE ?"
         binds << pattern.tr("*", "%")
       end
     end

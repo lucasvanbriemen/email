@@ -164,7 +164,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_id"], name: "profiles_user_id_foreign"
   end
 
-  create_table "sender_email", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "senders", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.timestamp "created_at"
     t.timestamp "updated_at"
     t.string "email", null: false
