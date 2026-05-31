@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class IncomingEmailSender extends Model
 {
 
-    protected $table = 'sender_email';
+    protected $table = 'senders';
     protected $filePath = 'attachments/logos/';
 
     protected $fillable = [
