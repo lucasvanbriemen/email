@@ -25,6 +25,7 @@ class IsLoggedIn
                 'last_activity' => now()->subHours(1)->toDateTimeString(),
             ];
             app()->instance('current_user', $current_user);
+
             return $next($request);
         }
 
@@ -32,23 +33,34 @@ class IsLoggedIn
         if (app()->environment('local')) {
             $authToken = config('app.user_token');
         } else {
-            $authToken = $_COOKIE['auth_token'] ?? $request->bearerToken() ?? null;
+            $authToken = $_COOKIE['auth_token']
+                ?? $request->query('auth_token')
+                ?? $request->bearerToken();
         }
 
-        $ch = curl_init('https://login.ltvb.nl/session/' . $authToken);
+        $ch = curl_init('https://login.ltvb.nl/session/'.$authToken);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Prevent direct output
         $responseBody = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         if ($httpCode === 200) {
-            $current_user = json_decode($responseBody); // Convert JSON to object
-            $current_user = $current_user->user;
-            app()->instance('current_user', $current_user);
+
+            if ($request->query('auth_token')) {
+                setcookie('auth_token', $authToken, time() + 10 * 24 * 60 * 60, '/', '.lucasvanbriemen.nl', true, true);
+
+                $cleanUrl = $request->url();
+                $params = $request->query();
+                unset($params['auth_token']);
+                if (!empty($params)) {
+                    $cleanUrl .= '?' . http_build_query($params);
+                }
+                return redirect($cleanUrl);
+            }
 
             return $next($request);
         } else {
-            return redirect('https://login.ltvb.nl?redirect=' . urlencode($request->fullUrl()));
+            return redirect('https://login.ltvb.nl?redirect='.urlencode($request->fullUrl()));
         }
     }
 }
