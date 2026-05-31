@@ -5,7 +5,9 @@ gem "rails", "~> 8.0.5"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 gem "dartsass-rails"
-# Use sqlite3 as the database for Active Record
+# Primary database: MySQL/MariaDB via the trilogy adapter (the old email DB)
+gem "trilogy", ">= 2.7"
+# Still used by Solid Cache/Queue/Cable for their local production stores
 gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -44,6 +46,9 @@ gem "thruster", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Load database credentials and other secrets from a local .env file
+  gem "dotenv-rails"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
