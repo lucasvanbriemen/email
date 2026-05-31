@@ -1,5 +1,9 @@
 <% content_for :title, "Email" %>
 
+<div class="pagination">
+  <%= paginate @emails %>
+</div>
+
 <div class="container">
   <%= @emails.each do |email| %>
     <div class="box">
@@ -9,3 +13,4 @@
     </div>
   <% end %>
 </div>
+
