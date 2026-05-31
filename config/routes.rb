@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
 
   root to: "emails#index"
+  get "mailbox/:path", to: "emails#index", as: :mailbox
 
   resource :session, only: [ :new, :create, :destroy, :show ]
   get "session/:token", to: "sessions#show", as: :session_lookup

@@ -3,7 +3,7 @@ class EmailsController < ApplicationController
   end
 
   def index
-    @emails = Email.order(created_at: :desc).page(params[:page])
+    @emails = Email.in_group(params[:path]).order(created_at: :desc).page(params[:page])
   end
 
   def create
