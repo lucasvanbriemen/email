@@ -3,7 +3,7 @@ class EmailsController < ApplicationController
   end
 
   def index
-    @emails = Email.all
+    @emails = [ Email.first ]
   end
 
   def create

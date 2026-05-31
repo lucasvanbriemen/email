@@ -1,15 +1,11 @@
 <% content_for :title, "Email" %>
 
 <div class="container">
-  <h1 class="title">Email</h1>
-  <p class="subtitle">This is the email page.</p>
-
   <%= @emails.each do |email| %>
     <div class="box">
-      <p><strong>From:</strong> <%= email.from %></p>
       <p><strong>To:</strong> <%= email.to %></p>
       <p><strong>Subject:</strong> <%= email.subject %></p>
-      <p><strong>Body:</strong> <%= email.body %></p>
+      <p><strong>Body:</strong> <%= email.html_body %></p>
     </div>
   <% end %>
 </div>
