@@ -41,9 +41,34 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_id"], name: "device_tokens_user_id_index"
   end
 
-# Could not dump table "emails" because of following StandardError
-#   Unknown type 'uuid' for column 'uuid'
-
+  create_table "emails", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "uuid", null: false, comment: "Unique identifier for the email in the IMAP server"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.string "subject"
+    t.text "to", size: :long
+    t.datetime "sent_at", precision: nil
+    t.boolean "has_read", default: false, null: false
+    t.string "uid"
+    t.text "html_body", size: :long, null: false
+    t.bigint "folder_id", unsigned: true
+    t.boolean "is_archived", default: false, null: false
+    t.boolean "is_starred", default: false, null: false
+    t.boolean "is_deleted", default: false, null: false
+    t.integer "profile_id", null: false
+    t.string "sender_name"
+    t.bigint "sender_id", unsigned: true
+    t.bigint "tag_id", unsigned: true
+    t.index ["folder_id"], name: "emails_folder_id_foreign"
+    t.index ["has_read"], name: "emails_has_read_index"
+    t.index ["html_body"], name: "ft_html_body", type: :fulltext
+    t.index ["sender_id"], name: "emails_sender_id_index"
+    t.index ["sent_at"], name: "emails_sent_at_index"
+    t.index ["subject", "html_body"], name: "ft_both", type: :fulltext
+    t.index ["subject"], name: "emails_subject_index"
+    t.index ["subject"], name: "ft_subject", type: :fulltext
+    t.index ["tag_id"], name: "emails_tag_id_foreign"
+  end
 
   create_table "failed_jobs", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "uuid", null: false

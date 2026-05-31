@@ -1,5 +1,8 @@
-class SessionsController < ApplicationController
+class EmailsController < ApplicationController
   def new
+  end
+
+  def index
   end
 
   def create

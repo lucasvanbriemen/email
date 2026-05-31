@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
 
-  root to: "sessions#new"
+  root to: "emails#index"
 
-  resource :session, only: [:new, :create, :destroy]
+  resource :session, only: [ :new, :create, :destroy, :show ]
   get "session/:token", to: "sessions#show", as: :session_lookup
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
