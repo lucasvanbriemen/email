@@ -4,11 +4,10 @@
   <%= paginate @emails %>
 </div>
 
-<div class="container">
+<div class="email-wrapper">
   <%= @emails.each do |email| %>
-    <div class="box">
-      <%= email.sender.name %>
-      <p><strong>To:</strong> <%= email.to %></p>
+    <div class="email-card">
+      From <%= email.sender.name %>
       <p><strong>Subject:</strong> <%= email.subject %></p>
     </div>
   <% end %>
