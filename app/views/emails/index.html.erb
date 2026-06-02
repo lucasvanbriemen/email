@@ -6,7 +6,7 @@
 
 <div class="email-wrapper">
   <% @emails.each do |email| %>
-    <%= email.sender.image_url %>
+    <img src="<%= email.sender.image_url %>" alt="<%= email.sender.name %>" loading="lazy" class="avatar">
     <%= email.sender.name %>
     <p><strong>Subject:</strong> <%= email.subject %></p>
   <% end %>

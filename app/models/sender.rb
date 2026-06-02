@@ -9,7 +9,5 @@ class Sender < ApplicationRecord
     domain = email.split("@").last
     domain_parts = domain.split(".")
     domain_parts.last(2).join(".")
-
-    domain_parts.last
   end
 end
