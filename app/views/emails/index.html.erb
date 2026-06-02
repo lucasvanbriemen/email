@@ -5,7 +5,8 @@
 </div>
 
 <div class="email-wrapper">
-  <%= @emails.each do |email| %>
+  <% @emails.each do |email| %>
+    <%= email.sender.image_url %>
     <%= email.sender.name %>
     <p><strong>Subject:</strong> <%= email.subject %></p>
   <% end %>
