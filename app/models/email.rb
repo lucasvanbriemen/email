@@ -5,6 +5,8 @@ class Email < ApplicationRecord
   # Emails belonging to the mailbox group identified by `path`.
   # Unknown path -> all emails.
   def self.in_group(path)
+    path = path || "home"
+
     group = MailboxConfig.find(path)
     rules = group[:rules]
 
