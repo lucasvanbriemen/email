@@ -6,8 +6,10 @@
 
 <div class="email-wrapper">
   <% @emails.each do |email| %>
-    <img src="<%= email.sender.image_url %>" alt="<%= email.sender.name %>" loading="lazy" class="avatar">
+    <img src="<%= email.sender.image_url %>" loading="lazy">
     <%= email.sender.name %>
     <p><strong>Subject:</strong> <%= email.subject %></p>
+    <%= distance_of_time_in_words(email.created_at, Time.current) %> ago
+    <hr><hr>
   <% end %>
 </div>
