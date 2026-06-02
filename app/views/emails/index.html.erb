@@ -6,10 +6,7 @@
 
 <div class="email-wrapper">
   <%= @emails.each do |email| %>
-    <div class="email-card">
-      From <%= email.sender.name %>
-      <p><strong>Subject:</strong> <%= email.subject %></p>
-    </div>
+    <%= email.sender.name %>
+    <p><strong>Subject:</strong> <%= email.subject %></p>
   <% end %>
 </div>
-
