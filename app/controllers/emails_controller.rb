@@ -10,13 +10,9 @@ class EmailsController < ApplicationController
   end
 
   def show
-    token = Token.find_by(value: params[:token])
+    @email = Email.find(params[:id])
 
-    if token.nil? || token.expires_at.past?
-      return render json: { error: "Invalid or expired token" }, status: :unauthorized
-    end
-
-    render json: token.account.as_json
+    render json: @email.as_json(include: :sender)
   end
 
   private

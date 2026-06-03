@@ -7,8 +7,7 @@ Rails.application.routes.draw do
   root to: "emails#index"
   get "mailbox/:path", to: "emails#index", as: :mailbox
 
-  resource :session, only: [ :new, :create, :destroy, :show ]
-  get "session/:token", to: "sessions#show", as: :session_lookup
+  get "/emails/:id", to: "emails#show", as: :email
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

@@ -30,7 +30,7 @@
               <p><strong>From:</strong> ${data.sender.name} &lt;${data.sender.email}&gt;</p>
               <p><strong>Sent:</strong> ${new Date(data.created_at).toLocaleString()}</p>
               <hr>
-              <div>${data.body}</div>
+              <div>${data.html_body}</div>
             `;
             const emailWindow = window.open("", "_blank", "width=600,height=400");
             emailWindow.document.write(emailContent);
