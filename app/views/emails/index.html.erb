@@ -20,7 +20,21 @@
       emailItems.forEach(item => {
         item.addEventListener("click", function() {
           const emailId = this.getAttribute("data-email-id");
-          console.log("Email ID:", emailId);
+          fetch(`/emails/${emailId}`, {
+            headers: { "Accept": "application/json" }
+          })
+          .then(response => response.json())
+          .then(data => {
+            const emailContent = `
+              <h2>${data.subject}</h2>
+              <p><strong>From:</strong> ${data.sender.name} &lt;${data.sender.email}&gt;</p>
+              <p><strong>Sent:</strong> ${new Date(data.created_at).toLocaleString()}</p>
+              <hr>
+              <div>${data.body}</div>
+            `;
+            const emailWindow = window.open("", "_blank", "width=600,height=400");
+            emailWindow.document.write(emailContent);
+          })
         });
       });
     });
