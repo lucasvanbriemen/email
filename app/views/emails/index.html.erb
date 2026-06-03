@@ -9,7 +9,7 @@
     <img src="<%= email.sender.image_url %>" loading="lazy">
     <%= email.sender.name %>
     <p><strong>Subject:</strong> <%= email.subject %></p>
-    <%= distance_of_time_in_words(email.created_at, Time.current) %> ago
+    <%= time_ago_in_words_with_tooltip(email.created_at) %>
     <hr><hr>
   <% end %>
 </div>
