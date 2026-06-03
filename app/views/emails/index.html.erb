@@ -21,9 +21,10 @@
         item.addEventListener("click", function() {
           const emailId = this.getAttribute("data-email-id");
           fetch(`/emails/${emailId}`)
-          .then(data => {
+          .then(response => response.text())
+          .then(html => {
             const emailWindow = window.open("", "_blank", "width=600,height=400");
-            emailWindow.document.write(data);
+            emailWindow.document.write(html);
           })
         });
       });
