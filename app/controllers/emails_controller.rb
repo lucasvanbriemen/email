@@ -12,7 +12,9 @@ class EmailsController < ApplicationController
   def show
     @email = Email.find(params[:id])
 
-    render json: @email.as_json(include: :sender)
+    respond_to do |format|
+      format.any { render :show }
+    end
   end
 
   private
