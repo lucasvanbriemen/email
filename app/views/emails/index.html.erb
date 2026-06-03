@@ -6,10 +6,23 @@
 
 <div class="email-wrapper">
   <% @emails.each do |email| %>
-    <img src="<%= email.sender.image_url %>" loading="lazy">
-    <%= email.sender.name %>
-    <p><strong>Subject:</strong> <%= email.subject %></p>
-    <%= time_ago_in_words_with_tooltip(email.created_at) %>
-    <hr><hr>
+    <button class="email-item" data-email-id="<%= email.id %>">
+      <img src="<%= email.sender.image_url %>" loading="lazy">
+      <%= email.sender.name %>
+      <p><strong>Subject:</strong> <%= email.subject %></p>
+      <%= time_ago_in_words_with_tooltip(email.created_at) %>
+    </button>
   <% end %>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const emailItems = document.querySelectorAll(".email-item");
+      emailItems.forEach(item => {
+        item.addEventListener("click", function() {
+          const emailId = this.getAttribute("data-email-id");
+          console.log("Email ID:", emailId);
+        });
+      });
+    });
+</script>
 </div>
