@@ -445,6 +445,8 @@ DEPENDENCIES
   jbuilder
   kamal
   kaminari
+  mail (~> 2.9)
+  net-imap
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.5)

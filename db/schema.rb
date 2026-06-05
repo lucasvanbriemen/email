@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 0) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_05_000001) do
   create_table "attachments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -59,9 +59,11 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.string "sender_name"
     t.bigint "sender_id", unsigned: true
     t.bigint "tag_id", unsigned: true
+    t.string "message_id", comment: "RFC822 Message-ID, used to dedupe IMAP imports"
     t.index ["folder_id"], name: "emails_folder_id_foreign"
     t.index ["has_read"], name: "emails_has_read_index"
     t.index ["html_body"], name: "ft_html_body", type: :fulltext
+    t.index ["profile_id", "message_id"], name: "emails_profile_message_id_unique", unique: true
     t.index ["sender_id"], name: "emails_sender_id_index"
     t.index ["sent_at"], name: "emails_sent_at_index"
     t.index ["subject", "html_body"], name: "ft_both", type: :fulltext
@@ -227,7 +229,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   add_foreign_key "attachments", "emails", name: "attachments_email_id_foreign", on_delete: :cascade
   add_foreign_key "emails", "folders", name: "emails_folder_id_foreign", on_delete: :nullify
-  add_foreign_key "emails", "sender_email", column: "sender_id", name: "emails_sender_id_foreign", on_delete: :nullify
+  add_foreign_key "emails", "senders", name: "emails_sender_id_foreign", on_delete: :nullify
   add_foreign_key "emails", "tags", name: "emails_tag_id_foreign", on_delete: :nullify
   add_foreign_key "profiles", "users", name: "profiles_user_id_foreign", on_delete: :cascade
   add_foreign_key "tags", "profiles", name: "tags_profile_id_foreign", on_delete: :cascade

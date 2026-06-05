@@ -1,6 +1,6 @@
 class Email < ApplicationRecord
   paginates_per 25
-  belongs_to :sender
+  belongs_to :sender, optional: true
 
   # Emails belonging to the mailbox group identified by `path`.
   # Unknown path -> all emails.
