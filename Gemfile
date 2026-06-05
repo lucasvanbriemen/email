@@ -41,6 +41,11 @@ gem "solid_cable"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+# Load database credentials and other secrets from a local .env file.
+# Needed in production too: the Plesk-deployed app and its build step read
+# DB_*/SECRET_KEY_BASE from /var/www/vhosts/.../mail.ltvb.nl/.env.
+gem "dotenv-rails"
+
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false
 
@@ -53,9 +58,6 @@ gem "thruster", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Load database credentials and other secrets from a local .env file
-  gem "dotenv-rails"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
