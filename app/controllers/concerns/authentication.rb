@@ -41,9 +41,6 @@ module Authentication
     return nil unless response.is_a?(Net::HTTPOK)
 
     JSON.parse(response.body)
-  rescue StandardError => e
-    Rails.logger.error("Auth token validation failed: #{e.message}")
-    nil
   end
 
   def store_auth_cookie(token)
