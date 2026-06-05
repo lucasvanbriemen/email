@@ -1,0 +1,2 @@
+class ImapCredential < ApplicationRecord
+end
