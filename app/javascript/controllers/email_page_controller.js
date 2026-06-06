@@ -8,9 +8,6 @@ export default class extends Controller {
       .then(response => response.text())
       .then(html => {
         this.contentTarget.innerHTML = html
-      }).catch(error => {
-        console.error("Error loading email content:", error)
-        this.contentTarget.innerHTML = "<p>Failed to load email content. Please try again.</p>"
       })
   }
 }
