@@ -1,7 +1,16 @@
-.email-wrapper {
+.email-page {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
+  margin: 2rem;
 
-  
+  .email-listing {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 40%;
+  }
+
+  .email-content {
+    width: 60%;
+  }
 }
