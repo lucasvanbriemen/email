@@ -1,14 +1,14 @@
 <% content_for :title, "Mail" %>
 
-<div class="pagination">
-  <%= paginate @emails %>
-</div>
-
 <div class="email-page" data-controller="email-page">
   <div class="email-listing">
     <% @emails.each do |email| %>
       <%= render partial: "email-button", locals: { email: email } %>
     <% end %>
+
+    <div class="pagination">
+      <%= paginate @emails %>
+    </div>
   </div>
 
   <div class="email-content" data-email-page-target="content">
