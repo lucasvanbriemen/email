@@ -13,4 +13,13 @@
   .email-content {
     width: 60%;
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin: 1rem;
+
+    .email-listing, .email-content {
+      width: 100%;
+    }
+  }
 }
