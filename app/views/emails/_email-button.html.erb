@@ -1,0 +1,8 @@
+<button class="email-item" data-action="email-page#select" data-email-page-id-param="<%= email.id %>">
+  <img src="<%= email.sender.image_url %>" loading="lazy">
+  <%= email.sender.name %>
+  <p><strong>Subject:</strong>
+    <%= email.subject %>
+  </p>
+  <%= time_ago_in_words_with_tooltip(email.created_at) %>
+</button>
