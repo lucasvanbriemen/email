@@ -5,6 +5,7 @@ export default class extends Controller {
 
   select(event) {
     this.element.querySelector(".active")?.classList.remove("active")
+    this.element.querySelector(".placeholder-content")?.classList.remove("placeholder-content")
     event.currentTarget.classList.add("active")
     
     fetch(`/emails/${event.params.id}`)

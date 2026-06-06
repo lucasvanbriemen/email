@@ -79,6 +79,18 @@
     top: 6rem;
     align-self: flex-start;
 
+    &.placeholder-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 12rem);
+      
+      color: var(--secondary);
+      font-size: 2rem;
+      font-weight: bold;
+      opacity: 0.5;
+    }
+
     .email-header {
       display: flex;
       align-items: center;
