@@ -1,6 +1,8 @@
 class Sender < ApplicationRecord
   has_many :emails
 
+  SENDER_NAME_FALLBACKS = [ nil, "", "0", " " ].freeze
+
   def image_url
     "https://img.logo.dev/#{top_level_domain}?token=pk_YHpEPFuOTnGDZ6nmBhgIog&retina=true"
   end
@@ -14,7 +16,7 @@ class Sender < ApplicationRecord
   def name
     # If the DB name is 0 or blank, fall back to the email prefix.
     db_name = super
-    if db_name.present? && db_name != "0"
+    if SENDER_NAME_FALLBACKS.exclude?(db_name)
       db_name
     else
       email.split("@").first
