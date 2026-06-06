@@ -4,37 +4,19 @@
   <%= paginate @emails %>
 </div>
 
-<div class="email-page">
+<div class="email-page" data-controller="email-page">
   <div class="email-listing">
     <% @emails.each do |email| %>
-      <button class="email-item" data-email-id="<%= email.id %>">
+      <button class="email-item" data-action="email-page#select" data-email-page-id-param="<%= email.id %>">
         <img src="<%= email.sender.image_url %>" loading="lazy">
         <%= email.sender.name %>
         <p><strong>Subject:</strong> <%= email.subject %></p>
         <%= time_ago_in_words_with_tooltip(email.created_at) %>
       </button>
     <% end %>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const emailItems = document.querySelectorAll(".email-item");
-        emailItems.forEach(item => {
-          item.addEventListener("click", function(e) {  
-            e.preventDefault();
-            const emailId = this.getAttribute("data-email-id");
-            fetch(`/emails/${emailId}`)
-            .then(response => response.text())
-            .then(html => {
-              const emailWindow = window.open("", "_blank", "width=600,height=400");
-              emailWindow.document.write(html);
-            })
-          });
-        });
-      });
-    </script>
   </div>
 
-  <div class="email-content">
+  <div class="email-content" data-email-page-target="content">
     <p>Select an email to view its content.</p>
   </div>
 </div>
