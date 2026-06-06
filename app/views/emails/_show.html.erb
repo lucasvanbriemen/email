@@ -9,9 +9,11 @@
       <span class="separator"></span>
       <span class="timestamp"><%= time_ago_in_words(email.created_at) %></span>
     </div>
+
+    <p class="to">to: <%= email.to %></p>
   </div>
 
-  <p class="to"><%= email.to %></p>
+  
 </div>
 <hr>
 <iframe srcdoc="<%= email.html_body %>" sandbox='allow-scripts allow-top-navigation allow-forms'></iframe>

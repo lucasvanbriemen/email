@@ -64,6 +64,47 @@
     position: sticky;
     top: 6rem;
     align-self: flex-start;
+
+    .email-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      background-color: var(--surface-at-1);
+      padding: 1rem;
+      border-radius: 1.5rem;
+
+      img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+      }
+
+      .email-info {
+        display: flex;
+        flex-direction: column;
+
+        .sender-name {
+          font-weight: bold;
+          font-size: 1.25rem;
+        }
+
+        .meta {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+          * { color: var(--secondary); }
+
+          font-size: 0.875rem;
+        }
+
+        .to {
+          font-size: 0.75rem;
+          line-height: 1.25rem;
+          color: var(--secondary);
+        }
+      }
+    }
   }
 
   @media (max-width: 768px) {
