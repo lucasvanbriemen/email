@@ -4,13 +4,19 @@ class Sender < ApplicationRecord
   SENDER_NAME_FALLBACKS = [ nil, "", "0", " " ].freeze
 
   def image_url
-    "https://img.logo.dev/#{top_level_domain}?token=pk_YHpEPFuOTnGDZ6nmBhgIog&retina=true"
+    "https://img.logo.dev/#{top_level_domain}?token=pk_YHpEPFuOTnGDZ6nmBhgIog&retina=true&fallback=monogram"
   end
 
   def top_level_domain
     domain = email.split("@").last.to_s.downcase
     # Use the Public Suffix List so multi-part TLDs (co.uk, com.au, ...) work.
-    PublicSuffix.domain(domain, ignore_private: true) || domain
+    domain = PublicSuffix.domain(domain, ignore_private: true) || domain
+
+    if domain.include?(".")
+      domain
+    else
+      "#{domain}.tld" # Avoid invalid logo.dev URLs for senders with malformed emails like "lucas@localhost".
+    end
   end
 
   def name
