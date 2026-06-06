@@ -105,6 +105,15 @@
         }
       }
     }
+
+    iframe {
+      width: 100%;
+      min-height: 60vh;
+      border: none;
+      border-radius: 1rem;
+      max-height: 100vh;
+      background-color: var(--surface-at-1);
+    }
   }
 
   @media (max-width: 768px) {
