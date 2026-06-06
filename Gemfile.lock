@@ -448,6 +448,7 @@ DEPENDENCIES
   mail (~> 2.9)
   net-imap
   propshaft
+  public_suffix
   puma (>= 5.0)
   rails (~> 8.0.5)
   rubocop-rails-omakase

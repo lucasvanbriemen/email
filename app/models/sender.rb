@@ -8,9 +8,9 @@ class Sender < ApplicationRecord
   end
 
   def top_level_domain
-    domain = email.split("@").last
-    domain_parts = domain.split(".")
-    domain_parts.last(2).join(".")
+    domain = email.split("@").last.to_s.downcase
+    # Use the Public Suffix List so multi-part TLDs (co.uk, com.au, ...) work.
+    PublicSuffix.domain(domain, ignore_private: true) || domain
   end
 
   def name
