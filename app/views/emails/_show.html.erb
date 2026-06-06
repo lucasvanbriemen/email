@@ -1,4 +1,17 @@
-<h2><%= email.subject %></h2>
-<p><strong>From:</strong> <%= email.sender.name %> &lt;<%= email.sender.email %>&gt;</p>
+<div class="email-header">
+  <img src="<%= email.sender.image_url %>" class="sender-image" loading="lazy">
+  <div class="email-info">
+    <h3 class="sender-name"><%= email.subject %></h3>
+    <div class="meta">
+      <span class="sender"><%= email.sender.name %></span>
+      <span class="separator"></span>
+      <span class="sender-email"><%= email.sender.email %></span>
+      <span class="separator"></span>
+      <span class="timestamp"><%= time_ago_in_words(email.created_at) %></span>
+    </div>
+  </div>
+
+  <p class="to"><%= email.to %></p>
+</div>
 <hr>
 <iframe srcdoc="<%= email.html_body %>" sandbox='allow-scripts allow-top-navigation allow-forms'></iframe>
