@@ -9,6 +9,20 @@
     gap: 0.5rem;
     width: 40%;
 
+    .email-search {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 1rem;
+      background-color: var(--surface-at-1);
+      flex-direction: row;
+
+      .input-wrapper {
+        flex: 1;
+      }
+    }
+
     .email-item {
       display: flex;
       align-items: center;

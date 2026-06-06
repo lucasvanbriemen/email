@@ -4,7 +4,7 @@
   <div class="email-listing">
 
     <%= form_with url: request.path, method: :get, class: "email-search", builder: CustomFormBuilder do |form| %>
-      <%= form.text_field :q, value: params[:q], label: "search emails" %>
+      <%= form.text_field :q, value: params[:q], label: "Search emails" %>
       <%= form.submit %>
     <% end %>
 
