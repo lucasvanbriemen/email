@@ -21,9 +21,17 @@
       border: 1px solid var(--outline-variant);
       cursor: pointer;
 
+      transition: background-color 0.3s, border-color 0.3s;
+
       &:hover {
         background-color: var(--surface-at-2);
         border-color: var(--outline);
+      }
+
+      &.active {
+        background-color: var(--surface-at-3);
+        border: 2px solid var(--primary);
+        padding: calc(1rem - 1px);
       }
 
       img {
