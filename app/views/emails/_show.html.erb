@@ -1,4 +1,4 @@
 <h2><%= email.subject %></h2>
 <p><strong>From:</strong> <%= email.sender.name %> &lt;<%= email.sender.email %>&gt;</p>
 <hr>
-<iframe srcdoc="<%= email.html_body %>"></iframe>
+<iframe srcdoc="<%= email.html_body %>" sandbox='allow-scripts allow-top-navigation allow-forms'</iframe>
