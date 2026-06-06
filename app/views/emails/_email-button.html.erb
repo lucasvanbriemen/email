@@ -2,11 +2,9 @@
   <img src="<%= email.sender.image_url %>" loading="lazy">
   <div class="email-info">
     <h3 class="subject"><%= email.subject %></h3>
+    <div class="meta">
+      <span class="sender"><%= email.sender.name %></span>
+      <span class="timestamp"><%= time_ago_in_words_with_tooltip(email.created_at) %></span>
+    </div>
   </div>
-     <p><strong>From:</strong> <%= email.sender.name %></p>
-  <%= email.sender.name %>
-  <p><strong>Subject:</strong>
-    
-  </p>
-  <%= time_ago_in_words_with_tooltip(email.created_at) %>
 </button>
