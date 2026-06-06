@@ -10,4 +10,14 @@ class Sender < ApplicationRecord
     domain_parts = domain.split(".")
     domain_parts.last(2).join(".")
   end
+
+  def name
+    # If the DB name is 0 or blank, fall back to the email prefix.
+    db_name = super
+    if db_name.present? && db_name != "0"
+      db_name
+    else
+      email.split("@").first
+    end
+  end
 end
