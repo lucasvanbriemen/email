@@ -2,6 +2,10 @@ class Email < ApplicationRecord
   paginates_per 50
   belongs_to :sender, optional: true
 
+  INTERNAL_EMAILS = [
+    "ntfy@ltvb.nl"
+  ].freeze
+
   # Emails belonging to the mailbox group identified by `path`.
   # Unknown path -> all emails.
   def self.in_group(path)
@@ -49,5 +53,9 @@ class Email < ApplicationRecord
     return none if clauses.empty?
 
     scope.where(clauses.join(" OR "), *binds)
+  end
+
+  def internal?
+    sender&.email.in?(INTERNAL_EMAILS)
   end
 end

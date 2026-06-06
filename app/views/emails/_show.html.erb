@@ -14,4 +14,8 @@
   </div>
 </div>
 
-<iframe srcdoc="<%= email.html_body %>" sandbox='allow-scripts allow-top-navigation allow-forms'></iframe>
+<% if email.internal? %>
+  <iframe src="<%= email.html_body %>"></iframe>
+<% else %>
+  <iframe srcdoc="<%= email.html_body %>" sandbox='allow-scripts allow-top-navigation allow-forms'></iframe>
+<% end %>
