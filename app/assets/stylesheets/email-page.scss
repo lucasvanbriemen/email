@@ -19,6 +19,12 @@
       padding: 1.5rem;
       border-radius: 1.5rem;
       border: 1px solid var(--outline-variant);
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--surface-at-2);
+        border-color: var(--outline);
+      }
 
       img {
         width: 3rem;
