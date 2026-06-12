@@ -12,6 +12,12 @@ export default class extends Controller {
       .then(response => response.text())
       .then(html => {
         this.contentTarget.innerHTML = html
+        this.contentTarget.classList.add("open")
       })
+  }
+
+  close() {
+    this.contentTarget.classList.remove("open")
+    this.element.querySelector(".active")?.classList.remove("active")
   }
 }
